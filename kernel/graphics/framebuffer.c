@@ -1,6 +1,8 @@
 #include "framebuffer.h"
 
 struct limine_framebuffer *fb;
+extern u8 _binary_font_bin_start[];
+extern u8 _binary_font_bin_end[];
 
 void drawPoint(u32 x, u32 y, u32 color)
 {
@@ -38,15 +40,45 @@ void drawChar(u8 c, u32 x, u32 y, u32 fgColor)
 
 void drawCharBg(u8 c, u32 x, u32 y, u32 fgColor, u32 bgColor)
 {
-    int cx, cy;
     u8* glyph = _binary_font_bin_start + ((u32)c * 16);
 
-    for (cy = 0; cy < 16; cy++)
-    {
-        for (cx = 0; cx < 8; cx++)
+    if(glyph+16 >= &_binary_font_bin_end) {
+        for (int cy = 0; cy < 16; cy++)
         {
-            drawPoint(x + cx, y + cy, glyph[cy] & (1 << cx) ? fgColor : bgColor);
+            for (int cx = 0; cx < 8; cx++)
+            {
+                drawPoint(x + cx, y + cy, 0xFF00FF);
+            }
         }
+        return; // holy cow how did this happen !!
+    }
+
+    for (int cy = 0; cy < 16; cy++)
+    {
+        for (int cx = 0; cx < 8; cx++)
+        {
+            if(glyph + cy >= _binary_font_bin_end) return;
+            char v = (*(glyph + cy));
+
+            char m = (1 << cx);
+            char mv = v & m;
+            drawPoint((x+16)-cx, y + cy, mv ? fgColor : bgColor);
+        }
+    }
+}
+
+void drawString(u8* str, u32 x, u32 y, u32 fgColor)
+{
+    drawStringBg(str, x, y, fgColor, 0x000000);
+}
+
+void drawStringBg(u8* str, u32 x, u32 y, u32 fgColor, u32 bgColor)
+{
+    u32 offX = 0;
+    while(*str != '\0') {
+        drawCharBg(*str, x + offX, y, fgColor, bgColor);
+        offX += 8;
+        str++;
     }
 }
 

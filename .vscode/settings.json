@@ -3,6 +3,10 @@
         "*.ejs": "html",
         "*.spag": "csharp",
         "limine.h": "c",
-        "framebuffer.h": "c"
+        "framebuffer.h": "c",
+        "num.h": "c",
+        "*.inc": "c",
+        "*.x": "c",
+        "random": "c"
     }
 }
