@@ -2,6 +2,7 @@
     "files.associations": {
         "*.ejs": "html",
         "*.spag": "csharp",
-        "limine.h": "c"
+        "limine.h": "c",
+        "framebuffer.h": "c"
     }
 }

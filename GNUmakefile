@@ -42,6 +42,7 @@ $(IMAGE_NAME).iso: limine kernel
 	mkdir -p iso_root
 	cp kernel/kernel.elf \
 		limine.cfg limine/limine.sys limine/limine-cd.bin limine/limine-cd-efi.bin iso_root/
+	cp -a include/. iso_root/
 	xorriso -as mkisofs -b limine-cd.bin \
 		-no-emul-boot -boot-load-size 4 -boot-info-table \
 		--efi-boot limine-cd-efi.bin \
@@ -64,6 +65,7 @@ $(IMAGE_NAME).hdd: limine kernel
 	sudo mkdir -p img_mount/EFI/BOOT
 	sudo cp -v kernel/kernel.elf limine.cfg limine/limine.sys img_mount/
 	sudo cp -v limine/BOOTX64.EFI img_mount/EFI/BOOT/
+	sudo cp -v include/ img_mount/
 	sync
 	sudo umount img_mount
 	sudo losetup -d `cat loopback_dev`

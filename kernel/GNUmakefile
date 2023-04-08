@@ -15,6 +15,12 @@ define DEFAULT_VAR =
     endif
 endef
 
+define uniq =
+  $(eval seen :=)
+  $(foreach _,$1,$(if $(filter $_,${seen}),,$(eval seen += $_)))
+  ${seen}
+endef
+
 # It is highly recommended to use a custom built cross toolchain to build a kernel.
 # We are only using "cc" as a placeholder here. It may work by using
 # the host system's toolchain, but this is not guaranteed.
@@ -82,8 +88,11 @@ override NASMFLAGS += \
 override CFILES := $(shell find -L . -type f -name '*.c')
 override ASFILES := $(shell find -L . -type f -name '*.S')
 override NASMFILES := $(shell find -L . -type f -name '*.asm')
-override OBJ := $(CFILES:.c=.o) $(ASFILES:.S=.o) $(NASMFILES:.asm=.o)
+override OFILES := $(shell find -L . -type f -name '*.o')
+override OBJ := $(CFILES:.c=.o) $(ASFILES:.S=.o) $(NASMFILES:.asm=.o) font.o
 override HEADER_DEPS := $(CFILES:.c=.d) $(ASFILES:.S=.d)
+
+$(info $(UNIQUEOBJS))
 
 # Default target.
 .PHONY: all

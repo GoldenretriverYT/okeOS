@@ -43,3 +43,9 @@ Cons:
 Another point to consider is that a lot of software tends to depend on Linux or glibc specific features, but a portable C library like [mlibc](https://github.com/managarm/mlibc) can be used instead of implementing your own, as it provides good compatibility with POSIX/Linux software.
 
 Other options, instead of implementing POSIX in your kernel, is to add a POSIX compatibility layer on top of your native design (with the large downside of complicating the design of your OS).
+
+-----------------------------------------
+# OkeOS
+
+### Credits
+I am using the zap-light16 psf font licensed under GPL3
