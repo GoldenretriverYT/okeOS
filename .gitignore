@@ -2,3 +2,7 @@
 /ovmf
 *.iso
 *.hdd
+/toolchain/gcc-12.2.0
+/toolchain/binutils-2.40
+/toolchain/build-binutils
+/toolchain/build-gcc

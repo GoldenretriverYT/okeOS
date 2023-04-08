@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "*.spag": "csharp",
+        "limine.h": "c"
+    }
+}
