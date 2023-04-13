@@ -48,6 +48,7 @@ void initInterrupts(u64 offset) {
     asm ("lidt %0" : : "m" (idtr));
 }
 
+
 // The following will be our kernel's entry point.
 // If renaming _start() to something else, make sure to change the
 // linker script accordingly.
@@ -73,8 +74,6 @@ void _start(void) {
     kprintf("Loading IDT & Interrupts...\n");
     initInterrupts(gdtDescriptor->Offset + 0x1000); // TODO: Replace with allocated page when paging is added
     kprintf("Initiliazed IDT & Interrupts!\n");
-
-    *((u8*)gdtDescriptor->Offset + 0x16000) = 123;
 
     // We're done, just hang...
     hcf();

@@ -1,4 +1,4 @@
 #pragma once
 #include "num.h"
 
-i32 abs(i32 val);
+i64 abs(i64 val);

@@ -1,6 +1,5 @@
 #pragma once
 #include "math.h"
 
-void swap(char *x, char *y);
-char* reverse(char *buffer, int i, int j);
-char* itoa(int value, char* buffer, int base);
+char* itoa(i64 value, char* str, i64 base);
+char* uitoa(u64 value, char* str, u64 base);
