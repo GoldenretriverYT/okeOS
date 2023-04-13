@@ -4,6 +4,8 @@
 #include "terminal/terminal.h"
 #include "lib/num.h"
 #include "gdt/gdt.h"
+#include "idt/idt.h"
+#include "idt/ints.h"
 #include "debug.h"
 
 // The Limine requests can be placed anywhere, but it is important that
@@ -21,6 +23,29 @@ static void hcf(void) {
     for (;;) {
         asm ("hlt");
     }
+}
+
+struct IDTR idtr;
+
+void setIdtGate(void* handler, u8 entryOffset, u8 typeAttr, u8 selector){
+    struct IDTDescEntry* interrupt = (struct IDTDescEntry*)(idtr.Offset + entryOffset * sizeof(struct IDTDescEntry));
+    idt_setOffset(interrupt, (uint64_t)handler);
+    interrupt->type_attr = typeAttr;
+    interrupt->selector = selector;
+}
+
+void initInterrupts(u64 offset) {
+    idtr.Limit = 0x0FFF;
+    idtr.Offset = offset;
+
+    setIdtGate((void*)pageFaultHandler, 0xE, IDT_TA_InterruptGate, 0x08);
+    setIdtGate((void*)doubleFaultHandler, 0x8, IDT_TA_InterruptGate, 0x08);
+    setIdtGate((void*)gpFaultHandler, 0xD, IDT_TA_InterruptGate, 0x08);
+    setIdtGate((void*)keyboardInterruptHandler, 0x21, IDT_TA_InterruptGate, 0x08);
+    setIdtGate((void*)mouseInterruptHandler, 0x2C, IDT_TA_InterruptGate, 0x08);
+    setIdtGate((void*)pitInterruptHandler, 0x20, IDT_TA_InterruptGate, 0x08);
+
+    asm ("lidt %0" : : "m" (idtr));
 }
 
 // The following will be our kernel's entry point.
@@ -43,6 +68,13 @@ void _start(void) {
     kprintf("Loading GDT...\n");
     struct GDTDescriptor* gdtDescriptor = gdt_init(&defaultGDT);
     kprintf("If you are reading this, we did load the GDT! hooray! GDTDescriptor Address: %x\n", &gdtDescriptor);
+
+    // Init IDT
+    kprintf("Loading IDT & Interrupts...\n");
+    initInterrupts(gdtDescriptor->Offset + 0x1000); // TODO: Replace with allocated page when paging is added
+    kprintf("Initiliazed IDT & Interrupts!\n");
+
+    *((u8*)gdtDescriptor->Offset + 0x16000) = 123;
 
     // We're done, just hang...
     hcf();

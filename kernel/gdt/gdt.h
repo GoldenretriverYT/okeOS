@@ -28,3 +28,4 @@ __attribute((aligned(0x1000)));
 struct GDTDescriptor* gdt_init();
 extern void loadGDT(struct GDTDescriptor* gdtDescriptor);
 extern struct GDT defaultGDT;
+extern struct GDTDescriptor gdtDescriptor;

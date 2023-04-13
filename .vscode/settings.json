@@ -1,12 +1,14 @@
 {
     "files.associations": {
         "*.ejs": "html",
+        "*.xmlsc": "xml",
         "*.spag": "csharp",
         "limine.h": "c",
         "framebuffer.h": "c",
         "num.h": "c",
         "*.inc": "c",
         "*.x": "c",
-        "random": "c"
+        "random": "c",
+        "compare": "cpp"
     }
 }

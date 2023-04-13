@@ -10,8 +10,9 @@ struct GDT defaultGDT = {
     {0, 0, 0, 0x92, 0xa0, 0}, // kernel data segment
 };
 
+struct GDTDescriptor gdtDescriptor;
+
 struct GDTDescriptor* gdt_init() {
-    struct GDTDescriptor gdtDescriptor;
     gdtDescriptor.Size = sizeof(struct GDT) - 1;
     gdtDescriptor.Offset = (u64)&defaultGDT;
     loadGDT(&gdtDescriptor);
