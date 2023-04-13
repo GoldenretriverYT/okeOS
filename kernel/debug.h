@@ -19,41 +19,41 @@ void kprintf(char* str, ...) {
         if(isParsingSpecifier) {
             switch(*str) {
                 case 'c':
-                    terminal_writechr((char)va_arg(args, u32));
+                    terminalWriteChar((char)va_arg(args, u32));
                     break;
                 case 'e':
                 case 'E':
-                    terminal_write("<formatter e/E not implemented>");
+                    terminalWrite("<formatter e/E not implemented>");
                     break;
                 case 'f':
-                    terminal_write("<formatter f not implemented>");
+                    terminalWrite("<formatter f not implemented>");
                     break;
                 case 'o':
                     itoa(va_arg(args, i32), buf, 8);
-                    terminal_write(buf);
+                    terminalWrite(buf);
                     break;
                 case 'd':
                 case 'i':
                     itoa(va_arg(args, i32), buf, 10);
-                    terminal_write(buf);
+                    terminalWrite(buf);
 
                     break;
                 case 's':
-                    terminal_write(va_arg(args, char*));
+                    terminalWrite(va_arg(args, char*));
                     break;
                 case 'u':
                     itoa(va_arg(args, u32), buf, 10);
-                    terminal_write(buf);
+                    terminalWrite(buf);
 
                     break;
                 case 'x':
                 case 'X': // TODO: Implement capital letters hexadecimal
                     itoa(va_arg(args, u32), buf, 16);
-                    terminal_write(buf);
+                    terminalWrite(buf);
 
                     break;
                 case '%':
-                    terminal_writechr('%');
+                    terminalWriteChar('%');
                     break;
             }
 
@@ -62,7 +62,7 @@ void kprintf(char* str, ...) {
             continue;
         }
 
-        terminal_writechr(*str);
+        terminalWriteChar(*str);
         str++;
     }
 }

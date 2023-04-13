@@ -3,6 +3,7 @@
 #include "graphics/framebuffer.h"
 #include "terminal/terminal.h"
 #include "lib/num.h"
+#include "gdt/gdt.h"
 #include "debug.h"
 
 // The Limine requests can be placed anywhere, but it is important that
@@ -35,9 +36,13 @@ void _start(void) {
     // Fetch the first framebuffer.
     fb = framebuffer_request.response->framebuffers[0]; 
 
-    terminal_init();
+    terminalInit();
     kprintf("Initiliazed terminal, yay! Test: %d | Test 2: 0x%x\n", 30, 0xFF00FF);
+    
+    // Load GDT
     kprintf("Loading GDT...\n");
+    struct GDTDescriptor* gdtDescriptor = gdt_init(&defaultGDT);
+    kprintf("If you are reading this, we did load the GDT! hooray! GDTDescriptor Address: %x\n", &gdtDescriptor);
 
     // We're done, just hang...
     hcf();

@@ -7,7 +7,7 @@ extern u32 terminal_charX;
 extern u32 terminal_charY;
 extern u32 terminal_charsPerLine;
 
-void terminal_init();
-void terminal_write(char* str);
-void terminal_writeln(char* str);
-void terminal_writechr(char c);
+void terminalInit();
+void terminalWrite(char* str);
+void terminalWriteln(char* str);
+void terminalWriteChar(char c);

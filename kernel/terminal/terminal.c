@@ -4,27 +4,27 @@ u32 terminal_charX = 0;
 u32 terminal_charY = 0;
 u32 terminal_charsPerLine = 0;
 
-void terminal_init() {
+void terminalInit() {
     terminal_charsPerLine = ((fb->pitch/4)/8)-1;
 }
 
-void terminal_write(char* str) {
+void terminalWrite(char* str) {
     while(*str != '\0') {
-        terminal_writechr(*str);
+        terminalWriteChar(*str);
         str++;
     }
 }
 
-void terminal_writeln(char* str) {
+void terminalWriteln(char* str) {
     while(*str != '\0') {
-        terminal_writechr(*str);
+        terminalWriteChar(*str);
         str++;
     }
 
-    terminal_writechr('\n');
+    terminalWriteChar('\n');
 }
 
-void terminal_writechr(char c) {
+void terminalWriteChar(char c) {
     if(c > 31) drawChar(c, terminal_charX * 8, terminal_charY * 16, 0xFFFFFF);
     terminal_charX++;
 
