@@ -46,6 +46,7 @@ Other options, instead of implementing POSIX in your kernel, is to add a POSIX c
 
 -----------------------------------------
 # OkeOS
+my first "proper" (if you can even call it that) kernel
 
 ### Credits
 I am using the zap-light16 psf font licensed under GPL3
