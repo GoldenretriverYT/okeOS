@@ -41,7 +41,7 @@ LOAD ./gdt/gdtasm.o
 LOAD font.o
                 0xffffffff80000000                . = 0xffffffff80000000
 
-.text           0xffffffff80000000     0x168b
+.text           0xffffffff80000000     0x169b
  *(.text .text.*)
  .text          0xffffffff80000000       0xb2 ./idt/ints.o
                 0xffffffff80000000                pageFaultHandler
@@ -105,31 +105,31 @@ LOAD font.o
                 0xffffffff80000e00                terminalWriteChar
                 0xffffffff80000e80                terminalWriteln
  *fill*         0xffffffff80000f2b        0x5 
- .text          0xffffffff80000f30      0x393 ./kernel.o
+ .text          0xffffffff80000f30      0x3a3 ./kernel.o
                 0xffffffff80000f30                setIdtGate
                 0xffffffff80000f80                initInterrupts
                 0xffffffff800010b0                _start
- *fill*         0xffffffff800012c3        0xd 
- .text          0xffffffff800012d0      0x296 ./graphics/framebuffer.o
-                0xffffffff800012d0                drawPoint
-                0xffffffff80001300                drawLine
-                0xffffffff80001360                drawHorizontalLine
-                0xffffffff80001390                drawCharBg
-                0xffffffff80001480                drawChar
-                0xffffffff80001490                drawString
-                0xffffffff800014e0                drawStringBg
-                0xffffffff80001550                translateToOffset
- *fill*         0xffffffff80001566        0xa 
- .text          0xffffffff80001570       0xf1 ./panic.o
-                0xffffffff80001570                traceStackTrace
-                0xffffffff800015d0                panic
- *fill*         0xffffffff80001661        0xf 
- .text          0xffffffff80001670       0x1b ./gdt/gdtasm.o
-                0xffffffff80001670                loadGDT
+ *fill*         0xffffffff800012d3        0xd 
+ .text          0xffffffff800012e0      0x296 ./graphics/framebuffer.o
+                0xffffffff800012e0                drawPoint
+                0xffffffff80001310                drawLine
+                0xffffffff80001370                drawHorizontalLine
+                0xffffffff800013a0                drawCharBg
+                0xffffffff80001490                drawChar
+                0xffffffff800014a0                drawString
+                0xffffffff800014f0                drawStringBg
+                0xffffffff80001560                translateToOffset
+ *fill*         0xffffffff80001576        0xa 
+ .text          0xffffffff80001580       0xf1 ./panic.o
+                0xffffffff80001580                traceStackTrace
+                0xffffffff800015e0                panic
+ *fill*         0xffffffff80001671        0xf 
+ .text          0xffffffff80001680       0x1b ./gdt/gdtasm.o
+                0xffffffff80001680                loadGDT
 
-.iplt           0xffffffff8000168b        0x0
- .iplt          0xffffffff8000168b        0x0 ./idt/ints.o
-                0xffffffff8000268b                . = (. + CONSTANT (MAXPAGESIZE))
+.iplt           0xffffffff8000169b        0x0
+ .iplt          0xffffffff8000169b        0x0 ./idt/ints.o
+                0xffffffff8000269b                . = (. + CONSTANT (MAXPAGESIZE))
 
 .rodata         0xffffffff800026a0      0x60a
  *(.rodata .rodata.*)
@@ -242,7 +242,7 @@ LOAD font.o
  *(.note .note.*)
 OUTPUT(kernel.elf elf64-x86-64)
 
-.debug_info     0x0000000000000000     0x3ed0
+.debug_info     0x0000000000000000     0x3ee9
  .debug_info    0x0000000000000000      0x231 ./idt/ints.o
  .debug_info    0x0000000000000231      0x1b8 ./idt/idt.o
  .debug_info    0x00000000000003e9      0x410 ./debug.o
@@ -254,12 +254,12 @@ OUTPUT(kernel.elf elf64-x86-64)
  .debug_info    0x0000000000001be4      0x207 ./lib/string.o
  .debug_info    0x0000000000001deb       0xac ./lib/math.o
  .debug_info    0x0000000000001e97      0x494 ./terminal/terminal.o
- .debug_info    0x000000000000232b      0xda8 ./kernel.o
- .debug_info    0x00000000000030d3      0xac2 ./graphics/framebuffer.o
- .debug_info    0x0000000000003b95      0x2eb ./panic.o
- .debug_info    0x0000000000003e80       0x50 ./gdt/gdtasm.o
+ .debug_info    0x000000000000232b      0xdc1 ./kernel.o
+ .debug_info    0x00000000000030ec      0xac2 ./graphics/framebuffer.o
+ .debug_info    0x0000000000003bae      0x2eb ./panic.o
+ .debug_info    0x0000000000003e99       0x50 ./gdt/gdtasm.o
 
-.debug_abbrev   0x0000000000000000     0x1552
+.debug_abbrev   0x0000000000000000     0x1553
  .debug_abbrev  0x0000000000000000      0x136 ./idt/ints.o
  .debug_abbrev  0x0000000000000136       0xf8 ./idt/idt.o
  .debug_abbrev  0x000000000000022e      0x184 ./debug.o
@@ -271,10 +271,10 @@ OUTPUT(kernel.elf elf64-x86-64)
  .debug_abbrev  0x0000000000000a91       0xe2 ./lib/string.o
  .debug_abbrev  0x0000000000000b73       0x74 ./lib/math.o
  .debug_abbrev  0x0000000000000be7      0x1f6 ./terminal/terminal.o
- .debug_abbrev  0x0000000000000ddd      0x2e7 ./kernel.o
- .debug_abbrev  0x00000000000010c4      0x2ce ./graphics/framebuffer.o
- .debug_abbrev  0x0000000000001392      0x1a5 ./panic.o
- .debug_abbrev  0x0000000000001537       0x1b ./gdt/gdtasm.o
+ .debug_abbrev  0x0000000000000ddd      0x2e8 ./kernel.o
+ .debug_abbrev  0x00000000000010c5      0x2ce ./graphics/framebuffer.o
+ .debug_abbrev  0x0000000000001393      0x1a5 ./panic.o
+ .debug_abbrev  0x0000000000001538       0x1b ./gdt/gdtasm.o
 
 .debug_aranges  0x0000000000000000      0x2d0
  .debug_aranges
@@ -308,7 +308,7 @@ OUTPUT(kernel.elf elf64-x86-64)
  .debug_aranges
                 0x00000000000002a0       0x30 ./gdt/gdtasm.o
 
-.debug_line     0x0000000000000000     0x18ec
+.debug_line     0x0000000000000000     0x18f2
  .debug_line    0x0000000000000000       0xfe ./idt/ints.o
  .debug_line    0x00000000000000fe       0xa3 ./idt/idt.o
  .debug_line    0x00000000000001a1      0x15e ./debug.o
@@ -320,12 +320,12 @@ OUTPUT(kernel.elf elf64-x86-64)
  .debug_line    0x0000000000000cce      0x197 ./lib/string.o
  .debug_line    0x0000000000000e65       0x65 ./lib/math.o
  .debug_line    0x0000000000000eca      0x239 ./terminal/terminal.o
- .debug_line    0x0000000000001103      0x302 ./kernel.o
- .debug_line    0x0000000000001405      0x368 ./graphics/framebuffer.o
- .debug_line    0x000000000000176d      0x134 ./panic.o
- .debug_line    0x00000000000018a1       0x4b ./gdt/gdtasm.o
+ .debug_line    0x0000000000001103      0x308 ./kernel.o
+ .debug_line    0x000000000000140b      0x368 ./graphics/framebuffer.o
+ .debug_line    0x0000000000001773      0x134 ./panic.o
+ .debug_line    0x00000000000018a7       0x4b ./gdt/gdtasm.o
 
-.debug_str      0x0000000000000000      0x995
+.debug_str      0x0000000000000000      0x99a
  .debug_str     0x0000000000000000      0x1be ./idt/ints.o
                                         0x1eb (size before relaxing)
  .debug_str     0x00000000000001be       0x75 ./idt/idt.o
@@ -346,15 +346,15 @@ OUTPUT(kernel.elf elf64-x86-64)
  .debug_str     0x00000000000006d7      0x132 ./lib/math.o
  .debug_str     0x00000000000006d7      0x13a ./terminal/terminal.o
                                         0x2c6 (size before relaxing)
- .debug_str     0x0000000000000811       0xbd ./kernel.o
-                                        0x5ad (size before relaxing)
- .debug_str     0x00000000000008ce       0xa2 ./graphics/framebuffer.o
+ .debug_str     0x0000000000000811       0xc2 ./kernel.o
+                                        0x5b2 (size before relaxing)
+ .debug_str     0x00000000000008d3       0xa2 ./graphics/framebuffer.o
                                         0x2d9 (size before relaxing)
- .debug_str     0x0000000000000970       0x25 ./panic.o
+ .debug_str     0x0000000000000975       0x25 ./panic.o
                                         0x1a3 (size before relaxing)
 
 .debug_line_str
-                0x0000000000000000      0x241
+                0x0000000000000000      0x24a
  .debug_line_str
                 0x0000000000000000       0x8c ./idt/ints.o
                                          0xaf (size before relaxing)
@@ -389,13 +389,13 @@ OUTPUT(kernel.elf elf64-x86-64)
                 0x00000000000001ba       0x4f ./terminal/terminal.o
                                         0x103 (size before relaxing)
  .debug_line_str
-                0x0000000000000209       0x19 ./kernel.o
-                                        0x126 (size before relaxing)
+                0x0000000000000209       0x22 ./kernel.o
+                                        0x12f (size before relaxing)
  .debug_line_str
-                0x0000000000000222       0x17 ./graphics/framebuffer.o
+                0x000000000000022b       0x17 ./graphics/framebuffer.o
                                          0xe0 (size before relaxing)
  .debug_line_str
-                0x0000000000000239        0x8 ./panic.o
+                0x0000000000000242        0x8 ./panic.o
                                          0xb5 (size before relaxing)
 
 .comment        0x0000000000000000       0x12

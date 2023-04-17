@@ -8,6 +8,7 @@
 #include "idt/ints.h"
 #include "mem/memutils.h"
 #include "mem/pageframeallocator.h"
+#include "mem/paging.h"
 #include "debug.h"
 
 // The Limine requests can be placed anywhere, but it is important that
@@ -100,6 +101,7 @@ void _start(void) {
     kprintf("[RAM] Total: %x, Free: %x, Used: %x, Reserved: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
     kprintf("[RAM] Total: %u, Free: %u, Used: %u, Reserved: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
     
+    test();
 
     // We're done, just hang...
     hcf();
