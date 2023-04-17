@@ -11,6 +11,7 @@
         "random": "c",
         "compare": "cpp",
         "internet": "c",
-        "coroutine": "c"
+        "coroutine": "c",
+        "terminal.h": "c"
     }
 }

@@ -10,6 +10,9 @@
 #include "mem/pageframeallocator.h"
 #include "mem/paging.h"
 #include "debug.h"
+#include "mem/paging.h"
+
+//#define DBG_DUMPMEMMAP
 
 // The Limine requests can be placed anywhere, but it is important that
 // the compiler does not optimise them away, so, usually, they should
@@ -71,8 +74,11 @@ void _start(void) {
     fb = framebuffer_request.response->framebuffers[0]; 
 
     terminalInit();
-    kprintf("Initiliazed terminal, yay! Test: %d | Test 2: 0x%x\n", 30, 0xFF00FF);
+    kprintf("Initiliazed terminal, yay! Test: %d | Test 2: 0x%x | chars/line: %u | lines/screen: %u\n", 30, 0xFF00FF, terminal_charsPerLine, terminal_maxLines);
     
+    kprintf("Initiliazing serial port: %d\n", serial_init());
+    kprintf_both("Initialized serial port!\n");
+
     // Load GDT
     kprintf("Loading GDT...\n");
     struct GDTDescriptor* gdtDescriptor = gdt_init(&defaultGDT);
@@ -83,7 +89,6 @@ void _start(void) {
     initInterrupts(gdtDescriptor->Offset + 0x1000); // TODO: Replace with allocated page when paging is added
     kprintf("Initiliazed IDT & Interrupts!\n");
 
-    kprintf("[dbg] Dumping memory map\n");
     if(memmap_request.response == NULL) {
         panic("No memory map!");
         hcf();
@@ -91,17 +96,35 @@ void _start(void) {
 
     struct limine_memmap_response memmap = *memmap_request.response;
 
+#ifdef DBG_DUMPMEMMAP
+    kprintf("[dbg] Dumping memory map\n");
     for(u64 i = 0; i < memmap.entry_count; i++) {
         struct limine_memmap_entry entry = (*memmap.entries)[i];
         kprintf("0x%x [size = 0x%x, type = %d (%s)]\n", entry.base, entry.length, entry.type, getMemoryMappingName(entry.type));
     }
+#endif
 
     kprintf("Initialize page frame allocator...\n");
     mem_pageframeallocator_init(memmap);
     kprintf("[RAM] Total: %x, Free: %x, Used: %x, Reserved: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
     kprintf("[RAM] Total: %u, Free: %u, Used: %u, Reserved: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
     
-    test();
+    kprintf_both("Initialize paging!\n");
+    globalPageTable = (PageTable*)mem_pageframeallocator_requestPage();
+    memset(globalPageTable, 0, 0x1000);
+
+    for(u64 i = 0; i < mem_getTotalRAM(); i += 0x1000) {
+        PageTable_MapMemory(globalPageTable, (void*)i, (void*)i);
+    }
+
+    kprintf_both("Mapped memory\n");
+
+    u64 fbSize = ((fb->width * fb->height * fb->bpp) / 8) + 0x1000;
+    mem_pageframeallocator_lockPages(fb->address, fbSize / 0x1000 + 1);
+
+    kprintf_both("Loading PML4 into CR3\n");
+    asm("mov %0, %%cr3" : : "r" (globalPageTable));
+    kprintf_both("Done initiliazing paging!\n");
 
     // We're done, just hang...
     hcf();

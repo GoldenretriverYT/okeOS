@@ -56,6 +56,7 @@ void mem_pageframeallocator_initBitmap(u64 bitmapSize, void* addr) {
 }
 
 void* mem_pageframeallocator_requestPage() {
+    //kprintf_both("Page requested from 0x%x %d\n", __builtin_return_address(0), mem_freeMemory);
     if(mem_freeMemory < 16384) {
         panic("out of memory");
     }
