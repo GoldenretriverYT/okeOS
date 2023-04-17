@@ -9,6 +9,8 @@
         "*.inc": "c",
         "*.x": "c",
         "random": "c",
-        "compare": "cpp"
+        "compare": "cpp",
+        "internet": "c",
+        "coroutine": "c"
     }
 }

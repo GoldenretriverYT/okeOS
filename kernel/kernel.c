@@ -6,6 +6,8 @@
 #include "gdt/gdt.h"
 #include "idt/idt.h"
 #include "idt/ints.h"
+#include "mem/memutils.h"
+#include "mem/pageframeallocator.h"
 #include "debug.h"
 
 // The Limine requests can be placed anywhere, but it is important that
@@ -14,6 +16,11 @@
 
 static volatile struct limine_framebuffer_request framebuffer_request = {
     .id = LIMINE_FRAMEBUFFER_REQUEST,
+    .revision = 0
+};
+
+static volatile struct limine_memmap_request memmap_request = {
+    .id = LIMINE_MEMMAP_REQUEST,
     .revision = 0
 };
 
@@ -68,12 +75,31 @@ void _start(void) {
     // Load GDT
     kprintf("Loading GDT...\n");
     struct GDTDescriptor* gdtDescriptor = gdt_init(&defaultGDT);
-    kprintf("If you are reading this, we did load the GDT! hooray! GDTDescriptor Address: %x\n", &gdtDescriptor);
+    kprintf("If you are reading this, we did load the GDT! hooray! GDTDescriptor Address: 0x%x\n", &gdtDescriptor);
 
     // Init IDT
     kprintf("Loading IDT & Interrupts...\n");
     initInterrupts(gdtDescriptor->Offset + 0x1000); // TODO: Replace with allocated page when paging is added
     kprintf("Initiliazed IDT & Interrupts!\n");
+
+    kprintf("[dbg] Dumping memory map\n");
+    if(memmap_request.response == NULL) {
+        panic("No memory map!");
+        hcf();
+    }
+
+    struct limine_memmap_response memmap = *memmap_request.response;
+
+    for(u64 i = 0; i < memmap.entry_count; i++) {
+        struct limine_memmap_entry entry = (*memmap.entries)[i];
+        kprintf("0x%x [size = 0x%x, type = %d (%s)]\n", entry.base, entry.length, entry.type, getMemoryMappingName(entry.type));
+    }
+
+    kprintf("Initialize page frame allocator...\n");
+    mem_pageframeallocator_init(memmap);
+    kprintf("[RAM] Total: %x, Free: %x, Used: %x, Reserved: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
+    kprintf("[RAM] Total: %u, Free: %u, Used: %u, Reserved: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
+    
 
     // We're done, just hang...
     hcf();

@@ -1,0 +1,151 @@
+#include "pageframeallocator.h"
+
+u64 mem_freeMemory = 0;
+u64 mem_reservedMemory = 0;
+u64 mem_usedMemory = 0;
+u64 bitmapIdx = 0;
+struct Bitmap mem_pfaBitmap;
+
+void mem_pageframeallocator_init(struct limine_memmap_response memmap){
+    void* largestFreeSegment = NULL;
+    u64 largestFreeSegmentSize = 0;
+
+    for(u64 i = 0; i < memmap.entry_count; i++) {
+        struct limine_memmap_entry entry = (*memmap.entries)[i];
+
+        // type 0 is free memory
+        if(entry.type == 0 && entry.length > largestFreeSegmentSize) {
+            largestFreeSegment = entry.base;
+            largestFreeSegmentSize = entry.length;
+        }
+    }
+
+    if(largestFreeSegment == NULL) {
+        panic("No free memory found!");
+    }
+
+    kprintf("Largest Free Segment: 0x%x (with size 0x%x)\n", largestFreeSegment, largestFreeSegmentSize);
+
+    u64 totalSize = getMemorySize(memmap);
+    kprintf("TotalSize: %x\n", totalSize);
+    mem_freeMemory = totalSize;
+    
+    u64 bitmapSize = (totalSize / 4096 / 8) + 1;
+
+    mem_pageframeallocator_initBitmap(bitmapSize, largestFreeSegment);
+    mem_pageframeallocator_reservePages(0, (totalSize / 4096)+1);
+
+    for(u64 i = 0; i < memmap.entry_count; i++) {
+        struct limine_memmap_entry entry = (*memmap.entries)[i];
+
+        // type 0 is free memory
+        if(entry.type == 0) {
+            mem_pageframeallocator_unreservePages(entry.base, (entry.length/4096)+1);
+        }
+    }
+
+    mem_pageframeallocator_reservePages(0, 0x100);
+    mem_pageframeallocator_lockPages(mem_pfaBitmap.Buffer, (mem_pfaBitmap.Size / 4096)+1);
+}
+
+void mem_pageframeallocator_initBitmap(u64 bitmapSize, void* addr) {
+    mem_pfaBitmap.Size = bitmapSize;
+    mem_pfaBitmap.Buffer = (u8*)addr;
+
+    for(int i = 0; i < bitmapSize; i++) *(u8*)(mem_pfaBitmap.Buffer + i) = 0;
+}
+
+void* mem_pageframeallocator_requestPage() {
+    if(mem_freeMemory < 16384) {
+        panic("out of memory");
+    }
+
+    for(; bitmapIdx < mem_pfaBitmap.Size * 8; bitmapIdx++) {
+        if(bitmap_get(mem_pfaBitmap, bitmapIdx) == true) continue;
+        mem_pageframeallocator_lockPage((void*)(bitmapIdx * 4096));
+        return (void*)(bitmapIdx * 4096);
+    }
+
+    panic("out of memory");
+}
+
+void mem_pageframeallocator_freePage(void* addr) {
+    u64 index = (u64)addr / 4096;
+    if (bitmap_get(mem_pfaBitmap, index) == false) return;
+
+    if (bitmap_set(mem_pfaBitmap, index, false)){
+        mem_freeMemory += 4096;
+        mem_usedMemory -= 4096;
+
+        if (bitmapIdx > index) bitmapIdx = index;
+    }
+}
+
+void mem_pageframeallocator_freePages(void* addr, u64 pageCount){
+    for (u64 i = 0; i < pageCount; i++){
+        mem_pageframeallocator_freePage((void*)((u64)addr + (i * 4096)));
+    }
+}
+
+void mem_pageframeallocator_lockPage(void* addr){
+    u64 index = (u64)addr / 4096;
+    if (bitmap_get(mem_pfaBitmap, index) == true) return;
+    if (bitmap_set(mem_pfaBitmap, index, true)) {
+        mem_freeMemory -= 4096;
+        mem_usedMemory += 4096;
+    }
+}
+
+void mem_pageframeallocator_lockPages(void* addr, u64 pageCount){
+    for (int i = 0; i < pageCount; i++){
+        mem_pageframeallocator_lockPage((void*)((u64)addr + (i * 4096)));
+    }
+}
+
+void mem_pageframeallocator_unreservePage(void* addr){
+    u64 index = (u64)addr / 4096;
+    if (bitmap_get(mem_pfaBitmap, index) == false) return;
+    if (bitmap_set(mem_pfaBitmap, index, false)){
+        mem_freeMemory += 4096;
+        mem_reservedMemory -= 4096;
+        if (bitmapIdx > index) bitmapIdx = index;
+    }
+}
+
+void mem_pageframeallocator_unreservePages(void* addr, u64 pageCount){
+    for (int i = 0; i < pageCount; i++){
+        mem_pageframeallocator_unreservePage((void*)((u64)addr + (i * 4096)));
+    }
+}
+
+void mem_pageframeallocator_reservePage(void* addr){
+    u64 index = (u64)addr / 4096;
+    if (bitmap_get(mem_pfaBitmap, index) == true) return;
+    if (bitmap_set(mem_pfaBitmap, index, true)){
+        mem_freeMemory -= 4096;
+        mem_reservedMemory += 4096;
+    }
+}
+
+void mem_pageframeallocator_reservePages(void* addr, u64 pageCount){
+    for (int i = 0; i < pageCount; i++){
+        mem_pageframeallocator_reservePage((void*)((u64)addr + (i * 4096)));
+    }
+}
+
+u64 mem_getFreeRAM() {
+    return mem_freeMemory;
+}
+
+u64 mem_getUsedRAM() {
+    return mem_usedMemory;
+}
+
+u64 mem_getReservedRAM() {
+    return mem_reservedMemory;
+}
+
+u64 mem_getTotalRAM() {
+    return mem_freeMemory + mem_usedMemory + mem_reservedMemory;
+}
+
