@@ -44,4 +44,6 @@ void panic(char* msg) { // TODO: Cleanup
     kprintf("Message: %s\n\n\n", msg);
 
     traceStackTrace(16);
+
+    while(1);
 }
