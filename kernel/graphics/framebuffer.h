@@ -2,7 +2,7 @@
 #include "../lib/num.h"
 #include "../limine.h"
 
-extern struct limine_framebuffer* fb;
+extern struct limine_framebuffer* gFramebuffer;
 void drawPoint(u32 x, u32 y, u32 color);
 
 void drawLine(u32 x0, u32 y0, u32 x1, u32 y1, u32 color);

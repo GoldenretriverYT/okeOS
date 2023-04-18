@@ -4,3 +4,5 @@ ACPI -> APIC -> IOAPIC ->
 LAPIC -> HPET -> APIC-TIMER ->
 SMP -> Multitasking -> Syscalls ->
 Userspace -> The fun begin
+
+roadmap stolen from somewhere on the internet:tm:

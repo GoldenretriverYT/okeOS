@@ -1,12 +1,12 @@
 #include "framebuffer.h"
 
-struct limine_framebuffer *fb;
+struct limine_framebuffer *gFramebuffer;
 extern u8 _binary_font_incbin_start[];
 extern u8 _binary_font_incbin_end[];
 
 void drawPoint(u32 x, u32 y, u32 color)
 {
-    u32 *addr = (u32*)fb->address;
+    u32 *addr = (u32*)gFramebuffer->address;
     addr[translateToOffset(x, y)] = color;
 }
 
@@ -26,7 +26,7 @@ void drawLine(u32 x0, u32 y0, u32 x1, u32 y1, u32 color)
 
 void drawHorizontalLine(u32 x0, u32 y0, u32 x1, u32 color)
 {
-    u32 *addr = (u32*)fb->address;
+    u32 *addr = (u32*)gFramebuffer->address;
     for (u32 x = x0; x < x1; x++)
     {
         addr[translateToOffset(x, y0)] = color;
@@ -73,5 +73,5 @@ void drawStringBg(u8* str, u32 x, u32 y, u32 fgColor, u32 bgColor)
 
 u32 translateToOffset(u32 x, u32 y)
 {
-    return (y * (fb->pitch / 4)) + x;
+    return (y * (gFramebuffer->pitch / 4)) + x;
 }

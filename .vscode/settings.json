@@ -12,6 +12,10 @@
         "compare": "cpp",
         "internet": "c",
         "coroutine": "c",
-        "terminal.h": "c"
+        "terminal.h": "c",
+        "*.def": "cpp",
+        "unordered_map": "cpp",
+        "socket": "cpp",
+        "*.tcc": "cpp"
     }
 }

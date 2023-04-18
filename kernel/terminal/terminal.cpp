@@ -1,54 +1,46 @@
 #include "terminal.h"
 #include "../debug.h"
 
-u32 terminal_charX = 0;
-u32 terminal_charY = 0;
-u32 terminal_charsPerLine = 0;
-u32 terminal_maxLines = 0;
-u32 terminal_color = 0xFFFFFF;
-u8 buffer[128][256]; // todo: make these dynamic to reduce mem usage
-u32 colorBuffer[128][256];
+void Terminal::init() {
+    this->charsPerLine = ((gFramebuffer->pitch/4)/8)-1;
+    this->maxLines = (gFramebuffer->height / 16)-1;
 
-
-void terminalInit() {
-    terminal_charsPerLine = ((fb->pitch/4)/8)-1;
-    terminal_maxLines = (fb->height / 16)-1;
-
-    if(terminal_charsPerLine > 256) terminal_charsPerLine = 256;
-    if(terminal_maxLines > 128) terminal_maxLines = 128;
+    if(this->charsPerLine > 256) this->charsPerLine = 256;
+    if(this->maxLines > 128) this->maxLines = 128;
 }
 
-void terminalWrite(char* str) {
+void Terminal::write(char* str) {
     while(*str != '\0') {
-        terminalWriteChar(*str);
+        writechar(*str);
         str++;
     }
 }
 
-void terminalWriteln(char* str) {
+void Terminal::writeln(char* str) {
     while(*str != '\0') {
-        terminalWriteChar(*str);
+        writechar(*str);
         str++;
     }
 
-    terminalWriteChar('\n');
+    writechar('\n');
 }
 
-void terminalWriteChar(char c) {
-    if(c > 31) drawChar(c, terminal_charX * 8, terminal_charY * 16, terminal_color);
-    buffer[terminal_charY][terminal_charX] = c;
-    colorBuffer[terminal_charY][terminal_charX] = terminal_color;
+void Terminal::writechar(char c) {
+    if(c > 31) drawChar(c, this->charX * 8, this->charY * 16, this->fgColor);
 
-    terminal_charX++;
+    this->charX++;
 
-    if(terminal_charX > terminal_charsPerLine || c == '\n') {
-        terminal_charX = 0;
-        terminal_charY++;
+    if(this->charX > this->charsPerLine || c == '\n') {
+        this->charX = 0;
+        this->charY++;
 
-        if(terminal_charY > terminal_maxLines) { // for now, lets just clear the screen
-            memset(fb->address, 0, fb->width * fb->height * fb->bpp / 8);
-            terminal_charX = 0;
-            terminal_charY = 0;
+        if(this->charY > this->maxLines) { // for now, lets just clear the screen
+            kprintf_serial("clear");
+            memset(gFramebuffer->address, 0, gFramebuffer->width * gFramebuffer->height * gFramebuffer->bpp / 8);
+            this->charX = 0;
+            this->charY = 0;
         }
     }
 }
+
+Terminal gTerminal;

@@ -4,9 +4,13 @@ u64 mem_freeMemory = 0;
 u64 mem_reservedMemory = 0;
 u64 mem_usedMemory = 0;
 u64 bitmapIdx = 0;
+u64 end = 0;
 struct Bitmap mem_pfaBitmap;
+struct limine_memmap_response __memmap;
 
 void mem_pageframeallocator_init(struct limine_memmap_response memmap){
+    __memmap = memmap;
+
     void* largestFreeSegment = NULL;
     u64 largestFreeSegmentSize = 0;
 
@@ -18,6 +22,8 @@ void mem_pageframeallocator_init(struct limine_memmap_response memmap){
             largestFreeSegment = (void*)entry.base;
             largestFreeSegmentSize = entry.length;
         }
+
+        if(entry.base + entry.length > end) end = entry.base + entry.length;
     }
 
     if(largestFreeSegment == NULL) {
@@ -52,7 +58,8 @@ void mem_pageframeallocator_initBitmap(u64 bitmapSize, void* addr) {
     mem_pfaBitmap.Size = bitmapSize;
     mem_pfaBitmap.Buffer = (u8*)addr;
 
-    for(int i = 0; i < bitmapSize; i++) *(u8*)(mem_pfaBitmap.Buffer + i) = 0;
+    for(int i = 0; i < bitmapSize; i++) *(u8*)((u64)mem_pfaBitmap.Buffer + i) = 0;
+    bitmapIdx = 0;
 }
 
 void* mem_pageframeallocator_requestPage() {
@@ -79,6 +86,8 @@ void mem_pageframeallocator_freePage(void* addr) {
         mem_usedMemory -= 4096;
 
         if (bitmapIdx > index) bitmapIdx = index;
+    }else {
+        kprintf_serial("WARN Failed to free page at address %x\n\n", (u64)addr);
     }
 }
 
@@ -94,6 +103,8 @@ void mem_pageframeallocator_lockPage(void* addr){
     if (mem_pfaBitmap.set(index, true)) {
         mem_freeMemory -= 4096;
         mem_usedMemory += 4096;
+    }else {
+        kprintf_serial("WARN Failed to lock page at address %x (idx: %x, bitmap size: %x)\n", (u64)addr, index, mem_pfaBitmap.Size);
     }
 }
 
@@ -110,6 +121,8 @@ void mem_pageframeallocator_unreservePage(void* addr){
         mem_freeMemory += 4096;
         mem_reservedMemory -= 4096;
         if (bitmapIdx > index) bitmapIdx = index;
+    }else {
+        kprintf_serial("WARN Failed to unreserve page at address %x\n", (u64)addr);
     }
 }
 
@@ -125,6 +138,8 @@ void mem_pageframeallocator_reservePage(void* addr){
     if (mem_pfaBitmap.set(index, true)){
         mem_freeMemory -= 4096;
         mem_reservedMemory += 4096;
+    }else {
+        kprintf_serial("WARN Failed to reserve page at address %x\n", (u64)addr);
     }
 }
 
@@ -147,6 +162,18 @@ u64 mem_getReservedRAM() {
 }
 
 u64 mem_getTotalRAM() {
-    return mem_freeMemory + mem_usedMemory + mem_reservedMemory;
+    return end;
+    //return mem_freeMemory + mem_usedMemory + mem_reservedMemory;
 }
 
+char* mem_getMemoryMapForAddress(u64 addr) {
+    for(u64 i = 0; i < __memmap.entry_count; i++) {
+        struct limine_memmap_entry entry = (*__memmap.entries)[i];
+
+        if(addr > entry.base && addr < entry.base + entry.length) {
+            return getMemoryMappingName(entry.type);
+        }
+    }
+
+    return "No mapping found";
+}

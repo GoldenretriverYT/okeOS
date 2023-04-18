@@ -31,3 +31,5 @@ u64 mem_getFreeRAM();
 u64 mem_getUsedRAM();
 u64 mem_getReservedRAM();
 u64 mem_getTotalRAM();
+
+char* mem_getMemoryMapForAddress(u64 addr);

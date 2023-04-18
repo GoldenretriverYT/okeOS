@@ -9,6 +9,3 @@ struct Bitmap {
     bool get(u64 offset);
     bool set(u64 offset, bool value);
 };
-
-bool bitmap_get(struct Bitmap* bitmap, u64 offset);
-bool bitmap_set(struct Bitmap* bitmap, u64 offset, bool value);

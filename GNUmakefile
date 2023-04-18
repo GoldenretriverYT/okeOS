@@ -11,7 +11,13 @@ all-hdd: $(IMAGE_NAME).hdd
 
 .PHONY: run
 run: $(IMAGE_NAME).iso
-	qemu-system-x86_64 -M q35 -m 512M -cdrom $(IMAGE_NAME).iso -boot d -serial mon:stdio
+	qemu-system-x86_64 -M q35 -m 1G -cdrom $(IMAGE_NAME).iso -boot d -serial stdio
+
+.PHONY: run-int
+run-int: $(IMAGE_NAME).iso
+	qemu-system-x86_64 -M q35 -m 1G -cdrom $(IMAGE_NAME).iso -boot d -serial stdio -d int
+
+
 
 .PHONY: run-uefi
 run-uefi: ovmf $(IMAGE_NAME).iso

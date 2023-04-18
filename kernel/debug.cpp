@@ -11,7 +11,7 @@ void __write(char* str, bool serial, bool terminal) {
         }
 
         if(terminal) {
-            terminalWriteChar(*str);
+            gTerminal.writechar(*str);
         }
         str++;
     }
@@ -23,7 +23,7 @@ void __writeChar(char str, bool serial, bool terminal) {
     }
 
     if(terminal) {
-        terminalWriteChar(str);
+        gTerminal.writechar(str);
     }
 }
 

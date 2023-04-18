@@ -32,7 +32,8 @@ void traceStackTraceOnlySerial(u32 MaxFrames)
 }
 
 void panic(char* msg) { // TODO: Cleanup
-    terminal_color = 0xFF0000;
+    asm volatile ("1: jmp 1b");
+    gTerminal.fgColor = 0xFF0000;
     kprintf_serial("Panic GODDAMN!\n");
     kprintf_serial("Message: %s\n\n\n", msg);
 

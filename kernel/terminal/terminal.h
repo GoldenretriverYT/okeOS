@@ -4,14 +4,18 @@
 #include "../lib/serial.h"
 #include "../graphics/framebuffer.h"
 
-extern u32 terminal_charX;
-extern u32 terminal_charY;
-extern u32 terminal_charsPerLine;
-extern u32 terminal_maxLines;
-extern u32 terminal_color;
+class Terminal {
+    public:
+    u32 charX = 0;
+    u32 charY = 0;
+    u32 charsPerLine = 0;
+    u32 maxLines = 0;
+    u32 fgColor = 0xFFFFFF;
 
-void terminalInit();
-void terminalWrite(char* str);
-void terminalWriteln(char* str);
-void terminalWriteChar(char c);
-void terminalRedraw();
+    void init();
+    void write(char* str);
+    void writeln(char* str);
+    void writechar(char c);
+};
+
+extern Terminal gTerminal;

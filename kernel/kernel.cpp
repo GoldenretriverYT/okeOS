@@ -3,6 +3,7 @@
 #include "graphics/framebuffer.h"
 #include "terminal/terminal.h"
 #include "lib/num.h"
+#include "lib/io.h"
 #include "gdt/gdt.h"
 #include "idt/idt.h"
 #include "idt/ints.h"
@@ -12,7 +13,7 @@
 #include "debug.h"
 #include "mem/paging.h"
 
-//#define DBG_DUMPMEMMAP
+#define DBG_DUMPMEMMAP
 
 // The Limine requests can be placed anywhere, but it is important that
 // the compiler does not optimise them away, so, usually, they should
@@ -71,10 +72,10 @@ extern "C" void _start(void) {
     }
 
     // Fetch the first framebuffer.
-    fb = framebuffer_request.response->framebuffers[0]; 
+    gFramebuffer = framebuffer_request.response->framebuffers[0]; 
 
-    terminalInit();
-    kprintf("Initiliazed terminal, yay! Test: %d | Test 2: 0x%x | chars/line: %u | lines/screen: %u\n", 30, 0xFF00FF, terminal_charsPerLine, terminal_maxLines);
+    gTerminal.init();
+    kprintf_both("Initiliazed terminal, yay! Test: %d | Test 2: 0x%x | chars/line: %u | lines/screen: %u\n", 30, 0xFF00FF, gTerminal.charsPerLine, gTerminal.maxLines);
     
     kprintf("Initiliazing serial port: %d\n", serial_init());
     kprintf_both("Initialized serial port!\n");
@@ -97,10 +98,10 @@ extern "C" void _start(void) {
     struct limine_memmap_response memmap = *memmap_request.response;
 
 #ifdef DBG_DUMPMEMMAP
-    kprintf("[dbg] Dumping memory map\n");
+    kprintf_serial("[dbg] Dumping memory map\n");
     for(u64 i = 0; i < memmap.entry_count; i++) {
         struct limine_memmap_entry entry = (*memmap.entries)[i];
-        kprintf("0x%x [size = 0x%x, type = %d (%s)]\n", entry.base, entry.length, entry.type, getMemoryMappingName(entry.type));
+        kprintf_serial("0x%x [size = 0x%x, type = %d (%s)]\n", entry.base, entry.length, entry.type, getMemoryMappingName(entry.type));
     }
 #endif
 
@@ -113,17 +114,26 @@ extern "C" void _start(void) {
     globalPageTable = (PageTable*)mem_pageframeallocator_requestPage();
     memset(globalPageTable, 0, 0x1000);
 
+    kprintf_both("Mapping from 0x%x to 0x%x!\n", 0, mem_getTotalRAM());
     for(u64 i = 0; i < mem_getTotalRAM(); i += 0x1000) {
+        if(mem_getMemoryMapForAddress(i) == "Kernel") {
+            kprintf_serial("MAPPING KERNEL!!\n");
+            PageTable_MapMemory(globalPageTable, (void*)i, (void*)i, true);
+        }
+
         PageTable_MapMemory(globalPageTable, (void*)i, (void*)i);
     }
 
     kprintf_both("Mapped memory\n");
 
-    u64 fbSize = ((fb->width * fb->height * fb->bpp) / 8) + 0x1000;
-    mem_pageframeallocator_lockPages(fb->address, fbSize / 0x1000 + 1);
-
+    //u64 fbSize = ((gFramebuffer->width * gFramebuffer->height * gFramebuffer->bpp) / 8) + 0x1000;
+    //mem_pageframeallocator_lockPages(gFramebuffer->address, fbSize / 0x1000 + 1);
+    
+    //kprintf_both("Locking up now, %x", globalPageTable);
+    //for(u64 i = 0; i < 1000000000; i++){ io_wait(); }
     kprintf_both("Loading PML4 into CR3\n");
     asm("mov %0, %%cr3" : : "r" (globalPageTable));
+    kprintf_serial("done paging!\n");
     kprintf_both("Done initiliazing paging!\n");
 
     // We're done, just hang...
