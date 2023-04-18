@@ -7,7 +7,7 @@ struct stackframe {
 
 void traceStackTrace(u32 MaxFrames)
 {
-    struct stackframe *stk = __builtin_frame_address(0);
+    struct stackframe *stk = (stackframe*)__builtin_frame_address(0);
 
     kprintf("Stack trace:\n");
     for(u32 frame = 0; stk && frame < MaxFrames; ++frame)
@@ -20,7 +20,7 @@ void traceStackTrace(u32 MaxFrames)
 
 void traceStackTraceOnlySerial(u32 MaxFrames)
 {
-    struct stackframe *stk = __builtin_frame_address(0);
+    struct stackframe *stk = (stackframe*)__builtin_frame_address(0);
 
     kprintf_serial("Stack trace:\n");
     for(u32 frame = 0; stk && frame < MaxFrames; ++frame)

@@ -86,12 +86,14 @@ override NASMFLAGS += \
 
 # Use "find" to glob all *.c, *.S, and *.asm files in the tree and obtain the
 # object and header dependency file names.
-override CFILES := $(shell find -L . -type f -name '*.c')
+override CFILES := $(shell find -L . -type f -name '*.cpp')
 override ASFILES := $(shell find -L . -type f -name '*.S')
 override NASMFILES := $(shell find -L . -type f -name '*.asm')
 override OFILES := $(shell find -L . -type f -name '*.o')
-override OBJ := $(CFILES:.c=.o) $(ASFILES:.S=.o) $(NASMFILES:.asm=.o) font.o
-override HEADER_DEPS := $(CFILES:.c=.d) $(ASFILES:.S=.d)
+override INCLFILES := $(shell find -L . -type f -name '*.incbin')
+
+override OBJ := $(CFILES:.cpp=.o) $(ASFILES:.S=.o) $(NASMFILES:.asm=.o) font.o
+override HEADER_DEPS := $(CFILES:.cpp=.d) $(ASFILES:.S=.d)
 
 $(info $(UNIQUEOBJS))
 
@@ -110,8 +112,11 @@ $(KERNEL): $(OBJ)
 -include $(HEADER_DEPS)
 
 # Compilation rules for *.c files.
-%.o: %.c limine.h
+%.o: %.cpp limine.h
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+%.o: %.incbin
+	objcopy -O elf64-x86-64 -B i386 -I binary $< $@
 
 # Compilation rules for *.S files.
 %.o: %.S limine.h

@@ -15,7 +15,7 @@ void mem_pageframeallocator_init(struct limine_memmap_response memmap){
 
         // type 0 is free memory
         if(entry.type == 0 && entry.length > largestFreeSegmentSize) {
-            largestFreeSegment = entry.base;
+            largestFreeSegment = (void*)entry.base;
             largestFreeSegmentSize = entry.length;
         }
     }
@@ -40,7 +40,7 @@ void mem_pageframeallocator_init(struct limine_memmap_response memmap){
 
         // type 0 is free memory
         if(entry.type == 0) {
-            mem_pageframeallocator_unreservePages(entry.base, (entry.length/4096)+1);
+            mem_pageframeallocator_unreservePages((void*)entry.base, (entry.length/4096)+1);
         }
     }
 
@@ -62,7 +62,7 @@ void* mem_pageframeallocator_requestPage() {
     }
 
     for(; bitmapIdx < mem_pfaBitmap.Size * 8; bitmapIdx++) {
-        if(bitmap_get(mem_pfaBitmap, bitmapIdx) == true) continue;
+        if(mem_pfaBitmap.get(bitmapIdx) == true) continue;
         mem_pageframeallocator_lockPage((void*)(bitmapIdx * 4096));
         return (void*)(bitmapIdx * 4096);
     }
@@ -72,9 +72,9 @@ void* mem_pageframeallocator_requestPage() {
 
 void mem_pageframeallocator_freePage(void* addr) {
     u64 index = (u64)addr / 4096;
-    if (bitmap_get(mem_pfaBitmap, index) == false) return;
+    if (mem_pfaBitmap.get(index) == false) return;
 
-    if (bitmap_set(mem_pfaBitmap, index, false)){
+    if (mem_pfaBitmap.set(index, false)){
         mem_freeMemory += 4096;
         mem_usedMemory -= 4096;
 
@@ -90,8 +90,8 @@ void mem_pageframeallocator_freePages(void* addr, u64 pageCount){
 
 void mem_pageframeallocator_lockPage(void* addr){
     u64 index = (u64)addr / 4096;
-    if (bitmap_get(mem_pfaBitmap, index) == true) return;
-    if (bitmap_set(mem_pfaBitmap, index, true)) {
+    if (mem_pfaBitmap.get(index) == true) return;
+    if (mem_pfaBitmap.set(index, true)) {
         mem_freeMemory -= 4096;
         mem_usedMemory += 4096;
     }
@@ -105,8 +105,8 @@ void mem_pageframeallocator_lockPages(void* addr, u64 pageCount){
 
 void mem_pageframeallocator_unreservePage(void* addr){
     u64 index = (u64)addr / 4096;
-    if (bitmap_get(mem_pfaBitmap, index) == false) return;
-    if (bitmap_set(mem_pfaBitmap, index, false)){
+    if (mem_pfaBitmap.get(index) == false) return;
+    if (mem_pfaBitmap.set(index, false)){
         mem_freeMemory += 4096;
         mem_reservedMemory -= 4096;
         if (bitmapIdx > index) bitmapIdx = index;
@@ -121,8 +121,8 @@ void mem_pageframeallocator_unreservePages(void* addr, u64 pageCount){
 
 void mem_pageframeallocator_reservePage(void* addr){
     u64 index = (u64)addr / 4096;
-    if (bitmap_get(mem_pfaBitmap, index) == true) return;
-    if (bitmap_set(mem_pfaBitmap, index, true)){
+    if (mem_pfaBitmap.get(index) == true) return;
+    if (mem_pfaBitmap.set(index, true)){
         mem_freeMemory -= 4096;
         mem_reservedMemory += 4096;
     }

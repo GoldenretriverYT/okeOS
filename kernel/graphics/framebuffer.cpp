@@ -1,12 +1,12 @@
 #include "framebuffer.h"
 
 struct limine_framebuffer *fb;
-extern u8 _binary_font_bin_start[];
-extern u8 _binary_font_bin_end[];
+extern u8 _binary_font_incbin_start[];
+extern u8 _binary_font_incbin_end[];
 
 void drawPoint(u32 x, u32 y, u32 color)
 {
-    u32 *addr = fb->address;
+    u32 *addr = (u32*)fb->address;
     addr[translateToOffset(x, y)] = color;
 }
 
@@ -26,7 +26,7 @@ void drawLine(u32 x0, u32 y0, u32 x1, u32 y1, u32 color)
 
 void drawHorizontalLine(u32 x0, u32 y0, u32 x1, u32 color)
 {
-    u32 *addr = fb->address;
+    u32 *addr = (u32*)fb->address;
     for (u32 x = x0; x < x1; x++)
     {
         addr[translateToOffset(x, y0)] = color;
@@ -40,24 +40,13 @@ void drawChar(u8 c, u32 x, u32 y, u32 fgColor)
 
 void drawCharBg(u8 c, u32 x, u32 y, u32 fgColor, u32 bgColor)
 {
-    u8* glyph = _binary_font_bin_start + ((u32)c * 16);
-
-    if(glyph+16 >= &_binary_font_bin_end) {
-        for (int cy = 0; cy < 16; cy++)
-        {
-            for (int cx = 0; cx < 8; cx++)
-            {
-                drawPoint(x + cx, y + cy, 0xFF00FF);
-            }
-        }
-        return; // holy cow how did this happen !!
-    }
+    u8* glyph = _binary_font_incbin_start + ((u32)c * 16);
 
     for (int cy = 0; cy < 16; cy++)
     {
         for (int cx = 0; cx < 8; cx++)
         {
-            if(glyph + cy >= _binary_font_bin_end) return;
+            if(glyph + cy >= _binary_font_incbin_end) return;
             char v = (*(glyph + cy));
 
             char m = (1 << cx);
