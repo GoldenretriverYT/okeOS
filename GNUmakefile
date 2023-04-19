@@ -11,11 +11,11 @@ all-hdd: $(IMAGE_NAME).hdd
 
 .PHONY: run
 run: $(IMAGE_NAME).iso
-	qemu-system-x86_64 -M q35 -m 1G -cdrom $(IMAGE_NAME).iso -boot d -serial stdio
+	qemu-system-x86_64 -M q35 -m 32M -cdrom $(IMAGE_NAME).iso -boot d -serial stdio
 
 .PHONY: run-int
 run-int: $(IMAGE_NAME).iso
-	qemu-system-x86_64 -M q35 -m 1G -cdrom $(IMAGE_NAME).iso -boot d -serial stdio -d int
+	qemu-system-x86_64 -M q35 -m 32M -cdrom $(IMAGE_NAME).iso -boot d -serial stdio -d int
 
 
 

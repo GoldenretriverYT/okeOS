@@ -162,8 +162,12 @@ u64 mem_getReservedRAM() {
 }
 
 u64 mem_getTotalRAM() {
+    //return end;
+    return mem_freeMemory + mem_usedMemory + mem_reservedMemory;
+}
+
+u64 mem_getMemoryMapSize() {
     return end;
-    //return mem_freeMemory + mem_usedMemory + mem_reservedMemory;
 }
 
 char* mem_getMemoryMapForAddress(u64 addr) {

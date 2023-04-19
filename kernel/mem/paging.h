@@ -19,7 +19,7 @@ typedef enum PT_Flag {
 
 
 typedef struct PageDirectoryEntry {
-    uint64_t Value;
+    uint64_t value;
 
     void SetFlag(PT_Flag flag, bool enabled);
     bool GetFlag(PT_Flag flag);

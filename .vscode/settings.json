@@ -16,6 +16,9 @@
         "*.def": "cpp",
         "unordered_map": "cpp",
         "socket": "cpp",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "complex": "cpp",
+        "streambuf": "cpp",
+        "valarray": "cpp"
     }
 }
