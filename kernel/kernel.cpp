@@ -126,16 +126,16 @@ extern "C" void _start(void) {
 
     u64 hhdmOff = hhdm_request.response->offset;//((hhdm_request.response->offset >> 16) | 0xffff000000000000);
     
-    kprintf_both("Mapping from 0x%x to 0x%x! | HHDM Offset: %x | pagetableaddr: %x | fb addr: %x | fb buffer addr: %x | kprintf_serial addr: %x | kernel offset phys: %x | kernel offset virt: %x | panic addr: %x\n", hhdmOff, hhdmOff + mem_getMemoryMapSize(), hhdmOff, (u64)globalPageTable, (u64)gFramebuffer, (u64)gFramebuffer->address, &kprintf_serial, kaddr_request.response->physical_base, kaddr_request.response->virtual_base, &panic);
+    kprintf_both("Mapping from 0x%x to 0x%x! | HHDM Offset: %x | pagetableaddr: %x | fb addr: %x | fb buffer addr: %x | kprintf_serial addr: %x | kernel offset phys: %x | kernel offset virt: %x | panic addr: %x | pf handler addr: %x | idtr addr: %x\n", hhdmOff, hhdmOff + mem_getMemoryMapSize(), hhdmOff, (u64)globalPageTable, (u64)gFramebuffer, (u64)gFramebuffer->address, &kprintf_serial, kaddr_request.response->physical_base, kaddr_request.response->virtual_base, &panic, &pageFaultHandler, &idtr);
     u64 kAddr = 0;
 
     for(u64 i = 0; i < mem_getMemoryMapSize(); i += 0x1000) {
-        if(mem_getMemoryMapForAddress(i) == "Kernel") {
+        /*if(mem_getMemoryMapForAddress(i) == "Kernel") {
             if(kAddr == 0) kAddr = kaddr_request.response->virtual_base;
             kprintf_serial("MAPPING KERNEL!!\n");
             PageTable_MapMemory(globalPageTable, (void*)(kAddr), (void*)(i), true);
             kAddr += 0x1000;
-        }
+        }*/
 
         PageTable_MapMemory(globalPageTable, (void*)(hhdmOff + i), (void*)(i), false);
     }

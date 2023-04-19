@@ -1,7 +1,8 @@
 #include "ints.h"
 
 __attribute__((interrupt)) void pageFaultHandler(struct interrupt_frame* frame){
-    panic("Page Fault Detected");
+    kprintf_serial("page fault :(");
+    //panic("Page Fault Detected");
     while(1);
 }
 
