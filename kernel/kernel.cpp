@@ -12,6 +12,7 @@
 #include "mem/paging.h"
 #include "debug.h"
 #include "mem/paging.h"
+#include "mem/heap.h"
 
 #define DBG_DUMPMEMMAP
 
@@ -111,7 +112,7 @@ extern "C" void _start(void) {
 #endif
 
     kprintf("Initialize page frame allocator...\n");
-    mem_pageframeallocator_init(memmap);
+    mem_pageframeallocator_init(memmap, hhdm_request.response);
     kprintf("[RAM] Total: %x, Free: %x, Used: %x, Reserved: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
     kprintf("[RAM] Total: %u, Free: %u, Used: %u, Reserved: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
     
@@ -127,6 +128,7 @@ extern "C" void _start(void) {
     u64 hhdmOff = hhdm_request.response->offset;//((hhdm_request.response->offset >> 16) | 0xffff000000000000);
     
     kprintf_both("Mapping from 0x%x to 0x%x! | HHDM Offset: %x | pagetableaddr: %x | fb addr: %x | fb buffer addr: %x | kprintf_serial addr: %x | kernel offset phys: %x | kernel offset virt: %x | panic addr: %x | pf handler addr: %x | idtr addr: %x\n", hhdmOff, hhdmOff + mem_getMemoryMapSize(), hhdmOff, (u64)globalPageTable, (u64)gFramebuffer, (u64)gFramebuffer->address, &kprintf_serial, kaddr_request.response->physical_base, kaddr_request.response->virtual_base, &panic, &pageFaultHandler, &idtr);
+    kprintf_both("idtr->offset: %x\n", idtr.Offset);
     u64 kAddr = 0;
 
     for(u64 i = 0; i < mem_getMemoryMapSize(); i += 0x1000) {
@@ -138,6 +140,7 @@ extern "C" void _start(void) {
         }*/
 
         PageTable_MapMemory(globalPageTable, (void*)(hhdmOff + i), (void*)(i), false);
+        PageTable_MapMemory(globalPageTable, (void*)(i), (void*)(i), false);
     }
 
     for(u64 i = kaddr_request.response->virtual_base; i < kaddr_request.response->virtual_base + 0x1000*1024; i += 0x1000) {
@@ -159,7 +162,25 @@ extern "C" void _start(void) {
     kprintf_serial("done paging!\n");
     kprintf_both("Done initiliazing paging!\n");
 
-    *(u32*)(0xffff820000000000) = 3;
+    kprintf_both("Enabling Kernel Heap (4kb)");
+    void* heapAddr = mem_pageframeallocator_requestPage();
+    mem_pageframeallocator_lockPages(heapAddr, 1);
+
+    void* test = malloc(20);
+    *(u8*)(test + 0) = 'h';
+    *(u8*)(test + 1) = 'i';
+    *(u8*)(test + 2) = ' ';
+    *(u8*)(test + 3) = 'm';
+    *(u8*)(test + 3) = 'a';
+    *(u8*)(test + 3) = 'l';
+    *(u8*)(test + 3) = 'l';
+    *(u8*)(test + 3) = 'o';
+    *(u8*)(test + 3) = 'c';
+
+    kprintf((char*)test);
+
+    free(test);
+    
     // We're done, just hang...
     hcf();
 }

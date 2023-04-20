@@ -19,6 +19,9 @@
         "*.tcc": "cpp",
         "complex": "cpp",
         "streambuf": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "rope": "cpp",
+        "chrono": "cpp",
+        "variant": "cpp"
     }
 }

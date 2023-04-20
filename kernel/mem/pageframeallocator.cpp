@@ -8,7 +8,7 @@ u64 end = 0;
 struct Bitmap mem_pfaBitmap;
 struct limine_memmap_response __memmap;
 
-void mem_pageframeallocator_init(struct limine_memmap_response memmap){
+void mem_pageframeallocator_init(struct limine_memmap_response memmap, struct limine_hhdm_response* hhdm){
     __memmap = memmap;
 
     void* largestFreeSegment = NULL;

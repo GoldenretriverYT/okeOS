@@ -11,7 +11,7 @@ extern u64 mem_reservedMemory;
 extern u64 mem_usedMemory;
 extern struct Bitmap mem_pfaBitmap;
 
-void mem_pageframeallocator_init(struct limine_memmap_response memmap);
+void mem_pageframeallocator_init(struct limine_memmap_response memmap, struct limine_hhdm_response* hhdm);
 void mem_pageframeallocator_initBitmap(u64 bitmapSize, void* addr);
 
 void* mem_pageframeallocator_requestPage();
