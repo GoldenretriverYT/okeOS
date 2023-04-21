@@ -12,5 +12,10 @@
 #define LIMINE_MEMMAP_KERNEL_AND_MODULES     6
 #define LIMINE_MEMMAP_FRAMEBUFFER            7
 
+extern u64 mem_hhdmOffset;
+extern u64 mem_kVirtOffset;
 char* getMemoryMappingName(u64 type);
 u64 getMemorySize(struct limine_memmap_response memmap);
+u64 getMemoryArealSize(struct limine_memmap_response memmap);
+u64 toPhys(u64 virt);
+u64 toVirt(u64 phys);

@@ -103,54 +103,57 @@ extern "C" void _start(void) {
 
     struct limine_memmap_response memmap = *memmap_request.response;
 
+    // setup memory "constants"
+    kprintf_serial("Physical Base of Kernel: %x\nVirtual Base of Kernel: %x\nHHDM Offset: %x\n", kaddr_request.response->physical_base, kaddr_request.response->virtual_base, hhdm_request.response->offset);
+    mem_hhdmOffset = hhdm_request.response->offset;
+    mem_kVirtOffset = kaddr_request.response->virtual_base;
+
 #ifdef DBG_DUMPMEMMAP
     kprintf_serial("[dbg] Dumping memory map\n");
     for(u64 i = 0; i < memmap.entry_count; i++) {
         struct limine_memmap_entry entry = (*memmap.entries)[i];
-        kprintf_serial("0x%x [size = 0x%x, type = %d (%s)]\n", entry.base, entry.length, entry.type, getMemoryMappingName(entry.type));
+        kprintf_serial("0x%x | + hhdm 0x%x | + kvirtoff 0x%x [size = 0x%x, type = %d (%s)]\n", entry.base, hhdm_request.response->offset + entry.base, kaddr_request.response->virtual_base + entry.base, entry.length, entry.type, getMemoryMappingName(entry.type));
     }
 #endif
 
     kprintf("Initialize page frame allocator...\n");
     mem_pageframeallocator_init(memmap, hhdm_request.response);
-    kprintf("[RAM] Total: %x, Free: %x, Used: %x, Reserved: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
-    kprintf("[RAM] Total: %u, Free: %u, Used: %u, Reserved: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM(), mem_getReservedRAM());
+    kprintf("[RAM] Total: %x, Free: %x, Used: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM());
+    kprintf("[RAM] Total: %u, Free: %u, Used: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM());
     
     // Init IDT
     kprintf("Loading IDT & Interrupts...\n");
-    initInterrupts((u64)mem_pageframeallocator_requestPage()); // TODO: Replace with allocated page when paging is added
+    u64 idtrOffset = (u64)mem_pageframeallocator_requestPage();
+    kprintf_both("Putting IDTR at address %x\n", idtrOffset);
+    initInterrupts(idtrOffset);
     kprintf("Initiliazed IDT & Interrupts!\n");
 
+    
     kprintf_both("Initialize paging!\n");
     globalPageTable = (PageTable*)mem_pageframeallocator_requestPage();
+    kprintf_both("PagingTable Address is %x\n", (u64)globalPageTable);
     memset(globalPageTable, 0, 0x1000);
 
-    u64 hhdmOff = hhdm_request.response->offset;//((hhdm_request.response->offset >> 16) | 0xffff000000000000);
-    
-    kprintf_both("Mapping from 0x%x to 0x%x! | HHDM Offset: %x | pagetableaddr: %x | fb addr: %x | fb buffer addr: %x | kprintf_serial addr: %x | kernel offset phys: %x | kernel offset virt: %x | panic addr: %x | pf handler addr: %x | idtr addr: %x\n", hhdmOff, hhdmOff + mem_getMemoryMapSize(), hhdmOff, (u64)globalPageTable, (u64)gFramebuffer, (u64)gFramebuffer->address, &kprintf_serial, kaddr_request.response->physical_base, kaddr_request.response->virtual_base, &panic, &pageFaultHandler, &idtr);
-    kprintf_both("idtr->offset: %x\n", idtr.Offset);
-    u64 kAddr = 0;
+    for(u64 i = 0; i < memmap.entry_count; i++) {
+        struct limine_memmap_entry entry = (*memmap.entries)[i];
+        
+        u64 sizeInPages = entry.length / 4096;
+        if(entry.length % 4096 != 0) sizeInPages++;
 
-    for(u64 i = 0; i < mem_getMemoryMapSize(); i += 0x1000) {
-        /*if(mem_getMemoryMapForAddress(i) == "Kernel") {
-            if(kAddr == 0) kAddr = kaddr_request.response->virtual_base;
-            kprintf_serial("MAPPING KERNEL!!\n");
-            PageTable_MapMemory(globalPageTable, (void*)(kAddr), (void*)(i), true);
-            kAddr += 0x1000;
-        }*/
+        for(u64 pageIdx = 0; pageIdx < sizeInPages; pageIdx++) {
+            u64 physAddr = entry.base + (pageIdx * 4096);
+            u64 virtAddr = toVirt(physAddr);
 
-        PageTable_MapMemory(globalPageTable, (void*)(hhdmOff + i), (void*)(i), false);
-        PageTable_MapMemory(globalPageTable, (void*)(i), (void*)(i), false);
-    }
+            if(entry.type == LIMINE_MEMMAP_KERNEL_AND_MODULES) {
+                virtAddr = mem_kVirtOffset + (pageIdx * 4096);
+                //kprintf_serial("KERNMAP: virtual 0x%x to physical 0x%x\n", virtAddr, physAddr);
+            }
 
-    for(u64 i = kaddr_request.response->virtual_base; i < kaddr_request.response->virtual_base + 0x1000*1024; i += 0x1000) {
-        PageTable_MapMemory(globalPageTable, (void*)i, (void*)(i - kaddr_request.response->virtual_base + kaddr_request.response->physical_base));
+            PageTable_MapMemory(globalPageTable, (void*)virtAddr, (void*)physAddr);
+        }
     }
 
     kprintf_both("Mapped memory\n");
-    PageMapIndexer indexer;
-    PageMapIndexer_From(&indexer, 0xffffffff800017b9);
-
 
     //u64 fbSize = ((gFramebuffer->width * gFramebuffer->height * gFramebuffer->bpp) / 8) + 0x1000;
     //mem_pageframeallocator_lockPages(gFramebuffer->address, fbSize / 0x1000 + 1);
@@ -161,25 +164,6 @@ extern "C" void _start(void) {
     asm("mov %0, %%cr3" : : "r" (globalPageTable));
     kprintf_serial("done paging!\n");
     kprintf_both("Done initiliazing paging!\n");
-
-    kprintf_both("Enabling Kernel Heap (4kb)");
-    void* heapAddr = mem_pageframeallocator_requestPage();
-    mem_pageframeallocator_lockPages(heapAddr, 1);
-
-    void* test = malloc(20);
-    *(u8*)(test + 0) = 'h';
-    *(u8*)(test + 1) = 'i';
-    *(u8*)(test + 2) = ' ';
-    *(u8*)(test + 3) = 'm';
-    *(u8*)(test + 3) = 'a';
-    *(u8*)(test + 3) = 'l';
-    *(u8*)(test + 3) = 'l';
-    *(u8*)(test + 3) = 'o';
-    *(u8*)(test + 3) = 'c';
-
-    kprintf((char*)test);
-
-    free(test);
     
     // We're done, just hang...
     hcf();

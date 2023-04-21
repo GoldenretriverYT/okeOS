@@ -5,9 +5,9 @@ Discarded input sections
  .eh_frame      0x0000000000000000       0x40 ./idt/idt.o
  .eh_frame      0x0000000000000000       0x38 ./gdt/gdt.o
  .eh_frame      0x0000000000000000       0xd0 ./mem/paging.o
- .eh_frame      0x0000000000000000       0x50 ./mem/memutils.o
+ .eh_frame      0x0000000000000000       0x98 ./mem/memutils.o
  .eh_frame      0x0000000000000000       0xd8 ./mem/heap.o
- .eh_frame      0x0000000000000000      0x2c0 ./mem/pageframeallocator.o
+ .eh_frame      0x0000000000000000      0x1d0 ./mem/pageframeallocator.o
  .eh_frame      0x0000000000000000       0x58 ./lib/io.o
  .eh_frame      0x0000000000000000       0x40 ./lib/bitmap.o
  .eh_frame      0x0000000000000000       0x80 ./lib/mem.o
@@ -49,7 +49,7 @@ LOAD ./gdt/gdtasm.o
 LOAD font.o
                 0xffffffff80000000                . = 0xffffffff80000000
 
-.text           0xffffffff80000000     0x26ab
+.text           0xffffffff80000000     0x254b
  *(.text .text.*)
  .text          0xffffffff80000000       0xb2 ./idt/ints.o
                 0xffffffff80000000                pageFaultHandler(interrupt_frame*)
@@ -73,154 +73,152 @@ LOAD font.o
                 0xffffffff800001c0                PageMapIndexer_From(PageMapIndexer*, unsigned long)
                 0xffffffff80000200                PageTable_MapMemory(PageTable*, void*, void*, bool)
  *fill*         0xffffffff80000489        0x7 
- .text          0xffffffff80000490       0x59 ./mem/memutils.o
+ .text          0xffffffff80000490       0xbb ./mem/memutils.o
                 0xffffffff80000490                getMemoryMappingName(unsigned long)
                 0xffffffff800004b0                getMemorySize(limine_memmap_response)
- *fill*         0xffffffff800004e9        0x7 
- .text          0xffffffff800004f0      0x491 ./mem/heap.o
-                0xffffffff80000600                heap_init(void*, unsigned long)
-                0xffffffff80000720                malloc(unsigned long)
-                0xffffffff800008b0                free(void*)
-                0xffffffff80000980                check()
- *fill*         0xffffffff80000981        0xf 
- .text          0xffffffff80000990      0x779 ./mem/pageframeallocator.o
-                0xffffffff80000990                mem_pageframeallocator_initBitmap(unsigned long, void*)
-                0xffffffff800009e0                mem_pageframeallocator_freePage(void*)
-                0xffffffff80000a70                mem_pageframeallocator_freePages(void*, unsigned long)
-                0xffffffff80000ac0                mem_pageframeallocator_lockPage(void*)
-                0xffffffff80000b50                mem_pageframeallocator_requestPage()
-                0xffffffff80000c00                mem_pageframeallocator_lockPages(void*, unsigned long)
-                0xffffffff80000c50                mem_pageframeallocator_unreservePage(void*)
-                0xffffffff80000ce0                mem_pageframeallocator_unreservePages(void*, unsigned long)
-                0xffffffff80000d30                mem_pageframeallocator_reservePage(void*)
-                0xffffffff80000db0                mem_pageframeallocator_init(limine_memmap_response, limine_hhdm_response*)
-                0xffffffff80001000                mem_pageframeallocator_reservePages(void*, unsigned long)
-                0xffffffff80001050                mem_getFreeRAM()
-                0xffffffff80001060                mem_getUsedRAM()
-                0xffffffff80001070                mem_getReservedRAM()
-                0xffffffff80001080                mem_getTotalRAM()
-                0xffffffff800010a0                mem_getMemoryMapSize()
-                0xffffffff800010b0                mem_getMemoryMapForAddress(unsigned long)
- *fill*         0xffffffff80001109        0x7 
- .text          0xffffffff80001110       0x25 ./lib/io.o
-                0xffffffff80001110                outb(unsigned short, unsigned char)
-                0xffffffff80001120                inb(unsigned short)
-                0xffffffff80001130                io_wait()
- *fill*         0xffffffff80001135        0xb 
- .text          0xffffffff80001140       0x79 ./lib/bitmap.o
-                0xffffffff80001140                Bitmap::get(unsigned long)
-                0xffffffff80001170                Bitmap::set(unsigned long, bool)
- *fill*         0xffffffff800011b9        0x7 
- .text          0xffffffff800011c0      0x10b ./lib/mem.o
-                0xffffffff800011c0                memcpy(void*, void const*, unsigned long)
-                0xffffffff800011f0                memset(void*, int, unsigned long)
-                0xffffffff80001210                memmove(void*, void const*, unsigned long)
-                0xffffffff80001260                memcmp(void const*, void const*, unsigned long)
-                0xffffffff800012a0                strlen(unsigned char*)
- *fill*         0xffffffff800012cb        0x5 
- .text          0xffffffff800012d0        0xb ./lib/math.o
-                0xffffffff800012d0                abs(long)
- *fill*         0xffffffff800012db        0x5 
- .text          0xffffffff800012e0      0x108 ./lib/string.o
-                0xffffffff800012e0                itoa(long, char*, long)
-                0xffffffff80001370                uitoa(unsigned long, char*, unsigned long)
- *fill*         0xffffffff800013e8        0x8 
- .text          0xffffffff800013f0      0x1a5 ./lib/serial.o
-                0xffffffff800013f0                serial_init()
-                0xffffffff800014b0                serial_received()
-                0xffffffff800014d0                serial_read()
-                0xffffffff80001500                is_transmit_empty()
-                0xffffffff80001520                serial_write(char)
-                0xffffffff80001550                serial_writemany(char*)
- *fill*         0xffffffff80001595        0xb 
- .text          0xffffffff800015a0      0x16d ./terminal/terminal.o
-                0xffffffff800015a0                Terminal::init()
-                0xffffffff800015e0                Terminal::writechar(char)
-                0xffffffff80001690                Terminal::write(char*)
-                0xffffffff800016d0                Terminal::writeln(char*)
- *fill*         0xffffffff8000170d        0x3 
- .text          0xffffffff80001710      0x146 ./panic.o
-                0xffffffff80001710                traceStackTrace(unsigned int)
-                0xffffffff80001770                traceStackTraceOnlySerial(unsigned int)
-                0xffffffff800017d0                panic(char*)
- *fill*         0xffffffff80001856        0xa 
- .text          0xffffffff80001860      0x5b3 ./kernel.o
-                0xffffffff80001860                setIdtGate(void*, unsigned char, unsigned char, unsigned char)
-                0xffffffff800018b0                initInterrupts(unsigned long)
-                0xffffffff800019e0                _start
- *fill*         0xffffffff80001e13        0xd 
- .text          0xffffffff80001e20      0x216 ./graphics/framebuffer.o
-                0xffffffff80001e20                drawPoint(unsigned int, unsigned int, unsigned int)
-                0xffffffff80001e50                drawLine(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)
-                0xffffffff80001eb0                drawHorizontalLine(unsigned int, unsigned int, unsigned int, unsigned int)
-                0xffffffff80001ee0                drawCharBg(unsigned char, unsigned int, unsigned int, unsigned int, unsigned int)
-                0xffffffff80001f70                drawChar(unsigned char, unsigned int, unsigned int, unsigned int)
-                0xffffffff80001f80                drawString(unsigned char*, unsigned int, unsigned int, unsigned int)
-                0xffffffff80001fd0                drawStringBg(unsigned char*, unsigned int, unsigned int, unsigned int, unsigned int)
-                0xffffffff80002020                translateToOffset(unsigned int, unsigned int)
- *fill*         0xffffffff80002036        0xa 
- .text          0xffffffff80002040      0x645 ./debug.o
-                0xffffffff80002040                __write(char*, bool, bool)
-                0xffffffff800020b0                __writeChar(char, bool, bool)
-                0xffffffff80002100                _kprintf(char*, bool, bool, __va_list_tag*)
-                0xffffffff800025a0                kprintf(char*, ...)
-                0xffffffff800025f0                kprintf_both(char*, ...)
-                0xffffffff80002640                kprintf_serial(char*, ...)
- *fill*         0xffffffff80002685        0xb 
- .text          0xffffffff80002690       0x1b ./gdt/gdtasm.o
-                0xffffffff80002690                loadGDT
+                0xffffffff800004f0                getMemoryArealSize(limine_memmap_response)
+                0xffffffff80000530                toPhys(unsigned long)
+                0xffffffff80000540                toVirt(unsigned long)
+ *fill*         0xffffffff8000054b        0x5 
+ .text          0xffffffff80000550      0x491 ./mem/heap.o
+                0xffffffff80000660                heap_init(void*, unsigned long)
+                0xffffffff80000780                malloc(unsigned long)
+                0xffffffff80000910                free(void*)
+                0xffffffff800009e0                check()
+ *fill*         0xffffffff800009e1        0xf 
+ .text          0xffffffff800009f0      0x609 ./mem/pageframeallocator.o
+                0xffffffff800009f0                mem_pageframeallocator_initBitmap(unsigned long, void*)
+                0xffffffff80000a40                mem_pageframeallocator_lockPage(void*)
+                0xffffffff80000ad0                mem_pageframeallocator_requestPage()
+                0xffffffff80000b80                mem_pageframeallocator_freePage(void*)
+                0xffffffff80000c10                mem_pageframeallocator_init(limine_memmap_response, limine_hhdm_response*)
+                0xffffffff80000ec0                mem_pageframeallocator_freePages(void*, unsigned long)
+                0xffffffff80000f10                mem_pageframeallocator_lockPages(void*, unsigned long)
+                0xffffffff80000f60                mem_getFreeRAM()
+                0xffffffff80000f70                mem_getUsedRAM()
+                0xffffffff80000f80                mem_getTotalRAM()
+                0xffffffff80000f90                mem_getMemoryMapSize()
+                0xffffffff80000fa0                mem_getMemoryMapForAddress(unsigned long)
+ *fill*         0xffffffff80000ff9        0x7 
+ .text          0xffffffff80001000       0x25 ./lib/io.o
+                0xffffffff80001000                outb(unsigned short, unsigned char)
+                0xffffffff80001010                inb(unsigned short)
+                0xffffffff80001020                io_wait()
+ *fill*         0xffffffff80001025        0xb 
+ .text          0xffffffff80001030       0x79 ./lib/bitmap.o
+                0xffffffff80001030                Bitmap::get(unsigned long)
+                0xffffffff80001060                Bitmap::set(unsigned long, bool)
+ *fill*         0xffffffff800010a9        0x7 
+ .text          0xffffffff800010b0      0x10b ./lib/mem.o
+                0xffffffff800010b0                memcpy(void*, void const*, unsigned long)
+                0xffffffff800010e0                memset(void*, int, unsigned long)
+                0xffffffff80001100                memmove(void*, void const*, unsigned long)
+                0xffffffff80001150                memcmp(void const*, void const*, unsigned long)
+                0xffffffff80001190                strlen(unsigned char*)
+ *fill*         0xffffffff800011bb        0x5 
+ .text          0xffffffff800011c0        0xb ./lib/math.o
+                0xffffffff800011c0                abs(long)
+ *fill*         0xffffffff800011cb        0x5 
+ .text          0xffffffff800011d0      0x108 ./lib/string.o
+                0xffffffff800011d0                itoa(long, char*, long)
+                0xffffffff80001260                uitoa(unsigned long, char*, unsigned long)
+ *fill*         0xffffffff800012d8        0x8 
+ .text          0xffffffff800012e0      0x1a5 ./lib/serial.o
+                0xffffffff800012e0                serial_init()
+                0xffffffff800013a0                serial_received()
+                0xffffffff800013c0                serial_read()
+                0xffffffff800013f0                is_transmit_empty()
+                0xffffffff80001410                serial_write(char)
+                0xffffffff80001440                serial_writemany(char*)
+ *fill*         0xffffffff80001485        0xb 
+ .text          0xffffffff80001490      0x16d ./terminal/terminal.o
+                0xffffffff80001490                Terminal::init()
+                0xffffffff800014d0                Terminal::writechar(char)
+                0xffffffff80001580                Terminal::write(char*)
+                0xffffffff800015c0                Terminal::writeln(char*)
+ *fill*         0xffffffff800015fd        0x3 
+ .text          0xffffffff80001600      0x146 ./panic.o
+                0xffffffff80001600                traceStackTrace(unsigned int)
+                0xffffffff80001660                traceStackTraceOnlySerial(unsigned int)
+                0xffffffff800016c0                panic(char*)
+ *fill*         0xffffffff80001746        0xa 
+ .text          0xffffffff80001750      0x563 ./kernel.o
+                0xffffffff80001750                setIdtGate(void*, unsigned char, unsigned char, unsigned char)
+                0xffffffff800017a0                initInterrupts(unsigned long)
+                0xffffffff800018d0                _start
+ *fill*         0xffffffff80001cb3        0xd 
+ .text          0xffffffff80001cc0      0x216 ./graphics/framebuffer.o
+                0xffffffff80001cc0                drawPoint(unsigned int, unsigned int, unsigned int)
+                0xffffffff80001cf0                drawLine(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)
+                0xffffffff80001d50                drawHorizontalLine(unsigned int, unsigned int, unsigned int, unsigned int)
+                0xffffffff80001d80                drawCharBg(unsigned char, unsigned int, unsigned int, unsigned int, unsigned int)
+                0xffffffff80001e10                drawChar(unsigned char, unsigned int, unsigned int, unsigned int)
+                0xffffffff80001e20                drawString(unsigned char*, unsigned int, unsigned int, unsigned int)
+                0xffffffff80001e70                drawStringBg(unsigned char*, unsigned int, unsigned int, unsigned int, unsigned int)
+                0xffffffff80001ec0                translateToOffset(unsigned int, unsigned int)
+ *fill*         0xffffffff80001ed6        0xa 
+ .text          0xffffffff80001ee0      0x645 ./debug.o
+                0xffffffff80001ee0                __write(char*, bool, bool)
+                0xffffffff80001f50                __writeChar(char, bool, bool)
+                0xffffffff80001fa0                _kprintf(char*, bool, bool, __va_list_tag*)
+                0xffffffff80002440                kprintf(char*, ...)
+                0xffffffff80002490                kprintf_both(char*, ...)
+                0xffffffff800024e0                kprintf_serial(char*, ...)
+ *fill*         0xffffffff80002525        0xb 
+ .text          0xffffffff80002530       0x1b ./gdt/gdtasm.o
+                0xffffffff80002530                loadGDT
 
-.iplt           0xffffffff800026ab        0x0
- .iplt          0xffffffff800026ab        0x0 ./idt/ints.o
-                0xffffffff800036ab                . = (. + CONSTANT (MAXPAGESIZE))
+.iplt           0xffffffff8000254b        0x0
+ .iplt          0xffffffff8000254b        0x0 ./idt/ints.o
+                0xffffffff8000354b                . = (. + CONSTANT (MAXPAGESIZE))
 
-.rodata         0xffffffff800036c0      0x940
+.rodata         0xffffffff80003560      0x908
  *(.rodata .rodata.*)
  .rodata.str1.1
-                0xffffffff800036c0       0x2a ./idt/ints.o
- *fill*         0xffffffff800036ea        0x6 
+                0xffffffff80003560       0x2a ./idt/ints.o
+ *fill*         0xffffffff8000358a        0x6 
  .rodata.str1.8
-                0xffffffff800036f0       0x22 ./idt/ints.o
- *fill*         0xffffffff80003712        0x6 
+                0xffffffff80003590       0x22 ./idt/ints.o
+ *fill*         0xffffffff800035b2        0x6 
  .rodata.str1.8
-                0xffffffff80003718       0x4c ./mem/paging.o
+                0xffffffff800035b8       0x4c ./mem/paging.o
  .rodata.str1.1
-                0xffffffff80003764       0x22 ./mem/paging.o
+                0xffffffff80003604       0x22 ./mem/paging.o
  .rodata.str1.1
-                0xffffffff80003786       0x79 ./mem/memutils.o
- *fill*         0xffffffff800037ff        0x1 
- .rodata        0xffffffff80003800       0x40 ./mem/memutils.o
+                0xffffffff80003626       0x79 ./mem/memutils.o
+ *fill*         0xffffffff8000369f        0x1 
+ .rodata        0xffffffff800036a0       0x40 ./mem/memutils.o
  .rodata.str1.8
-                0xffffffff80003840      0x105 ./mem/pageframeallocator.o
+                0xffffffff800036e0      0x173 ./mem/pageframeallocator.o
  .rodata.str1.1
-                0xffffffff80003945       0x44 ./mem/pageframeallocator.o
- *fill*         0xffffffff80003989        0x7 
+                0xffffffff80003853       0x39 ./mem/pageframeallocator.o
+ *fill*         0xffffffff8000388c        0x4 
  .rodata.str1.8
-                0xffffffff80003990       0x48 ./lib/string.o
+                0xffffffff80003890       0x48 ./lib/string.o
  .rodata.str1.1
-                0xffffffff800039d8        0x6 ./terminal/terminal.o
+                0xffffffff800038d8        0x6 ./terminal/terminal.o
  .rodata.str1.1
-                0xffffffff800039de       0x3a ./panic.o
+                0xffffffff800038de       0x3a ./panic.o
                                          0x3d (size before relaxing)
  .rodata.str1.8
-                0xffffffff80003a18       0x6a ./panic.o
- *fill*         0xffffffff80003a82        0x6 
+                0xffffffff80003918       0x6a ./panic.o
+ *fill*         0xffffffff80003982        0x6 
  .rodata.str1.8
-                0xffffffff80003a88      0x278 ./kernel.o
+                0xffffffff80003988      0x1d7 ./kernel.o
  .rodata.str1.1
-                0xffffffff80003d00      0x11e ./kernel.o
- *fill*         0xffffffff80003e1e        0x2 
+                0xffffffff80003b5f      0x128 ./kernel.o
+ *fill*         0xffffffff80003c87        0x1 
  .rodata.str1.8
-                0xffffffff80003e20       0x20 ./debug.o
+                0xffffffff80003c88       0x20 ./debug.o
  .rodata.str1.1
-                0xffffffff80003e40       0x1e ./debug.o
- *fill*         0xffffffff80003e5e        0x2 
- .rodata        0xffffffff80003e60      0x1a0 ./debug.o
+                0xffffffff80003ca8       0x1e ./debug.o
+ *fill*         0xffffffff80003cc6        0x2 
+ .rodata        0xffffffff80003cc8      0x1a0 ./debug.o
 
-.rela.dyn       0xffffffff80004000        0x0
- .rela.got      0xffffffff80004000        0x0 ./idt/ints.o
- .rela.iplt     0xffffffff80004000        0x0 ./idt/ints.o
-                0xffffffff80005000                . = (. + CONSTANT (MAXPAGESIZE))
+.rela.dyn       0xffffffff80003e68        0x0
+ .rela.got      0xffffffff80003e68        0x0 ./idt/ints.o
+ .rela.iplt     0xffffffff80003e68        0x0 ./idt/ints.o
+                0xffffffff80004e68                . = (. + CONSTANT (MAXPAGESIZE))
 
 .data           0xffffffff80005000     0x25cc
  *(.data .data.*)
@@ -258,7 +256,7 @@ LOAD font.o
 .igot.plt       0xffffffff800075d0        0x0
  .igot.plt      0xffffffff800075d0        0x0 ./idt/ints.o
 
-.bss            0xffffffff800075e0 0x100021d0
+.bss            0xffffffff800075e0 0x100021e8
  *(COMMON)
  *(.bss .bss.*)
  .bss           0xffffffff800075e0        0x0 ./idt/ints.o
@@ -268,86 +266,87 @@ LOAD font.o
  *fill*         0xffffffff800075ea        0x6 
  .bss           0xffffffff800075f0        0x8 ./mem/paging.o
                 0xffffffff800075f0                globalPageTable
- .bss           0xffffffff800075f8        0x0 ./mem/memutils.o
- *fill*         0xffffffff800075f8        0x8 
- .bss           0xffffffff80007600 0x10002140 ./mem/heap.o
-                0xffffffff80007600                slot
-                0xffffffff80009600                MEM
-                0xffffffff90009600                last
-                0xffffffff90009608                first
-                0xffffffff90009610                mem_meta
-                0xffffffff90009618                mem_used
-                0xffffffff90009620                mem_free
-                0xffffffff90009640                free_chunk
- .bss           0xffffffff90009740       0x58 ./mem/pageframeallocator.o
-                0xffffffff90009740                __memmap
-                0xffffffff90009760                mem_pfaBitmap
-                0xffffffff90009770                end
-                0xffffffff90009778                bitmapIdx
-                0xffffffff90009780                mem_usedMemory
-                0xffffffff90009788                mem_reservedMemory
-                0xffffffff90009790                mem_freeMemory
- .bss           0xffffffff90009798        0x0 ./lib/io.o
- .bss           0xffffffff90009798        0x0 ./lib/bitmap.o
- .bss           0xffffffff90009798        0x0 ./lib/mem.o
- .bss           0xffffffff90009798        0x0 ./lib/math.o
- .bss           0xffffffff90009798        0x0 ./lib/string.o
- .bss           0xffffffff90009798        0x0 ./lib/serial.o
- .bss           0xffffffff90009798        0x0 ./terminal/terminal.o
- .bss           0xffffffff90009798        0x0 ./panic.o
- .bss           0xffffffff90009798        0xa ./kernel.o
-                0xffffffff90009798                idtr
- *fill*         0xffffffff900097a2        0x6 
- .bss           0xffffffff900097a8        0x8 ./graphics/framebuffer.o
-                0xffffffff900097a8                gFramebuffer
- .bss           0xffffffff900097b0        0x0 ./debug.o
+ .bss           0xffffffff800075f8       0x10 ./mem/memutils.o
+                0xffffffff800075f8                mem_kVirtOffset
+                0xffffffff80007600                mem_hhdmOffset
+ *fill*         0xffffffff80007608       0x18 
+ .bss           0xffffffff80007620 0x10002140 ./mem/heap.o
+                0xffffffff80007620                slot
+                0xffffffff80009620                MEM
+                0xffffffff90009620                last
+                0xffffffff90009628                first
+                0xffffffff90009630                mem_meta
+                0xffffffff90009638                mem_used
+                0xffffffff90009640                mem_free
+                0xffffffff90009660                free_chunk
+ .bss           0xffffffff90009760       0x50 ./mem/pageframeallocator.o
+                0xffffffff90009760                __memmap
+                0xffffffff90009780                mem_pfaBitmap
+                0xffffffff90009790                end
+                0xffffffff90009798                bitmapIdx
+                0xffffffff900097a0                mem_usedMemory
+                0xffffffff900097a8                mem_freeMemory
+ .bss           0xffffffff900097b0        0x0 ./lib/io.o
+ .bss           0xffffffff900097b0        0x0 ./lib/bitmap.o
+ .bss           0xffffffff900097b0        0x0 ./lib/mem.o
+ .bss           0xffffffff900097b0        0x0 ./lib/math.o
+ .bss           0xffffffff900097b0        0x0 ./lib/string.o
+ .bss           0xffffffff900097b0        0x0 ./lib/serial.o
+ .bss           0xffffffff900097b0        0x0 ./terminal/terminal.o
+ .bss           0xffffffff900097b0        0x0 ./panic.o
+ .bss           0xffffffff900097b0        0xa ./kernel.o
+                0xffffffff900097b0                idtr
+ *fill*         0xffffffff900097ba        0x6 
+ .bss           0xffffffff900097c0        0x8 ./graphics/framebuffer.o
+                0xffffffff900097c0                gFramebuffer
+ .bss           0xffffffff900097c8        0x0 ./debug.o
 
 /DISCARD/
  *(.eh_frame)
  *(.note .note.*)
 OUTPUT(kernel.elf elf64-x86-64)
 
-.debug_info     0x0000000000000000     0x728f
+.debug_info     0x0000000000000000     0x6fae
  .debug_info    0x0000000000000000      0x256 ./idt/ints.o
  .debug_info    0x0000000000000256      0x1c5 ./idt/idt.o
  .debug_info    0x000000000000041b      0x204 ./gdt/gdt.o
  .debug_info    0x000000000000061f      0x9e4 ./mem/paging.o
- .debug_info    0x0000000000001003      0x1ab ./mem/memutils.o
- .debug_info    0x00000000000011ae     0x1189 ./mem/heap.o
- .debug_info    0x0000000000002337      0xe06 ./mem/pageframeallocator.o
- .debug_info    0x000000000000313d      0x12f ./lib/io.o
- .debug_info    0x000000000000326c      0x1f0 ./lib/bitmap.o
- .debug_info    0x000000000000345c      0x375 ./lib/mem.o
- .debug_info    0x00000000000037d1       0xb0 ./lib/math.o
- .debug_info    0x0000000000003881      0x20f ./lib/string.o
- .debug_info    0x0000000000003a90      0x46a ./lib/serial.o
- .debug_info    0x0000000000003efa      0x579 ./terminal/terminal.o
- .debug_info    0x0000000000004473      0x432 ./panic.o
- .debug_info    0x00000000000048a5     0x14d5 ./kernel.o
- .debug_info    0x0000000000005d7a      0xa2f ./graphics/framebuffer.o
- .debug_info    0x00000000000067a9      0xa96 ./debug.o
- .debug_info    0x000000000000723f       0x50 ./gdt/gdtasm.o
+ .debug_info    0x0000000000001003      0x2b7 ./mem/memutils.o
+ .debug_info    0x00000000000012ba     0x1189 ./mem/heap.o
+ .debug_info    0x0000000000002443      0xbbb ./mem/pageframeallocator.o
+ .debug_info    0x0000000000002ffe      0x12f ./lib/io.o
+ .debug_info    0x000000000000312d      0x1f0 ./lib/bitmap.o
+ .debug_info    0x000000000000331d      0x375 ./lib/mem.o
+ .debug_info    0x0000000000003692       0xb0 ./lib/math.o
+ .debug_info    0x0000000000003742      0x20f ./lib/string.o
+ .debug_info    0x0000000000003951      0x46a ./lib/serial.o
+ .debug_info    0x0000000000003dbb      0x579 ./terminal/terminal.o
+ .debug_info    0x0000000000004334      0x432 ./panic.o
+ .debug_info    0x0000000000004766     0x1333 ./kernel.o
+ .debug_info    0x0000000000005a99      0xa2f ./graphics/framebuffer.o
+ .debug_info    0x00000000000064c8      0xa96 ./debug.o
+ .debug_info    0x0000000000006f5e       0x50 ./gdt/gdtasm.o
 
-.debug_abbrev   0x0000000000000000     0x2253
+.debug_abbrev   0x0000000000000000     0x2299
  .debug_abbrev  0x0000000000000000      0x13f ./idt/ints.o
  .debug_abbrev  0x000000000000013f       0xff ./idt/idt.o
  .debug_abbrev  0x000000000000023e       0xf8 ./gdt/gdt.o
  .debug_abbrev  0x0000000000000336      0x318 ./mem/paging.o
- .debug_abbrev  0x000000000000064e      0x105 ./mem/memutils.o
- .debug_abbrev  0x0000000000000753      0x408 ./mem/heap.o
- .debug_abbrev  0x0000000000000b5b      0x34d ./mem/pageframeallocator.o
- .debug_abbrev  0x0000000000000ea8       0xc0 ./lib/io.o
- .debug_abbrev  0x0000000000000f68      0x14f ./lib/bitmap.o
- .debug_abbrev  0x00000000000010b7      0x128 ./lib/mem.o
- .debug_abbrev  0x00000000000011df       0x74 ./lib/math.o
- .debug_abbrev  0x0000000000001253       0xe2 ./lib/string.o
- .debug_abbrev  0x0000000000001335      0x198 ./lib/serial.o
- .debug_abbrev  0x00000000000014cd      0x247 ./terminal/terminal.o
- .debug_abbrev  0x0000000000001714      0x1cc ./panic.o
- .debug_abbrev  0x00000000000018e0      0x3db ./kernel.o
- .debug_abbrev  0x0000000000001cbb      0x2a3 ./graphics/framebuffer.o
- .debug_abbrev  0x0000000000001f5e      0x2da ./debug.o
- .debug_abbrev  0x0000000000002238       0x1b ./gdt/gdtasm.o
+ .debug_abbrev  0x000000000000064e      0x131 ./mem/memutils.o
+ .debug_abbrev  0x000000000000077f      0x408 ./mem/heap.o
+ .debug_abbrev  0x0000000000000b87      0x369 ./mem/pageframeallocator.o
+ .debug_abbrev  0x0000000000000ef0       0xc0 ./lib/io.o
+ .debug_abbrev  0x0000000000000fb0      0x14f ./lib/bitmap.o
+ .debug_abbrev  0x00000000000010ff      0x128 ./lib/mem.o
+ .debug_abbrev  0x0000000000001227       0x74 ./lib/math.o
+ .debug_abbrev  0x000000000000129b       0xe2 ./lib/string.o
+ .debug_abbrev  0x000000000000137d      0x198 ./lib/serial.o
+ .debug_abbrev  0x0000000000001515      0x247 ./terminal/terminal.o
+ .debug_abbrev  0x000000000000175c      0x1cc ./panic.o
+ .debug_abbrev  0x0000000000001928      0x3d9 ./kernel.o
+ .debug_abbrev  0x0000000000001d01      0x2a3 ./graphics/framebuffer.o
+ .debug_abbrev  0x0000000000001fa4      0x2da ./debug.o
+ .debug_abbrev  0x000000000000227e       0x1b ./gdt/gdtasm.o
 
 .debug_aranges  0x0000000000000000      0x390
  .debug_aranges
@@ -389,28 +388,28 @@ OUTPUT(kernel.elf elf64-x86-64)
  .debug_aranges
                 0x0000000000000360       0x30 ./gdt/gdtasm.o
 
-.debug_line     0x0000000000000000     0x2d9a
+.debug_line     0x0000000000000000     0x2c4f
  .debug_line    0x0000000000000000       0xf4 ./idt/ints.o
  .debug_line    0x00000000000000f4       0xa3 ./idt/idt.o
  .debug_line    0x0000000000000197       0x91 ./gdt/gdt.o
  .debug_line    0x0000000000000228      0x3f3 ./mem/paging.o
- .debug_line    0x000000000000061b       0xb8 ./mem/memutils.o
- .debug_line    0x00000000000006d3      0x83a ./mem/heap.o
- .debug_line    0x0000000000000f0d      0x6fc ./mem/pageframeallocator.o
- .debug_line    0x0000000000001609       0x7a ./lib/io.o
- .debug_line    0x0000000000001683       0xf0 ./lib/bitmap.o
- .debug_line    0x0000000000001773      0x1e2 ./lib/mem.o
- .debug_line    0x0000000000001955       0x62 ./lib/math.o
- .debug_line    0x00000000000019b7      0x190 ./lib/string.o
- .debug_line    0x0000000000001b47      0x1d3 ./lib/serial.o
- .debug_line    0x0000000000001d1a      0x1ca ./terminal/terminal.o
- .debug_line    0x0000000000001ee4      0x1bc ./panic.o
- .debug_line    0x00000000000020a0      0x4f8 ./kernel.o
- .debug_line    0x0000000000002598      0x30a ./graphics/framebuffer.o
- .debug_line    0x00000000000028a2      0x4ad ./debug.o
- .debug_line    0x0000000000002d4f       0x4b ./gdt/gdtasm.o
+ .debug_line    0x000000000000061b      0x100 ./mem/memutils.o
+ .debug_line    0x000000000000071b      0x83a ./mem/heap.o
+ .debug_line    0x0000000000000f55      0x592 ./mem/pageframeallocator.o
+ .debug_line    0x00000000000014e7       0x7a ./lib/io.o
+ .debug_line    0x0000000000001561       0xf0 ./lib/bitmap.o
+ .debug_line    0x0000000000001651      0x1e2 ./lib/mem.o
+ .debug_line    0x0000000000001833       0x62 ./lib/math.o
+ .debug_line    0x0000000000001895      0x190 ./lib/string.o
+ .debug_line    0x0000000000001a25      0x1d3 ./lib/serial.o
+ .debug_line    0x0000000000001bf8      0x1ca ./terminal/terminal.o
+ .debug_line    0x0000000000001dc2      0x1bc ./panic.o
+ .debug_line    0x0000000000001f7e      0x4cf ./kernel.o
+ .debug_line    0x000000000000244d      0x30a ./graphics/framebuffer.o
+ .debug_line    0x0000000000002757      0x4ad ./debug.o
+ .debug_line    0x0000000000002c04       0x4b ./gdt/gdtasm.o
 
-.debug_str      0x0000000000000000     0x15b9
+.debug_str      0x0000000000000000     0x1517
  .debug_str     0x0000000000000000      0x2c7 ./idt/ints.o
                                         0x304 (size before relaxing)
  .debug_str     0x00000000000002c7       0xab ./idt/idt.o
@@ -419,37 +418,37 @@ OUTPUT(kernel.elf elf64-x86-64)
                                         0x207 (size before relaxing)
  .debug_str     0x0000000000000422      0x2cd ./mem/paging.o
                                         0x456 (size before relaxing)
- .debug_str     0x00000000000006ef       0x9c ./mem/memutils.o
-                                        0x20c (size before relaxing)
- .debug_str     0x000000000000078b      0x1bb ./mem/heap.o
+ .debug_str     0x00000000000006ef      0x121 ./mem/memutils.o
+                                        0x29b (size before relaxing)
+ .debug_str     0x0000000000000810      0x1bb ./mem/heap.o
                                         0x348 (size before relaxing)
- .debug_str     0x0000000000000946      0x4f0 ./mem/pageframeallocator.o
-                                        0x7e6 (size before relaxing)
- .debug_str     0x0000000000000e36       0x3a ./lib/io.o
+ .debug_str     0x00000000000009cb      0x3c7 ./mem/pageframeallocator.o
+                                        0x6d1 (size before relaxing)
+ .debug_str     0x0000000000000d92       0x3a ./lib/io.o
                                         0x17d (size before relaxing)
- .debug_str     0x0000000000000e70       0x15 ./lib/bitmap.o
+ .debug_str     0x0000000000000dcc       0x15 ./lib/bitmap.o
                                         0x1d0 (size before relaxing)
- .debug_str     0x0000000000000e85       0x66 ./lib/mem.o
+ .debug_str     0x0000000000000de1       0x66 ./lib/mem.o
                                         0x1f0 (size before relaxing)
- .debug_str     0x0000000000000eeb        0x8 ./lib/math.o
+ .debug_str     0x0000000000000e47        0x8 ./lib/math.o
                                         0x13c (size before relaxing)
- .debug_str     0x0000000000000ef3       0x1f ./lib/string.o
+ .debug_str     0x0000000000000e4f       0x1f ./lib/string.o
                                         0x171 (size before relaxing)
- .debug_str     0x0000000000000f12       0xcf ./lib/serial.o
+ .debug_str     0x0000000000000e6e       0xcf ./lib/serial.o
                                         0x228 (size before relaxing)
- .debug_str     0x0000000000000fe1      0x190 ./terminal/terminal.o
+ .debug_str     0x0000000000000f3d      0x190 ./terminal/terminal.o
                                         0x372 (size before relaxing)
- .debug_str     0x0000000000001171       0x73 ./panic.o
+ .debug_str     0x00000000000010cd       0x81 ./panic.o
                                         0x2e9 (size before relaxing)
- .debug_str     0x00000000000011e4      0x19c ./kernel.o
-                                        0xc49 (size before relaxing)
- .debug_str     0x0000000000001380      0x139 ./graphics/framebuffer.o
+ .debug_str     0x000000000000114e      0x190 ./kernel.o
+                                        0xb66 (size before relaxing)
+ .debug_str     0x00000000000012de      0x139 ./graphics/framebuffer.o
                                         0x391 (size before relaxing)
- .debug_str     0x00000000000014b9      0x100 ./debug.o
+ .debug_str     0x0000000000001417      0x100 ./debug.o
                                         0x418 (size before relaxing)
 
 .debug_line_str
-                0x0000000000000000      0x2c4
+                0x0000000000000000      0x2bd
  .debug_line_str
                 0x0000000000000000       0x8e ./idt/ints.o
                                          0xb5 (size before relaxing)
@@ -463,13 +462,13 @@ OUTPUT(kernel.elf elf64-x86-64)
                 0x00000000000000c1       0x71 ./mem/paging.o
                                         0x100 (size before relaxing)
  .debug_line_str
-                0x0000000000000132       0x1a ./mem/memutils.o
-                                         0xbb (size before relaxing)
+                0x0000000000000132       0x25 ./mem/memutils.o
+                                         0xc6 (size before relaxing)
  .debug_line_str
-                0x000000000000014c        0xd ./mem/heap.o
+                0x0000000000000157        0xd ./mem/heap.o
                                          0xa8 (size before relaxing)
  .debug_line_str
-                0x0000000000000159       0x2f ./mem/pageframeallocator.o
+                0x0000000000000164       0x24 ./mem/pageframeallocator.o
                                         0x112 (size before relaxing)
  .debug_line_str
                 0x0000000000000188        0xb ./lib/io.o
@@ -496,13 +495,13 @@ OUTPUT(kernel.elf elf64-x86-64)
                 0x000000000000024f        0xa ./panic.o
                                          0xbb (size before relaxing)
  .debug_line_str
-                0x0000000000000259       0x2b ./kernel.o
-                                        0x164 (size before relaxing)
+                0x0000000000000259       0x24 ./kernel.o
+                                        0x15d (size before relaxing)
  .debug_line_str
-                0x0000000000000284       0x19 ./graphics/framebuffer.o
+                0x000000000000027d       0x19 ./graphics/framebuffer.o
                                          0xe6 (size before relaxing)
  .debug_line_str
-                0x000000000000029d       0x27 ./debug.o
+                0x0000000000000296       0x27 ./debug.o
                                          0xec (size before relaxing)
 
 .comment        0x0000000000000000       0x12
@@ -527,60 +526,60 @@ OUTPUT(kernel.elf elf64-x86-64)
  .comment       0x0000000000000012       0x13 ./debug.o
 
 .debug_loclists
-                0x0000000000000000     0x2cb1
+                0x0000000000000000     0x2c0b
  .debug_loclists
                 0x0000000000000000       0x7f ./idt/idt.o
  .debug_loclists
                 0x000000000000007f      0x71d ./mem/paging.o
  .debug_loclists
-                0x000000000000079c       0x50 ./mem/memutils.o
+                0x000000000000079c       0x99 ./mem/memutils.o
  .debug_loclists
-                0x00000000000007ec      0xb8a ./mem/heap.o
+                0x0000000000000835      0xb8a ./mem/heap.o
  .debug_loclists
-                0x0000000000001376      0x798 ./mem/pageframeallocator.o
+                0x00000000000013bf      0x632 ./mem/pageframeallocator.o
  .debug_loclists
-                0x0000000000001b0e       0x14 ./lib/io.o
+                0x00000000000019f1       0x14 ./lib/io.o
  .debug_loclists
-                0x0000000000001b22       0x8b ./lib/bitmap.o
+                0x0000000000001a05       0x8b ./lib/bitmap.o
  .debug_loclists
-                0x0000000000001bad      0x17c ./lib/mem.o
+                0x0000000000001a90      0x17c ./lib/mem.o
  .debug_loclists
-                0x0000000000001d29      0x184 ./lib/string.o
+                0x0000000000001c0c      0x184 ./lib/string.o
  .debug_loclists
-                0x0000000000001ead       0x49 ./lib/serial.o
+                0x0000000000001d90       0x49 ./lib/serial.o
  .debug_loclists
-                0x0000000000001ef6      0x12e ./terminal/terminal.o
+                0x0000000000001dd9      0x12e ./terminal/terminal.o
  .debug_loclists
-                0x0000000000002024       0xbc ./panic.o
+                0x0000000000001f07       0xbc ./panic.o
  .debug_loclists
-                0x00000000000020e0      0x288 ./kernel.o
+                0x0000000000001fc3      0x2ff ./kernel.o
  .debug_loclists
-                0x0000000000002368      0x58d ./graphics/framebuffer.o
+                0x00000000000022c2      0x58d ./graphics/framebuffer.o
  .debug_loclists
-                0x00000000000028f5      0x3bc ./debug.o
+                0x000000000000284f      0x3bc ./debug.o
 
 .debug_rnglists
-                0x0000000000000000      0x5ea
+                0x0000000000000000      0x5f0
  .debug_rnglists
                 0x0000000000000000       0xb4 ./mem/paging.o
  .debug_rnglists
-                0x00000000000000b4       0x1a ./mem/memutils.o
+                0x00000000000000b4       0x2c ./mem/memutils.o
  .debug_rnglists
-                0x00000000000000ce      0x2a2 ./mem/heap.o
+                0x00000000000000e0      0x2a2 ./mem/heap.o
  .debug_rnglists
-                0x0000000000000370       0xbb ./mem/pageframeallocator.o
+                0x0000000000000382       0x8e ./mem/pageframeallocator.o
  .debug_rnglists
-                0x000000000000042b       0x13 ./lib/mem.o
+                0x0000000000000410       0x13 ./lib/mem.o
  .debug_rnglists
-                0x000000000000043e       0x17 ./lib/serial.o
+                0x0000000000000423       0x17 ./lib/serial.o
  .debug_rnglists
-                0x0000000000000455       0x15 ./terminal/terminal.o
+                0x000000000000043a       0x15 ./terminal/terminal.o
  .debug_rnglists
-                0x000000000000046a       0x80 ./kernel.o
+                0x000000000000044f       0xa1 ./kernel.o
  .debug_rnglists
-                0x00000000000004ea       0xa9 ./graphics/framebuffer.o
+                0x00000000000004f0       0xa9 ./graphics/framebuffer.o
  .debug_rnglists
-                0x0000000000000593       0x57 ./debug.o
+                0x0000000000000599       0x57 ./debug.o
 
 .debug_pubnames
                 0x0000000000000000        0x0
