@@ -19,6 +19,8 @@ void mem_pageframeallocator_freePage(void* addr);
 void mem_pageframeallocator_freePages(void* addr, u64 pageCount);
 void mem_pageframeallocator_lockPages(void* addr, u64 pageCount);
 
+void mem_pageframeallocator_lockPagesNonAvailable(void* addr, u64 pageCount);
+
 u64 mem_getFreeRAM();
 u64 mem_getUsedRAM();
 u64 mem_getTotalRAM();

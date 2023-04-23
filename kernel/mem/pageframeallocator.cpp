@@ -31,7 +31,6 @@ void mem_pageframeallocator_init(struct limine_memmap_response memmap, struct li
 
 
     kprintf_both("Largest Free Segment: 0x%x (virt: 0x%x) (with size 0x%x)\n", largestFreeSegment, toVirt((u64)largestFreeSegment), largestFreeSegmentSize);
-    mem_freeMemory = largestFreeSegmentSize;
 
     // Calculate Bitmap Size
     u64 totalMemorySize = getMemoryArealSize(memmap);
@@ -42,7 +41,7 @@ void mem_pageframeallocator_init(struct limine_memmap_response memmap, struct li
     kprintf_both("Total memory space is %d bytes in size, or %d pages\n", totalMemorySize, totalMemorySizeInPages);
 
     // Initiliaze bitmap
-    mem_pageframeallocator_initBitmap(bitmapSize, largestFreeSegment);
+    mem_pageframeallocator_initBitmap(bitmapSize, (void*)(mem_hhdmOffset + (u64)largestFreeSegment));
 
     // Lock bitmap & non-usable spaces
     mem_pageframeallocator_lockPages(0, totalMemorySizeInPages);
@@ -56,6 +55,10 @@ void mem_pageframeallocator_init(struct limine_memmap_response memmap, struct li
             mem_pageframeallocator_freePages((void*)(entry.base), entrySizeInPages);
         }
     }
+
+    // Only set these counters now since else they would be trash
+    mem_usedMemory = 0; 
+    mem_freeMemory = largestFreeSegmentSize;
 
     mem_pageframeallocator_lockPages(largestFreeSegment, bitmapSizeInPages);
     kprintf_both("Initiliazed page frame allocator!\n");
@@ -102,6 +105,17 @@ void mem_pageframeallocator_lockPage(void* addr){
     }
 }
 
+/// @brief Locks page but does not fuck around with the free/used counters
+/// @param addr 
+void mem_pageframeallocator_lockPageNonAvailable(void* addr){
+    u64 index = (u64)addr / 4096;
+
+    if (mem_pfaBitmap.get(index) == true) return;
+    if (!mem_pfaBitmap.set(index, true)) {
+        kprintf_serial("WARN Failed to lock page at address %x (idx: %x, bitmap size: %x)\n", (u64)addr, index, mem_pfaBitmap.Size);
+    }
+}
+
 /// @brief Frees/Unlocks a page at the given physical address
 /// @param addr Physical address of the page
 void mem_pageframeallocator_freePage(void* addr) {
@@ -133,6 +147,14 @@ void mem_pageframeallocator_freePages(void* addr, u64 pageCount){
 void mem_pageframeallocator_lockPages(void* addr, u64 pageCount){
     for (int i = 0; i < pageCount; i++){
         mem_pageframeallocator_lockPage((void*)((u64)addr + (i * 4096)));
+    }
+}
+
+/// @brief Locks pages but does not fuck around with the free/used counters
+/// @param addr 
+void mem_pageframeallocator_lockPagesNonAvailable(void* addr, u64 pageCount){
+    for (int i = 0; i < pageCount; i++){
+        mem_pageframeallocator_lockPageNonAvailable((void*)((u64)addr + (i * 4096)));
     }
 }
 

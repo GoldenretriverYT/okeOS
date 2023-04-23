@@ -4,6 +4,7 @@
 
 struct interrupt_frame
 {
+    u64 err_code;
     u64 rip;
     u64 cs;
     u64 rflags;

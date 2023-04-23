@@ -26,5 +26,32 @@
               }
             }
           ]
-    }]
+    },
+    {
+      "label": "makeint",
+      "command": "make kernel && make run-int", // Could be any other shell command
+      "args": [],
+      "options": {
+          "cwd": "/home/gryt/okeOS"
+      },
+      "type": "shell",
+      "isBackground": true,
+      "problemMatcher": [
+          {
+            "pattern": [
+              {
+                "regexp": ".",
+                "file": 1,
+                "location": 2,
+                "message": 3
+              }
+            ],
+            "background": {
+              "activeOnStart": true,
+              "beginsPattern": ".",
+              "endsPattern": ".",
+            }
+          }
+        ]
+  }]
 }

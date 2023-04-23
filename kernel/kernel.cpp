@@ -153,6 +153,15 @@ extern "C" void _start(void) {
         }
     }
 
+    /*// We have to map these physical locations :shrug:
+    PageTable_MapMemory(globalPageTable, (void*)idtrOffset, (void*)idtrOffset);
+    PageTable_MapMemory(globalPageTable, (void*)globalPageTable, (void*)globalPageTable);*/
+
+    // Map first 16 mb
+    for(u64 i = 0; i < mb(16); i += 0x1000) {
+        PageTable_MapMemory(globalPageTable, (void*)i, (void*)i);
+    }
+
     kprintf_both("Mapped memory\n");
 
     //u64 fbSize = ((gFramebuffer->width * gFramebuffer->height * gFramebuffer->bpp) / 8) + 0x1000;
@@ -165,6 +174,21 @@ extern "C" void _start(void) {
     kprintf_serial("done paging!\n");
     kprintf_both("Done initiliazing paging!\n");
     
+    // Init heap
+    kprintf_both("Initiliazing heap with starting size 1mb\n");
+    initHeap((void*)0x800000, mb(1) / kb(4));
+    kprintf_serial("initHeap() done\n");
+
+    char* newString = (char*)malloc(16);
+    kprintf_serial("Address of newString: 0x%x\n", (u64)newString);
+
+    char* copyable = "Hello World!";
+
+    memcpy(newString, copyable, strlen((u8*)copyable));
+
+    kprintf_both("Heap Test: %s\n", newString);
+    kprintf_both("Heap successfully initiliazed!\n");
+
     // We're done, just hang...
     hcf();
 }

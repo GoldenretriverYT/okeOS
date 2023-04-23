@@ -12,5 +12,8 @@ typedef int16_t i16;
 typedef int32_t i32;
 typedef int64_t i64;
 
+#define kb(x) (x * 1024)
+#define mb(x) (x * 1024 * 1024)
+
 //#define true TRUE
 //#define false FALSE
