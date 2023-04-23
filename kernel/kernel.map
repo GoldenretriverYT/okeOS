@@ -448,61 +448,61 @@ OUTPUT(kernel.elf elf64-x86-64)
                                         0x418 (size before relaxing)
 
 .debug_line_str
-                0x0000000000000000      0x2bd
+                0x0000000000000000      0x2c3
  .debug_line_str
-                0x0000000000000000       0x8e ./idt/ints.o
-                                         0xb5 (size before relaxing)
+                0x0000000000000000       0x94 ./idt/ints.o
+                                         0xbe (size before relaxing)
  .debug_line_str
-                0x000000000000008e       0x12 ./idt/idt.o
-                                         0xa2 (size before relaxing)
+                0x0000000000000094       0x12 ./idt/idt.o
+                                         0xab (size before relaxing)
  .debug_line_str
-                0x00000000000000a0       0x21 ./gdt/gdt.o
-                                         0xa2 (size before relaxing)
+                0x00000000000000a6       0x21 ./gdt/gdt.o
+                                         0xab (size before relaxing)
  .debug_line_str
-                0x00000000000000c1       0x71 ./mem/paging.o
-                                        0x100 (size before relaxing)
+                0x00000000000000c7       0x71 ./mem/paging.o
+                                        0x109 (size before relaxing)
  .debug_line_str
-                0x0000000000000132       0x25 ./mem/memutils.o
-                                         0xc6 (size before relaxing)
+                0x0000000000000138       0x25 ./mem/memutils.o
+                                         0xcf (size before relaxing)
  .debug_line_str
-                0x0000000000000157        0xd ./mem/heap.o
-                                         0xa8 (size before relaxing)
+                0x000000000000015d        0xd ./mem/heap.o
+                                         0xb1 (size before relaxing)
  .debug_line_str
-                0x0000000000000164       0x24 ./mem/pageframeallocator.o
-                                        0x112 (size before relaxing)
+                0x000000000000016a       0x24 ./mem/pageframeallocator.o
+                                        0x11b (size before relaxing)
  .debug_line_str
-                0x0000000000000188        0xb ./lib/io.o
-                                         0x8e (size before relaxing)
+                0x000000000000018e        0xb ./lib/io.o
+                                         0x97 (size before relaxing)
  .debug_line_str
-                0x0000000000000193        0xf ./lib/bitmap.o
+                0x0000000000000199        0xf ./lib/bitmap.o
+                                         0xac (size before relaxing)
+ .debug_line_str
+                0x00000000000001a8        0xc ./lib/mem.o
                                          0xa3 (size before relaxing)
  .debug_line_str
-                0x00000000000001a2        0xc ./lib/mem.o
-                                         0x9a (size before relaxing)
+                0x00000000000001b4        0xd ./lib/math.o
+                                         0x9d (size before relaxing)
  .debug_line_str
-                0x00000000000001ae        0xd ./lib/math.o
-                                         0x94 (size before relaxing)
+                0x00000000000001c1        0xf ./lib/string.o
+                                         0xa3 (size before relaxing)
  .debug_line_str
-                0x00000000000001bb        0xf ./lib/string.o
-                                         0x9a (size before relaxing)
+                0x00000000000001d0       0x14 ./lib/serial.o
+                                         0xa8 (size before relaxing)
  .debug_line_str
-                0x00000000000001ca       0x14 ./lib/serial.o
-                                         0x9f (size before relaxing)
+                0x00000000000001e4       0x71 ./terminal/terminal.o
+                                        0x135 (size before relaxing)
  .debug_line_str
-                0x00000000000001de       0x71 ./terminal/terminal.o
-                                        0x12c (size before relaxing)
+                0x0000000000000255        0xa ./panic.o
+                                         0xc4 (size before relaxing)
  .debug_line_str
-                0x000000000000024f        0xa ./panic.o
-                                         0xbb (size before relaxing)
+                0x000000000000025f       0x24 ./kernel.o
+                                        0x166 (size before relaxing)
  .debug_line_str
-                0x0000000000000259       0x24 ./kernel.o
-                                        0x15d (size before relaxing)
+                0x0000000000000283       0x19 ./graphics/framebuffer.o
+                                         0xef (size before relaxing)
  .debug_line_str
-                0x000000000000027d       0x19 ./graphics/framebuffer.o
-                                         0xe6 (size before relaxing)
- .debug_line_str
-                0x0000000000000296       0x27 ./debug.o
-                                         0xec (size before relaxing)
+                0x000000000000029c       0x27 ./debug.o
+                                         0xf5 (size before relaxing)
 
 .comment        0x0000000000000000       0x12
  .comment       0x0000000000000000       0x12 ./idt/ints.o
