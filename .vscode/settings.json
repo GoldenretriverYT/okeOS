@@ -1,8 +1,8 @@
 {
     "files.associations": {
         "*.ejs": "html",
-        "*.spag": "csharp",
         "*.xmlsc": "xml",
+        "*.spag": "csharp",
         "limine.h": "c",
         "framebuffer.h": "c",
         "num.h": "c",
@@ -25,6 +25,7 @@
         "variant": "cpp",
         "string_view": "cpp",
         "regex": "cpp",
-        "span": "cpp"
+        "span": "cpp",
+        "buffer": "cpp"
     }
 }

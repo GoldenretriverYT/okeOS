@@ -34,7 +34,7 @@ void Terminal::writechar(char c) {
         this->charX = 0;
         this->charY++;
 
-        if(this->charY > this->maxLines) { // for now, lets just clear the screen
+        if(this->charY > this->maxLines) { // TODO: Implement proper scrolling
             kprintf_serial("clear");
             memset(gFramebuffer->address, 0, gFramebuffer->width * gFramebuffer->height * gFramebuffer->bpp / 8);
             this->charX = 0;
@@ -42,5 +42,4 @@ void Terminal::writechar(char c) {
         }
     }
 }
-
 Terminal gTerminal;

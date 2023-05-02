@@ -13,6 +13,7 @@
 #include "debug.h"
 #include "mem/paging.h"
 #include "mem/heap.h"
+#include "acpi/rsdp.h"
 
 #define DBG_DUMPMEMMAP
 
@@ -37,6 +38,11 @@ static volatile struct limine_hhdm_request hhdm_request = {
 
 static volatile struct limine_kernel_address_request kaddr_request = {
     .id = LIMINE_KERNEL_ADDRESS_REQUEST,
+    .revision = 0
+};
+
+static volatile struct limine_rsdp_request rsdp_request = {
+    .id = LIMINE_RSDP_REQUEST,
     .revision = 0
 };
 
@@ -188,6 +194,18 @@ extern "C" void _start(void) {
 
     kprintf_both("Heap Test: %s\n", newString);
     kprintf_both("Heap successfully initiliazed!\n");
+
+    kprintf_both("RSDP: %x\n", rsdp_request.response->address);
+    RSDPDescriptor* rsdp = (RSDPDescriptor*)rsdp_request.response->address;
+    //rsdp->checksumValidation(); // no who gives a fuck tbh then well it just isnt gonna work who cares
+
+    if(rsdp->Revision != 2) {
+        kprintf_both("$cY[WARN] $cFACPI Version 2.0+ is not fully supported.");
+    }
+
+    if(memcmp(rsdp->Signature, "RSD PTR ", 8) != 0) {
+        panic("RSDP Signature does not match!");
+    }
 
     // We're done, just hang...
     hcf();
