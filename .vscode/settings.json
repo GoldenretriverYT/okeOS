@@ -1,8 +1,8 @@
 {
     "files.associations": {
         "*.ejs": "html",
-        "*.xmlsc": "xml",
         "*.spag": "csharp",
+        "*.xmlsc": "xml",
         "limine.h": "c",
         "framebuffer.h": "c",
         "num.h": "c",
@@ -26,6 +26,8 @@
         "string_view": "cpp",
         "regex": "cpp",
         "span": "cpp",
-        "buffer": "cpp"
+        "buffer": "cpp",
+        "interception-malloc-test-1.C": "cpp",
+        "cmath": "cpp"
     }
 }

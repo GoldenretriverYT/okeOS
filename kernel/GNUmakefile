@@ -49,6 +49,7 @@ override CFLAGS += \
     -fno-lto \
     -fno-pie \
     -fno-pic \
+    -fno-exceptions \
     -m64 \
     -march=x86-64 \
     -mabi=sysv \
@@ -71,6 +72,7 @@ override CPPFLAGS := \
 # Internal linker flags that should not be changed by the user.
 override LDFLAGS += \
     -nostdlib \
+    --no-ld-generated-unwind-info \
     -static \
     -m elf_x86_64 \
     -z max-page-size=0x1000 \

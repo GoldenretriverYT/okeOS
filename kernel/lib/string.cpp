@@ -71,3 +71,47 @@ char* uitoa(u64 value, char* str, u64 base)
     }
     return rc;
 }
+
+FastStringBuilder::FastStringBuilder(int parts) {
+    this->parts = (char**)malloc(sizeof(char*) * (parts+1));
+    this->nParts = parts;
+}
+
+FastStringBuilder::~FastStringBuilder() {
+    free(parts);
+}
+
+void FastStringBuilder::append(char* ptr) {
+    if(partOffset >= nParts) {
+        // we can write to this locate as we allocate 1 extra part each time
+        parts[nParts] = "FastStringBuilder OutOfBounds";
+    }
+
+    parts[partOffset] = ptr;
+    partOffset++;
+}
+
+char* FastStringBuilder::build() {
+    u64 fullSize = 0;
+    u64 off = 0;
+
+    for(int i = 0; i < nParts; i++) {
+        fullSize += strlen((u8*)parts[i]);
+    }
+
+    char* newBuf = (char*)malloc(fullSize);
+
+    for(int i = 0; i < nParts; i++) {
+        u64 partLen = strlen((u8*)parts[i]);
+        memcpy(newBuf+off, parts[i], partLen);
+        off += partLen;
+    }
+
+    return newBuf;
+} 
+
+char* FastStringBuilder::buildAndDestroy()  {
+    char* ptr = build();
+    delete this;
+    return ptr;
+}

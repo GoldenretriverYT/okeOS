@@ -30,6 +30,10 @@ void __write(char* str, bool serial, bool terminal) {
                     gTerminal.fgColor = 0x0000FF;
                 }else if(*str == 'F') {
                     gTerminal.fgColor = 0xFFFFFF;
+                }else if(*str == '7') {
+                    gTerminal.fgColor = 0xAAAAAA;
+                }else if(*str == '8') {
+                    gTerminal.fgColor = 0x555555;
                 }
 
                 currentlyReadingAnything = false;
@@ -72,6 +76,10 @@ void __writeChar(char str, bool serial, bool terminal) {
                 gTerminal.fgColor = 0x0000FF;
             }else if(str == 'F') {
                 gTerminal.fgColor = 0xFFFFFF;
+            }else if(str == '7') {
+                gTerminal.fgColor = 0xAAAAAA;
+            }else if(str == '8') {
+                gTerminal.fgColor = 0x555555;
             }
 
             currentlyReadingAnything = false;
@@ -93,7 +101,7 @@ void __writeChar(char str, bool serial, bool terminal) {
 
 /// Formatted kernel print to only terminal
 /// Supported formatters: c (char), o (octal), d/i (decimal base10), s (string), u (unsigned base10), x (unsigned base16)
-/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset)
+/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset), 7 (Gray), 8 (Dark Gray)
 void kprintf(char* str, ...) {
     va_list args;
     va_start(args, str);
@@ -102,7 +110,7 @@ void kprintf(char* str, ...) {
 
 /// Formatted kernel print to both channels (terminal & serial)
 /// Supported formatters: c (char), o (octal), d/i (decimal base10), s (string), u (unsigned base10), x (unsigned base16)
-/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset)
+/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset), 7 (Gray), 8 (Dark Gray)
 void kprintf_both(char* str, ...) {
     va_list args;
     va_start(args, str);
@@ -111,7 +119,7 @@ void kprintf_both(char* str, ...) {
 
 /// Formatted kernel print to serial
 /// Supported formatters: c (char), o (octal), d/i (decimal base10), s (string), u (unsigned base10), x (unsigned base16)
-/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset)
+/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset), 7 (Gray), 8 (Dark Gray)
 void kprintf_serial(char* str, ...) {
     va_list args;
     va_start(args, str);
@@ -120,7 +128,7 @@ void kprintf_serial(char* str, ...) {
 
 /// Formatted kernel print
 /// Supported formatters: c (char), o (octal), d/i (decimal base10), s (string), u (unsigned base10), x (unsigned base16)
-/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset)
+/// You can use $c<Color> to print colors too! Valid colors: Y (Yellow), R (Red), G (Green), B (Blue), F (White/Reset), 7 (Gray), 8 (Dark Gray)
 void _kprintf(char* str, bool serial, bool terminal, va_list args) {
     char buf[32];
     u8 isParsingSpecifier = 0;

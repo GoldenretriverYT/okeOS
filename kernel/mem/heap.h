@@ -23,9 +23,8 @@ void* malloc(size_t size);
 void free(void* address);
 
 
-inline void* operator new(size_t size) {return malloc(size);}
-inline void* operator new[](size_t size) {return malloc(size);}
-
-inline void operator delete(void* p) {free(p);}
-inline void operator delete[](void* p) {free(p);}
-inline void operator delete(void* p, unsigned long _) {free(p);}
+inline void* operator new(size_t size) noexcept {return malloc(size);}
+inline void* operator new[](size_t size) noexcept {return malloc(size);}
+inline void operator delete(void* p) noexcept {free(p);}
+inline void operator delete[](void* p) noexcept {free(p);}
+inline void operator delete(void* p, unsigned long _) noexcept {free(p);}

@@ -14,6 +14,7 @@
 #include "mem/paging.h"
 #include "mem/heap.h"
 #include "acpi/rsdp.h"
+#include "lib/logger.h"
 
 #define DBG_DUMPMEMMAP
 
@@ -181,7 +182,7 @@ extern "C" void _start(void) {
     kprintf_both("Done initiliazing paging!\n");
     
     // Init heap
-    kprintf_both("Initiliazing heap with starting size 1mb\n");
+    kprintf_both("Initiliazing heap with starting size 1mb, CurrentFreeMemory: %u\n", mem_getFreeRAM());
     initHeap((void*)0x800000, mb(1) / kb(4));
     kprintf_serial("initHeap() done\n");
 
@@ -195,12 +196,23 @@ extern "C" void _start(void) {
     kprintf_both("Heap Test: %s\n", newString);
     kprintf_both("Heap successfully initiliazed!\n");
 
-    kprintf_both("RSDP: %x\n", rsdp_request.response->address);
+    Logger testLogger = Logger("Test", "Kernel");
+    u64 free = mem_getFreeRAM();
+    testLogger.info("Checking memory leaks from logger...");
+    testLogger.info("Info from test logger!");
+    testLogger.warn("Warn from test logger!");
+    testLogger.error("Error from test logger!");
+    testLogger.info("Before: %u; After: %u", free, mem_getFreeRAM());
+    
+
+    Logger acpiLogger = Logger("ACPI", "Kernel");
+    acpiLogger.info("Enabling ACPI...");
+    acpiLogger.info("RSDP: %x", rsdp_request.response->address);
     RSDPDescriptor* rsdp = (RSDPDescriptor*)rsdp_request.response->address;
     //rsdp->checksumValidation(); // no who gives a fuck tbh then well it just isnt gonna work who cares
 
     if(rsdp->Revision != 2) {
-        kprintf_both("$cY[WARN] $cFACPI Version 2.0+ is not fully supported.");
+        acpiLogger.warn("ACPI Version 2.0+ is not fully supported.");
     }
 
     if(memcmp(rsdp->Signature, "RSD PTR ", 8) != 0) {
