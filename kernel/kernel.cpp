@@ -203,7 +203,6 @@ extern "C" void _start(void) {
     testLogger.warn("Warn from test logger!");
     testLogger.error("Error from test logger!");
     testLogger.info("Before: %u; After: %u", free, mem_getFreeRAM());
-    
 
     Logger acpiLogger = Logger("ACPI", "Kernel");
     acpiLogger.info("Enabling ACPI...");

@@ -105,6 +105,10 @@ void __writeChar(char str, bool serial, bool terminal) {
 void kprintf(char* str, ...) {
     va_list args;
     va_start(args, str);
+    vakprintf(str, args);
+}
+
+void vakprintf(char* str, va_list args) {
     _kprintf(str, false, true, args);
 }
 
@@ -114,6 +118,10 @@ void kprintf(char* str, ...) {
 void kprintf_both(char* str, ...) {
     va_list args;
     va_start(args, str);
+    vakprintf_both(str, args);
+}
+
+void vakprintf_both(char* str, va_list args) {
     _kprintf(str, true, true, args);
 }
 
@@ -123,6 +131,10 @@ void kprintf_both(char* str, ...) {
 void kprintf_serial(char* str, ...) {
     va_list args;
     va_start(args, str);
+    vakprintf_serial(str, args);
+}
+
+void vakprintf_serial(char* str, va_list args) {
     _kprintf(str, true, false, args);
 }
 

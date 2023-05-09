@@ -44,10 +44,7 @@ class Logger {
     }
 
     private:
-    void __internal_log(char* tpStr, char* str, ...) {
-        va_list args;
-        va_start(args, str);
-
+    void __internal_log(char* tpStr, char* str, va_list args) {
         FastStringBuilder* builder = new FastStringBuilder(7);
         builder->append("$c8[");
         builder->append(nspace);
@@ -59,13 +56,13 @@ class Logger {
 
         switch(target) {
             case LoggerTarget::BOTH:
-                kprintf_both(builder->buildAndDestroy(), nspace, tag, str, args);
+                vakprintf_both(builder->buildAndDestroy(), args);
                 break;
             case LoggerTarget::SERIAL:
-                kprintf_serial(builder->buildAndDestroy(), nspace, tag, str, args);
+                vakprintf_serial(builder->buildAndDestroy(), args);
                 break;
             case LoggerTarget::TERMINAL:
-                kprintf(builder->buildAndDestroy(), nspace, tag, str, args);
+                vakprintf(builder->buildAndDestroy(), args);
                 break;
             case LoggerTarget::NONE:
                 delete builder;

@@ -10,5 +10,8 @@ void __writeChar(char str, bool serial, bool terminal);
 void kprintf(char* str, ...);
 void kprintf_both(char* str, ...);
 void kprintf_serial(char* str, ...);
+void vakprintf(char* str, va_list args);
+void vakprintf_both(char* str, va_list args);
+void vakprintf_serial(char* str, va_list args);
 
 void _kprintf(char* str, bool serial, bool terminal, va_list args);

@@ -6,6 +6,7 @@ u64 bitmapIdx = 0;
 u64 end = 0;
 struct Bitmap mem_pfaBitmap;
 struct limine_memmap_response __memmap;
+bool oomPanics = false;
 
 void mem_pageframeallocator_init(struct limine_memmap_response memmap, struct limine_hhdm_response* hhdm){
     __memmap = memmap;
@@ -59,6 +60,7 @@ void mem_pageframeallocator_init(struct limine_memmap_response memmap, struct li
     // Only set these counters now since else they would be trash
     mem_usedMemory = 0; 
     mem_freeMemory = largestFreeSegmentSize;
+    oomPanics = true;
 
     mem_pageframeallocator_lockPages(largestFreeSegment, bitmapSizeInPages);
     kprintf_both("Initiliazed page frame allocator!\n");
@@ -75,7 +77,7 @@ void mem_pageframeallocator_initBitmap(u64 bitmapSize, void* addr) {
 /// @brief Request a page
 /// @return Returns the physical address of the page
 void* mem_pageframeallocator_requestPage() {
-    if(mem_freeMemory < 16384) {
+    if(oomPanics && mem_freeMemory < 16384) {
         panic("Out of memory");
     }
 
@@ -94,7 +96,7 @@ void* mem_pageframeallocator_requestPage() {
 /// @brief Locks a page at the given physical address
 /// @param addr Physical address of the page
 void mem_pageframeallocator_lockPage(void* addr){
-    if(mem_freeMemory < 16384) { // TODO: Remove after identification of counter overflow problem
+    if(oomPanics && mem_freeMemory < 16384) {
         panic("Out of memory");
     }
 

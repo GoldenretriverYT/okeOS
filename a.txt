@@ -1,0 +1,1538 @@
+/lib64/ld-linux-x86-64.so.2
+__cxa_finalize
+__libc_start_main
+__cxa_atexit
+dcgettext
+stderr
+__fprintf_chk
+__printf_chk
+stdout
+fputs_unlocked
+strcmp
+setlocale
+strncmp
+strlen
+__memcpy_chk
+__stack_chk_fail
+error
+abort
+memcpy
+free
+realloc
+__assert_fail
+nl_langinfo
+strtol
+__libc_current_sigrtmin
+__libc_current_sigrtmax
+strcpy
+__sprintf_chk
+sigemptyset
+sigprocmask
+sigismember
+sigaction
+__errno_location
+__fpending
+fileno
+__freading
+fflush
+fclose
+lseek
+fseeko
+fputc_unlocked
+__ctype_get_mb_cur_max
+memcmp
+__ctype_b_loc
+mbrtowc
+iswprint
+mbsinit
+memset
+malloc
+strchr
+strtok
+sigaddset
+sigdelset
+sigfillset
+_exit
+strrchr
+program_invocation_name
+__progname_full
+bindtextdomain
+calloc
+getopt_long
+optarg
+optind
+getenv
+strspn
+stpcpy
+program_invocation_short_name
+__progname
+__environ
+putenv
+chdir
+execvp
+fwrite
+unsetenv
+libc.so.6
+GLIBC_2.3
+GLIBC_2.14
+GLIBC_2.3.4
+GLIBC_2.4
+GLIBC_2.34
+GLIBC_2.2.5
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+AWAVAUATUSH
+T$@H
+t$8H
+l$X1
+t$8E
+t$8E
+D$ L
+d$@E
+\u[<cA
+t$8E
+l$XE
+\$ H
+D$PB
+D$ H
+$DUMML
+L$8E1
+l$0L
+t$@L
+l$0L
+L$8L
+t$@H
+L$ I
+L$0H
+}/Hc
+D$ I
+D$HL
+L$PD
+D$XI
+D$PH
+D$ H
+D$PH
+$;\$
+,$D;l$
+,$D;l$
+}NIc
+D9l$
+D;l$
+d$ M
+d$`D
+D;l$
+[]A\A]A^A_
+L$PH
+t$ L
+AtsD
+t$`D
+t$ L
+Mc,$
+D9l$
+D$ H
+PTE1
+u{UH
+ATSt
+AVAUA
+ATUSH
+D$x1
+L$0H
+D$ H
+L$@H
+D$(H
+D$8H
+D$HH
+L$PH
+D$XH
+<$CH
+AUATUSH
+[]A\A]
+	vYE1
+]A\A]
+<UuD
+<TuH
+<Fu=
+<Bt"
+#tdL
+[]A\
+#t$9
+[]A\
+RTMAA
+RTMIf
+AWAVAUATUSH
+l$0H
+Ata1
+[]A\A]A^A_
+AVAUATUH
+[]A\A]A^
+8	A\
+A]A^
+E H9E(u
+AVAUATUH
+D$  
+D$$0
+t$@H
+D$(L
+L$(E
+T$ M
+L$xL
+D$p1
+L$hH
+|$`L
+t$XL
+l$PL
+\$HL
+d$@L
+AWAV
+[]A\A]A^A_
+L$xL
+L$hL
+|$`L
+t$XL
+l$PH
+\$HL
+d$@H
+d$@1
+\$HL
+d$@1
+l$PH
+\$H1
+d$@H
+t$XL
+l$PH
+\$HL
+t$XL
+l$PH
+\$HL
+|$`L
+t$XL
+l$PH
+\$HH
+AWAV
+D$pH
+|$`L
+t$XL
+l$PH
+\$HL
+L$xL
+L$hH
+|$`L
+t$XL
+l$PH
+\$HL
+d$@H
+D$xL
+\$xD
+\$ H
+\$ H
+\$ H9
+\$ H
+\$ H9
+D$&H
+\$HD
+\$ H
+l$%M
+"D$%J
+T$@D
+\$8L
+L$0H
+T$(D
+T$@D
+\$8L
+L$0H
+T$(I
+D$'L9
+t$HH
+T$8D
+\$0L
+L$(D
+D$'L
+\$0L
+t/M9
+D$ I
+|uV1
+l$%M
+T$8D
+\$0L
+L$(D
+D$'L
+\$0L
+T$8H
+"T$%
+D$HA
+l$|1
+l$%E
+D$HA
+l$&E
+"D$&A
+T$%"T$&H
+D$`I
+T$8D
+\$0L
+L$(D
+T$8L
+L$(D
+\$0D
+D$'I
+D$}1
+D$8L
+L$0L
+d$(D
+l$'L
+T$pD
+l$@L
+t$hL
+\$~H
+D$0H
+l$(L
+|$8L
+l$'H
+D$}L
+L$0L
+\$~L
+T$pD
+l$@"T$%H
+l$'H
+l$&L
+t/M9
+|$&@
+}t{~*1
+|$&A
+l$%D
+D$|H
+l$%E
+T$PE1
+l$|I
+D$}L
+L$01
+d$(D
+\$~L
+t$hL
+T$pD
+[<!w
+l$%L
+t$(L
+l$hL
+d$p@
+T$%1
+d$(H
+L$0D
+\$~H
+t$hL
+T$pD
+l$@H
+T$%1
+D$HH
+[]A\A]A^A_
+\$ H
+\$ H
+D$XH
+l$%M
+D$ L
+AWAVI
+AUATUSH
+L$(H
+[]A\A]A^A_
+AWAVAUI
+ATUH
+[]A\A]A^A_
+>StKL
+AVAUATUS
+[]A\A]A^
+ []A\A]A^
+AWAVAUATA
+D$(1
+D$(dH+
+8[]A\A]A^A_
+D$(dH+
+8[]A\A]A^A_
+D$81
+T$8dH+
+t/UH
+test invocation
+Multi-call invocation
+sha224sum
+sha2 utilities
+sha256sum
+sha384sum
+sha512sum
+%s online help: <%s>
+GNU coreutils
+Full documentation <%s%s>
+POSIX
+memory exhausted
+src/env.c
+str && *str == '$'
+GB18030
+RTMIN
+RTMAX
+IGNORE
+%-10s (%2d): %s%s%s
+%s (%s) %s
+Written by %s.
+Written by %s and %s.
+Written by %s, %s, and %s.
+abcdefghijklmnopqrstuvwxyz
+%s: invalid signal
+write error
+ (failure ignored)
+DEFAULT
+UNBLOCK
+/.libs/
+/usr/share/locale
+!(sq && dq)
+invalid sequence '\%c' in -S
+expanding ${%s} into %s
+split -S:  %s
+ into:    %s
+     &    %s
+invalid option -- '%c'
+David MacKenzie
+Richard Mlynarik
+8.32
+Assaf Gordon
+cleaning environ
+unset:    %s
+cannot unset %s
+setenv:   %s
+cannot set %s
+%s%c
+Reset signal %s (%d) to %s%s
+chdir:    %s
+cannot change directory to %s
+executing: %s
+   arg[%d]= %s
+ignore-environment
+null
+unset
+chdir
+default-signal
+ignore-signal
+block-signal
+list-signal-handling
+debug
+split-string
+help
+version
+Try '%s --help' for more information.
+Usage: %s [OPTION]... [-] [NAME=VALUE]... [COMMAND [ARG]...]
+Set each NAME to VALUE in the environment and run COMMAND.
+Mandatory arguments to long options are mandatory for short options too.
+  -i, --ignore-environment  start with an empty environment
+  -0, --null           end each output line with NUL, not newline
+  -u, --unset=NAME     remove variable from the environment
+  -C, --chdir=DIR      change working directory to DIR
+  -S, --split-string=S  process and split S into separate arguments;
+                        used to pass multiple arguments on shebang lines
+      --block-signal[=SIG]    block delivery of SIG signal(s) to COMMAND
+      --default-signal[=SIG]  reset handling of SIG signal(s) to the default
+      --ignore-signal[=SIG]   set handling of SIG signals(s) to do nothing
+      --list-signal-handling  list non default signal handling to stderr
+  -v, --debug          print verbose information for each processing step
+      --help     display this help and exit
+      --version  output version information and exit
+A mere - implies -i.  If no COMMAND, print the resulting environment.
+SIG may be a signal name like 'PIPE', or a signal number like '13'.
+Without SIG, all known signals are included.  Multiple signals can be
+comma-separated.
+https://www.gnu.org/software/coreutils/
+Report any translation bugs to <https://translationproject.org/team/>
+or available locally via: info '(coreutils) %s%s'
+failed to get signal process mask
+License GPLv3+: GNU GPL version 3 or later <%s>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+https://gnu.org/licenses/gpl.html
+Written by %s, %s, %s,
+and %s.
+Written by %s, %s, %s,
+%s, and %s.
+Written by %s, %s, %s,
+%s, %s, and %s.
+Written by %s, %s, %s,
+%s, %s, %s, and %s.
+Written by %s, %s, %s,
+%s, %s, %s, %s,
+and %s.
+Written by %s, %s, %s,
+%s, %s, %s, %s,
+%s, and %s.
+Written by %s, %s, %s,
+%s, %s, %s, %s,
+%s, %s, and others.
+A NULL argv[0] was passed through an exec system call.
+'\c' must not appear in double-quoted -S string
+invalid backslash at end of string in -S
+only ${VARNAME} expansion is supported, error at: %s
+no terminating quote in -S string
+replacing ${%s} with null string
+use -[v]S to pass options in shebang lines
+cannot specify --null (-0) with command
+must specify command with --chdir (-C)
+failed to get signal action for signal %d
+failed to set signal action for signal %d
+signal %s (%d) mask set to %s
+failed to set signal process mask
+Copyright %s %d Free Software Foundation, Inc.
+validate_split_str
+escape_char
++C:iS:u:v0 	
+scan_varname
+:*3$"
+QUIT
+TRAP
+ABRT
+KILL
+SEGV
+PIPE
+ALRM
+TERM
+USR1
+USR2
+CHLD
+STOP
+TSTP
+CONT
+TTIN
+TTOU
+POLL
+VTALRM
+PROF
+XCPU
+XFSZ
+WINCH
+STKFLT
+EXIT
+/usr/lib/debug/.dwz/x86_64-linux-gnu/coreutils.debug
+cefeec8da87842bf5cffa780222e881d4db8ae.debug
+.shstrtab
+.interp
+.note.gnu.property
+.note.gnu.build-id
+.note.ABI-tag
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.plt.sec
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.ctors
+.dtors
+.data.rel.ro
+.dynamic
+.data
+.bss
+.gnu_debugaltlink
+.gnu_debuglink
+/lib64/ld-linux-x86-64.so.2
+__cxa_finalize
+__libc_start_main
+strcmp
+strerror
+fnmatch
+execve
+open
+read
+close
+__stack_chk_fail
+strcspn
+strsignal
+stpncpy
+_exit
+__longjmp_chk
+sigsetmask
+raise
+free
+strchr
+write
+memmove
+strlen
+fcntl
+wait3
+sigfillset
+sigprocmask
+sigsuspend
+malloc
+strstr
+strtol
+strdup
+getcwd
+strcpy
+tcsetpgrp
+__ctype_b_loc
+mempcpy
+strtoimax
+opendir
+readdir64
+memcpy
+closedir
+stpcpy
+lstat64
+realloc
+strchrnul
+strpbrk
+setpgid
+vfork
+__errno_location
+strspn
+chdir
+strtok
+kill
+killpg
+isatty
+umask
+getrlimit
+setrlimit
+strcasecmp
+open64
+tcgetpgrp
+geteuid
+setuid
+setgid
+getegid
+dup2
+_setjmp
+pipe
+abort
+getpwnam
+fstat64
+getuid
+getgid
+getpid
+__vsnprintf_chk
+strtoumax
+faccessat
+sigaction
+memset
+strtod
+sysconf
+times
+qsort
+__environ
+getppid
+libc.so.6
+GLIBC_2.3
+GLIBC_2.11
+GLIBC_2.3.4
+GLIBC_2.14
+GLIBC_2.33
+GLIBC_2.4
+GLIBC_2.34
+GLIBC_2.2.5
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_ITM_registerTMCloneTable
+ATUSH
+4$dH
+D$81
+L$0H
+T$(H9
+L9%i
+PTE1
+u+UH
+ATUH
+[]A\
+AWAVE
+[]A\A]A^A_
+AVAUATUSH
+[]A\A]A^A_
+AVAUATI
+[]A\A]A^A_
+Done
+umpeH
+ (core dH
+ATUS
+uK[]A\
+u([]A\
+ATUH
+[]A\
+[]A\
+[]A\
+D$0H
+](H9
+[]A\
+	t[H
+{ H;z
+{ H;z
+AUATUSH
+[]A\A]
+[]A\A]
+[]A\A]
+AUATUSH
+t	L9
+[]A\A]A^A_
+v!D9 u
+R M9
+AUATUH
+t<E1
+[]A\A]
+]A\A]
+t$(H
+T$0H
+L$8L
+D$@L
+)D$P
+)L$`
+)T$p
+D$ H
+AVAUATUH
+[]A\A]A^A_
+AWAVAUATUH
+-uaM
+[]A\A]A^A_
+AVAUATUSL
+AWAVAUATUSH
+([]A\A]A^A_
+AWAVAUATSH
+A+D$
+[A\A]A^A_]
+-t H
+D$HH
+t(Hc
+	t!D
+]A\A]A^
+t$(H
+T$0H
+L$8L
+D$@L
+)D$P
+)L$`
+)T$p
+D$ H
+AUATI
+]A\A]
+ATUS
+[]A\A]
+AUATUSH
+[]A\A]A^
+AUATUSH
+@ H9
+[]A\A]
+AWAVAUATUH
+[]A\A]A^A_
+\$0A
+H9P 
+L9d$
+v$f.
+[]A\A]A^A_
+|$/H
+Running
+AUATA
+[]A\A]
+[]A\
+[]A\
+AVAUATUSH
+L$(L
+L$,M
+Dt$0L
+T$(I9
+HcD$
+HcD$
+D$ H
+D$ H
+|$8H
+H[]A\A]A^A_
+T$(u=L9d$
+L$8H
+AVAUI
+8/tkE
+[]A\A]A^A_
+t$ I
+T$ H
+t$(H
+95Yn
+t$0L
+T$ H
+T$ H
+H;;t 
+H9;u
+ATUH
+[]A\
+AWAVAUATUSH
+<%t|H
+([]A\A]A^A_
+AVAUATUH
+<wH;=
+[]A]A^A_
+[]A]A^A_
+AWAVAUATA
+[]A\A]A^A_
+H;=oa
+AWAVAUATUH
+L+%Ob
+[]A\A]A^A_
+ATUSH
+[]A\
+AUATUH
+[]A\A]
+[]A\A]
+@ H9
+d$0H
+L$,H
+T$,H
+t$ H
+AUATA
+;"tXH
+[]A\A]
+	vBA
+A\A]A^]
+]A\A]A^
+]A\A]A^
+]A\A]A^
+]A\A]A^
+AWAVAUL
+[]A\A]A^A_
+AVAUATUH
+]A\A]A^
+A\A]A^
+AVAUATUH
+]A\A]A^
+[]L	
+A\A]A^
+AWAVAUATUH
+[]A\A]A^A_
+AWAVAUATUH
+L+5*O
+[]A\A]A^A_
+AWAVAUATUSH
+[]A\A]A^A_
+:tsH
+:tvL
+AVAUATUSH
+u>E1
+]A\A]A^
+AWAVAUATL
+l$0H
+D$(I
+D$H%
+t$(1
+[]A\A]A^A_
+L9t$
+<$.t
+H;=	E
+H9=eD
+L;t$
+L;t$
+AUATL
+[]A\A]
+AWAVAUATUSH
+<%u5
+<-tjL
+[]A\A]A^A_
+AVAUL
+ATUSH
+D$(H
+D$'H
+@ I9
+D$(dH+
+[]A\A]A^A_
+ATUH
+AUATA
+]A\A]A^
+A\A]A^
+AWE1
+AUATU1
+D$H1
++5+:
+H+=	:
+T$0H
+T$8L)
+D$8H
+D$HdH+
+[]A\A]A^A_
+T$/H
+T$/H
+AWAVAUATE1
+D$81
+D$8dH+
+[]A\A]A^A_
+,ujI
+D!d$
+D	d$
+D!d$
+AWAVAUL
+[]A\A]A^A_
+AVAUATUSH
+[]A\A]A^A_
+[]A\A]A^A_
+@wdM
+ATSH
+[]A\
+AUATUSH
+[]A\A]
+ATUH
+;=1-
+AUATU
+[]A\A]
+AVAUATUH
+D$(H
+L$ H
+T$(dH+
+0[]A\A]A^
+t}E1
+AUATA
+([]A\A]
+ATE1
+;	tw
+ATSH
+L$(dH
+)L$@H
+D$ H
+oD$@H
+D$PH
+AWAVAUATI
+[A\A]A^A_]
+AVAUL
+ATUSH
+L$ H
+T$(dH+
+8[]A\A]A^A_
+AWAVI
+LcD$
+[]A\A]A^A_
+AWAVAUATA
+[A\A]A^A_]
+L+-O
+|$0H
+D$0H
+D$(H
+\uHH
+;t>H
+AWAVL
+AUATUSH
+[]A\A]A^A_
+AWAVAUA
+ATSH
+[A\A]A^A_]
+_t#H
+"t5H
+H;=e
+H;={
+<u,D
+_t:H
+AVAUATUSH
+[]A\A]A^
+AWAVE1
+[]A\A]A^A_
+AWAVL
+AUATI
+[]A\A]A^A_
+AWAVAUATUSH
+D$(H
+D$0H
+H9D$
+urD	
+D$(H
+D$ H
+[]A\A]A^A_
+tTH9
+AWAVAUATUSH
+D$81
+l$0L
+t$(E1
+d$ H
+D$ I
+D$(I
+D$0I
+D$8dH+
+[]A\A]A^A_
+D$ H
+AUATUSH
+[]A\A]
+[]A\A]
+AWAVAUATUSH
+t_Lc
+[]A\A]A^A_
+D$(%
+D$(%
+AVE1
+AUATA
+]A\A]A^
+D$ H
+AWE1
+AVAUATU1
+L$0H
+D$ @
+d$ M
+L$PH
+T$HH9
+u3I9
+[]A\A]A^A_
+AWAVI
+ATUS
+L$8dH
+[]A\A]A^A_
+t$@L
+T$81
+D$ L
+|$8L
+l$,I
+D$(D9
+t$ H
+D$X%
+d$0I
+DD$,
+l$,t
+AWAVAUI
+ATUSH
+D$(H
+T$(dH+
+8[]A\A]A^A_
+AVAUATUSH
+D$(1
+D$(dH+
+8[]A\A]A^A_
+AVAUI
+ATUSH
+D$81
+xltzH
+T$8dH+
+H[]A\A]A^A_
+t$ L
+T$ H
+D$(H
+AUATUSH
+[]A\A]
+]A\A]
+ATE1
+vt:H
+[]A\A]
+]A\A]
+ATUSH
+[]A\A]
+D$(%
+AWAVAUATUSH
+t$XdH
+D$0H
+T$8H
+T$xD
+D$$H9
+\$(M
+D$PH
+T$HH
+l$\H
+l$\H
+T$8H
+t$pH
+t$HH
+L$xH
+L9%1
+D$0H;
+\$0t
+t$(1
+[]A\A]A^A_
+L$XH
+L$XH
+|$oL
+\$8L
+d$(I
+-tXH
+\$8L
+d$(I
+\$8L
+d$(M
+\$(L
+l$8M
+\$(L
+l$8H
+\$(L
+l$8M
+T$xH
+=t,A
+ATUH
+x_Hc
+[]A\A]A^
+T$0H
+L$8L
+D$@L
+)D$P
+)L$`
+)T$p
+H;=]
+[]A\
+t'H9
+ATUSH
+<"t1<'t-
+[]A\
+AUATUSH
+[]A\A]
+D$`H9
+D$`H9
+AUATUSH
+[]A\A]
+[]A\A]
+[]A\A]
+[]A\A]
+[]A\A]
+\$ E1
+"uEH
+"u?H
+AVAUATE1
+]A\A]A^
+AWHc
+AVAUATUH
+[]A\A]A^A_
+AWHc
+AVAUATUH
+[]A\A]A^A_
+AUATUSH
+[]A\A]
+[]A\A]
+ATUH
+[]A\A]
+[]A\A]
+AUATUSE
+A\A]A^
+AVAUATI
+[]A\A]A^A_
+H)D$
+AWAVAUATI
+|$(H
+D$HH
+L$@H
+T$8H9
+t$(D
+l$(H
+D$(A
+A"D$
+H+-2
+D$(H
+D$(L
+L$(H
+|$(L
+|$(Hc
+D$HdH+
+[]A\A]A^A_
+|$(L
+D$(1
+T$(H
+|$(L
+9-t`H
+L$8L
+D$@L
+)D$P
+)L$`
+)T$p
+D$(H
+L$ H
+D$(dH+
+8[A\A]A^
+T$0H
+L$8L
+D$@L
+)D$P
+)L$`
+)T$p
+D$ H
+t$(H
+T$0H
+L$8L
+D$@L
+)D$P
+)L$`
+)T$p
+D$ H
+AVAUATUSH
+D$H1
+D$ H
+D$ H
+D$(f
+|$ L
+l$(A
+T$@I
+t$8H
+D$@I)
+t$@L
+H;D$
+T$HdH+
+X[]A\A]A^A_
+D$@I)
+T$D1
+D$@I)
+t$@D
+T$@L
+D$@I)
+T$DL
+|$8H
+t$8L
+t$@1
+D$@I)
+t$@L
+t$@L
+t$@D
+D$(1
+D$(dH+
+AVAUATUH
+=t#H
+]A\A]A^
+AWAVAUI
+ATUH
+[]A\A]A^A_
+=t$@
+AUATL
+H+='
+[]A\A]A^A_
+AVAUL
+H;,$r*
+H9,$v6L
+[]A\A]A^A_
+AUATI
+=t!L
+]A\A]A^
+]A\A]A^
+AUATI
+[]A\A]
+St1H
+AUATUSH
+[]A\A]
+=t#@
+8/t)1
+AUATUSH
+AUATUSH
+[]A\A]
+AUATL
+[]A\A]
+[]A\A]
+[]A\A]
+AVAUATUSH
+[]A\A]A^
+AUATUH
+[]A\A]
+ATUH
+D$ A
+[]A\
+[]A\
+T$0H
+L$8L
+D$@L
+)D$P
+)L$`
+)T$p
+D$ H
+AWAVAUATI
+H+=fz
+[]A\A]A^A_
+No such file
+Directory nonexistent
+/bin/sh
+func
+Done(%d)
+sh: turning off NDELAY mode
+%s: %d: 
+%s: %d: %s: 
+division by zero
+Out of space
+No current job
+No previous job
+No such job: %s
+%s: ambiguous
+errexit
+Current option settings
+%-16s%s
+set %s %s
+Illegal option -o %s
+Illegal option -%c
+OPTARG
+Illegal option -%c
+No arg for -%c option
+OPTIND
+Syntax error: %s
+Bad fd number
+%s unexpected (expecting %s)
+%s unexpected
+%d: %s
+OLDPWD
+getcwd() failed: %s
+[%d]   
+%*c%d 
+%s%*c%s
+ | %s
+$(...)
+ || 
+ && 
+until 
+while 
+; fi
+; done
+() { ... }
+<<...
+esac
+; then 
+; else 
+; do 
+for 
+ in 
+case 
+Cannot fork
+expecting ')'
+expecting primary
+expecting ':'
+You have stopped jobs.
+can't shift that many
+%s=%s
+%s: %s not found
+No arg for -%c option
+unalias
+CDPATH
+can't cd to %s
+[%d] 
+arg count
+%.4o
+augo
+rwxugoXs
+Illegal mode: %s
+HSatfdscmlpnvw
+too many arguments
+unlimited
+bad number
+%-20s 
+unlimited
+error setting limit (%s)
+EXIT
+trap -- %s %s
+trap: %s: bad trap
+open
+create
+cannot %s %s: %s
+/dev/tty
+Pipe call failed
+expecting EOF
+ or null
+parameter not set
+%.*s: %s%s
+Bad substitution
+Missing '))'
+Unterminated quoted string
+Missing '}'
+EOF in backquote substitution
+%s: I/O error
+Bad for loop variable
+Bad function name
+you have mail
+Use "exit" to leave shell.
+%s not defined in %s
+ is a shell keyword
+ a tracked alias for
+special 
+ is an alias for %s
+alias 
+ is%s %s
+ is a shell function
+ is a %sshell builtin
+: not found
+$HOME/.profile
+-c requires an argument
+/etc/profile
+%s: not found
+end of file
+newline
+"&&"
+"||"
+";;"
+redirection
+"case"
+"do"
+"done"
+"elif"
+"else"
+"esac"
+"fi"
+"for"
+"if"
+"in"
+"then"
+"until"
+"while"
+noglob
+ignoreeof
+interactive
+monitor
+noexec
+stdin
+xtrace
+verbose
+emacs
+noclobber
+allexport
+notify
+nounset
+privileged
+nolog
+debug
+time(seconds)
+file(blocks)
+data(kbytes)
+stack(kbytes)
+coredump(blocks)
+locked memory(kbytes)
+process
+nofiles
+vmemory(kbytes)
+locks
+rtprio
+QUIT
+TRAP
+ABRT
+KILL
+USR1
+SEGV
+USR2
+PIPE
+TERM
+CHLD
+CONT
+STOP
+TSTP
+TTIN
+TTOU
+XCPU
+XFSZ
+VTALRM
+PROF
+WINCH
+RTMIN
+RTMIN+1
+RTMIN+2
+RTMIN+3
+RTMIN+4
+RTMIN+5
+RTMIN+6
+RTMIN+7
+RTMIN+8
+RTMIN+9
+RTMIN+10
+RTMIN+11
+RTMIN+12
+RTMIN+13
+RTMIN+14
+RTMIN+15
+RTMAX-14
+RTMAX-13
+RTMAX-12
+RTMAX-11
+RTMAX-10
+RTMAX-9
+RTMAX-8
+RTMAX-7
+RTMAX-6
+RTMAX-5
+RTMAX-4
+RTMAX-3
+RTMAX-2
+RTMAX-1
+RTMAX
+case
+elif
+else
+then
+until
+while
+break
+chdir
+command
+continue
+echo
+eval
+false
+getopts
+hash
+jobs
+kill
+local
+printf
+read
+readonly
+return
+shift
+test
+times
+trap
+true
+type
+ulimit
+umask
+wait
+PS2=> 
+PS4=+ 
+arithmetic expression: %s: "%s"
+job %s not created under job control
+Usage: getopts optstring var [arg]
+Cannot set tty process group (%s)
+Usage: kill [-s sigspec | -signum | -sigspec] [pid | job]... or
+kill -l [exitstatus]
+invalid signal number or name: %s
+invalid signal number or exit status: %s
+can't access tty; job control turned off
+Maximum function recursion depth (%d) reached
+}-+?=
+PS1=$ 
+PS1=# 
+Illegal number: %s
+efIimnsxvVECabup
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+MAIL
+MAILPATH
+HOME
+xvsnprintf failed
+%s: expected numeric value
+%s: not completely converted
+closing paren expected
+argument expected
+missing ]
+unexpected operator
+#-+ 0
+*0123456789
+missing format character
+%s: invalid directive
+%dm%fs %dm%fs
+%dm%fs %dm%fs
+%.*s: is read only
+%.*s: bad variable name
+%s%s%.*s%s
+not in a function
+/dev/null
+usage: printf format [arg ...]
+:*3$"
+OPTIND=1
+IFS= 	
+PPID=
+ab02fc1b8ff61b41647c1e16ec9d95ba5de9f0.debug
+.shstrtab
+.interp
+.note.gnu.property
+.note.gnu.build-id
+.note.ABI-tag
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.plt.sec
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.data.rel.ro
+.dynamic
+.data
+.bss
+.gnu_debuglink
+#!/usr/bin/env sh
+echo $$ > /tmp/Microsoft-MIEngine-Pid-c2w0vgtj.n0t ; cd "/home/gryt/okeOS/kernel" ; DbgTerm=`tty` ; set -o monitor ; trap 'rm "/tmp/Microsoft-MIEngine-In-y0hv1ici.fqp" "/tmp/Microsoft-MIEngine-Out-pnt1hmcz.3bu" "/tmp/Microsoft-MIEngine-Pid-c2w0vgtj.n0t" "/tmp/Microsoft-MIEngine-Cmd-znhau2mw.bff"' EXIT ; "/usr/bin/gdb" --interpreter=mi --tty=$DbgTerm < "/tmp/Microsoft-MIEngine-In-y0hv1ici.fqp" > "/tmp/Microsoft-MIEngine-Out-pnt1hmcz.3bu" & clear; pid=$! ; echo $pid > "/tmp/Microsoft-MIEngine-Pid-c2w0vgtj.n0t" ; wait $pid; 
