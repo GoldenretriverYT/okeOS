@@ -96,10 +96,6 @@ void* mem_pageframeallocator_requestPage() {
 /// @brief Locks a page at the given physical address
 /// @param addr Physical address of the page
 void mem_pageframeallocator_lockPage(void* addr){
-    if(oomPanics && mem_freeMemory < 16384) {
-        panic("Out of memory");
-    }
-
     u64 index = (u64)addr / 4096;
 
     if (mem_pfaBitmap.get(index) == true) return;

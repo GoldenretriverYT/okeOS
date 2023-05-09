@@ -14,6 +14,8 @@
 #include "mem/paging.h"
 #include "mem/heap.h"
 #include "acpi/rsdp.h"
+#include "acpi/rsdt.h"
+#include "acpi/acpi.h"
 #include "lib/logger.h"
 
 #define DBG_DUMPMEMMAP
@@ -217,6 +219,9 @@ extern "C" void _start(void) {
     if(memcmp(rsdp->Signature, "RSD PTR ", 8) != 0) {
         panic("RSDP Signature does not match!");
     }
+
+    gRSDT = (RSDT*)(void*)rsdp->RsdtAddress;
+    ACPI::init(&acpiLogger);
 
     // We're done, just hang...
     hcf();

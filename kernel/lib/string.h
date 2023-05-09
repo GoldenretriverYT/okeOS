@@ -5,6 +5,7 @@
 
 char* itoa(i64 value, char* str, i64 base);
 char* uitoa(u64 value, char* str, u64 base);
+int strncmp(char* str1, char* str2, size_t num);
 
 /// @brief The fast string builder utilizes a fixed size char* array which reduces memory overhead and amount of memory ops significantly
 /// @paragraph The array itself is freed on deconstruct but not the char*s itself.
