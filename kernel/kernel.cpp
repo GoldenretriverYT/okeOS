@@ -204,12 +204,26 @@ extern "C" void _start(void) {
     testLogger.info("Info from test logger!");
     testLogger.warn("Warn from test logger!");
     testLogger.error("Error from test logger!");
+
+    for(int i = 0; i < 128; i++) {
+        char* chr = (char*)malloc(i+1);
+
+        for(int x = 0; x < i; x++) {
+            *(chr+x) = 'A';
+        }
+
+        chr[i] = '\n';
+
+        kprintf_serial(chr);
+    }
+
     testLogger.info("Before: %u; After: %u", free, mem_getFreeRAM());
 
     Logger acpiLogger = Logger("ACPI", "Kernel");
     acpiLogger.info("Enabling ACPI...");
     acpiLogger.info("RSDP: %x", rsdp_request.response->address);
     RSDPDescriptor* rsdp = (RSDPDescriptor*)rsdp_request.response->address;
+
     //rsdp->checksumValidation(); // no who gives a fuck tbh then well it just isnt gonna work who cares
 
     if(rsdp->Revision != 2) {
@@ -221,6 +235,12 @@ extern "C" void _start(void) {
     }
 
     gRSDT = (RSDT*)(void*)rsdp->RsdtAddress;
+    
+    acpiLogger.info("Calling ACPIsuinit");
+    acpiLogger.info("Calling ACPIsuinit");
+    acpiLogger.info("Calling ACPIsuinit");
+    
+    
     ACPI::init(&acpiLogger);
 
     // We're done, just hang...

@@ -29,5 +29,18 @@
         "buffer": "cpp",
         "interception-malloc-test-1.C": "cpp",
         "cmath": "cpp"
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/*.o": true,
+        "**/*.d": true,
+        "**/*.out": true,
+        "**/kernel.elf": true,
+        
     }
 }

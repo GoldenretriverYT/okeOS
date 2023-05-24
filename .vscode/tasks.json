@@ -5,7 +5,7 @@
         "command": "make kernel && make rungdb", // Could be any other shell command
         "args": [],
         "options": {
-            "cwd": "/home/gryt/okeOS"
+            "cwd": "${userHome}/okeOS"
         },
         "type": "shell",
         "isBackground": true,
@@ -32,7 +32,7 @@
       "command": "make kernel && make run-int", // Could be any other shell command
       "args": [],
       "options": {
-          "cwd": "/home/gryt/okeOS"
+          "cwd": "${userHome}/okeOS"
       },
       "type": "shell",
       "isBackground": true,

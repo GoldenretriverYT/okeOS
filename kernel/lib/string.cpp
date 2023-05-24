@@ -92,7 +92,7 @@ int strncmp(char *str1, char *str2, size_t num)
 
 FastStringBuilder::FastStringBuilder(int parts)
 {
-    this->parts = (char **)malloc(sizeof(char *) * (parts + 1));
+    this->parts = (char **)malloc(sizeof(char *) * (parts));
     this->nParts = parts;
 }
 
@@ -105,8 +105,8 @@ void FastStringBuilder::append(char *ptr)
 {
     if (partOffset >= nParts)
     {
-        // we can write to this locate as we allocate 1 extra part each time
-        parts[nParts] = "FastStringBuilder OutOfBounds";
+        parts[nParts-1] = "FastStringBuilder OutOfBounds";
+        return;
     }
 
     parts[partOffset] = ptr;

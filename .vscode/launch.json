@@ -6,8 +6,8 @@
             "name": "Launch with GDB",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/home/gryt/okeOS/kernel/kernel.elf",
-            "cwd": "/home/gryt/okeOS/",
+            "program": "${userHome}/okeOS/kernel/kernel.elf",
+            "cwd": "${userHome}/okeOS/",
             "args": [],
             "targetArchitecture": "x64",
             "MIMode": "gdb",
@@ -26,7 +26,7 @@
                     "ignoreFailures": true
                 },
                 {
-                    "text": "file /home/gryt/okeOS/kernel/kernel.elf",
+                    "text": "file ${userHome}/okeOS/kernel/kernel.elf",
                     "description": "Load binary."
                 },
                 {
@@ -41,8 +41,8 @@
             "name": "Launch with GDB (int logging)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/home/gryt/okeOS/kernel/kernel.elf",
-            "cwd": "/home/gryt/okeOS/",
+            "program": "${userHome}/okeOS/kernel/kernel.elf",
+            "cwd": "${userHome}/okeOS/",
             "args": [],
             "targetArchitecture": "x64",
             "MIMode": "gdb",
@@ -61,7 +61,7 @@
                     "ignoreFailures": true
                 },
                 {
-                    "text": "file /home/gryt/okeOS/kernel/kernel.elf",
+                    "text": "file ${userHome}/okeOS/kernel/kernel.elf",
                     "description": "Load binary."
                 },
                 {
