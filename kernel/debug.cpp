@@ -45,10 +45,6 @@ void __write(char* str, bool serial, bool terminal) {
         #pragma endregion
         if(serial) {
             serial_write(*str);
-
-            if(*str < 32 || *str > 127) {
-                serial_writemany("(unreadable)");
-            }
         }
 
         if(terminal) {
@@ -95,14 +91,6 @@ void __writeChar(char str, bool serial, bool terminal) {
 
     if(serial) {
         serial_write(str);
-
-        if(str < 32 || str > 127) {
-            char bud[32];
-
-            uitoa(str, bud, 10);
-            serial_writemany("NL");
-            serial_writemany(bud);   
-        }
     }
 
     if(terminal) {
@@ -155,7 +143,6 @@ void vakprintf_serial(char* str, va_list args) {
 void _kprintf(char* str, bool serial, bool terminal, va_list args) {
     char buf[32];
     u8 isParsingSpecifier = 0;
-    __writeChar('!', serial, terminal);
     while(*str != 0) {
         if(*str == '%') {
             isParsingSpecifier = 1;

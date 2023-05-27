@@ -98,7 +98,8 @@ FastStringBuilder::FastStringBuilder(int parts)
 
 FastStringBuilder::~FastStringBuilder()
 {
-    free(parts);
+    sfree(parts, sizeof(nParts));
+    sfree(outputBuf, outputBufSize);
 }
 
 void FastStringBuilder::append(char *ptr)
@@ -123,16 +124,23 @@ char *FastStringBuilder::build()
         fullSize += strlen((u8 *)parts[i]);
     }
 
-    char *newBuf = (char *)malloc(fullSize);
+    if(this->outputBuf != nullptr)
+        free(this->outputBuf);
+
+    this->outputBuf = (char *)malloc(fullSize);
+
+    if(this->outputBuf == nullptr)
+        return "FastStringBuilder Unable to allocate memory";
 
     for (int i = 0; i < nParts; i++)
     {
         u64 partLen = strlen((u8 *)parts[i]);
-        memcpy(newBuf + off, parts[i], partLen);
+        memcpy(this->outputBuf + off, parts[i], partLen);
         off += partLen;
     }
 
-    return newBuf;
+    this->outputBufSize = fullSize;
+    return this->outputBuf;
 }
 
 char *FastStringBuilder::buildAndDestroy()

@@ -56,13 +56,16 @@ class Logger {
 
         switch(target) {
             case LoggerTarget::BOTH:
-                vakprintf_both(builder->buildAndDestroy(), args);
+                vakprintf_both(builder->build(), args);
+                delete builder;
                 break;
             case LoggerTarget::SERIAL:
-                vakprintf_serial(builder->buildAndDestroy(), args);
+                vakprintf_serial(builder->build(), args);
+                delete builder;
                 break;
             case LoggerTarget::TERMINAL:
-                vakprintf(builder->buildAndDestroy(), args);
+                vakprintf(builder->build(), args);
+                delete builder;
                 break;
             case LoggerTarget::NONE:
                 delete builder;

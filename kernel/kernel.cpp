@@ -197,27 +197,18 @@ extern "C" void _start(void) {
 
     kprintf_both("Heap Test: %s\n", newString);
     kprintf_both("Heap successfully initiliazed!\n");
+    kprintf_both("Funny fun fact: The HeapSegHdr is %d bytes long\n", sizeof(HeapSegHdr));
 
     Logger testLogger = Logger("Test", "Kernel");
-    u64 free = mem_getFreeRAM();
+    u64 used = getUsedMem();
     testLogger.info("Checking memory leaks from logger...");
     testLogger.info("Info from test logger!");
     testLogger.warn("Warn from test logger!");
     testLogger.error("Error from test logger!");
-
-    for(int i = 0; i < 128; i++) {
-        char* chr = (char*)malloc(i+1);
-
-        for(int x = 0; x < i; x++) {
-            *(chr+x) = 'A';
-        }
-
-        chr[i] = '\n';
-
-        kprintf_serial(chr);
-    }
-
-    testLogger.info("Before: %u; After: %u", free, mem_getFreeRAM());
+    testLogger.info("Before: %u; After: %u", used, getUsedMem());
+    testLogger.info("Heap Test, how much memory is used for allocation of 4 bytes?");
+    void* testBlockOfMemory = malloc(4);
+    testLogger.info("Before: %u; After: %u", used, getUsedMem());
 
     Logger acpiLogger = Logger("ACPI", "Kernel");
     acpiLogger.info("Enabling ACPI...");
@@ -239,7 +230,6 @@ extern "C" void _start(void) {
     acpiLogger.info("Calling ACPIsuinit");
     acpiLogger.info("Calling ACPIsuinit");
     acpiLogger.info("Calling ACPIsuinit");
-    
     
     ACPI::init(&acpiLogger);
 

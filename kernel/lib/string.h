@@ -15,6 +15,9 @@ class FastStringBuilder {
     int nParts;
     int partOffset = 0;
 
+    char *outputBuf;
+    u32 outputBufSize = 0;
+
     FastStringBuilder(int parts);
     ~FastStringBuilder();
 

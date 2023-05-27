@@ -31,8 +31,17 @@ void free(void* address){
     segment->combineBackward();
 }
 
+void sfree(void* address, size_t size){
+    HeapSegHdr* segment = (HeapSegHdr*)address - 1;
+    segment->free = true;
+    segment->combineForward();
+    segment->combineBackward();
+
+    memset(address, 0, size);
+}
+
 void* malloc(size_t size){
-    if (size % 0x10 > 0){ // it is not a multiple of 0x10
+    if (size % 0x10 > 0) { // align to 0x10
         size -= (size % 0x10);
         size += 0x10;
     }
@@ -118,4 +127,15 @@ void HeapSegHdr::combineForward(){
 
 void HeapSegHdr::combineBackward(){
     if (last != NULL && last->free) last->combineForward();
+}
+
+size_t getUsedMem(){
+    size_t used = 0;
+    HeapSegHdr* currentSeg = (HeapSegHdr*) heapStart;
+    while(true){
+        if (!currentSeg->free) used += currentSeg->length + sizeof(HeapSegHdr);
+        if (currentSeg->next == NULL) break;
+        currentSeg = currentSeg->next;
+    }
+    return used;
 }
