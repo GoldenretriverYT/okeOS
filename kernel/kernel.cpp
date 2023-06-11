@@ -86,24 +86,6 @@ void cpuid(u32 code, u32* a, u32* b, u32* c, u32* d) {
                  : "a"(code), "c"(0));
 }
 
-bool sseAvailable() {
-    u32 eax, ebx, ecx, edx;
-    cpuid(1, &eax, &ebx, &ecx, &edx);
-    return edx & (1 << 25);
-}
-
-void initSSE() {
-    asm("mov %cr0, %rax");
-    asm("and $0xfffb, %ax");
-    asm("or $0x2, %ax");
-    asm("mov %rax, %cr0");
-
-    asm("mov %cr4, %rax");
-    asm("or $0x600, %ax");
-    asm("mov %rax, %cr4");
-}
-
-
 // The following will be our kernel's entry point.
 // If renaming _start() to something else, make sure to change the
 // linker script accordingly.
@@ -160,15 +142,7 @@ extern "C" void _start(void) {
     initInterrupts(idtrOffset);
     kprintf("Initiliazed IDT & Interrupts!\n");
 
-    // Init SSE
-    if(sseAvailable()) {
-        kprintf("Initiliaze SSE...\n");
-        initSSE();
-        kprintf("Initiliazed SSE!\n");
-    }else {
-        kprintf("SSE is not available!\n");
-    }
-    
+    // Init paging
     kprintf_both("Initialize paging...\n");
     globalPageTable = (PageTable*)mem_pageframeallocator_requestPage();
     kprintf_both("PagingTable Address is %x\n", (u64)globalPageTable);
