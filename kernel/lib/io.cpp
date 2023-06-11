@@ -12,6 +12,15 @@ u8 inb(u16 port) {
     return returnVal;
 }
 
+u16 inw (u16 port)
+{
+  u16 returnVal;
+  asm volatile ("inw %w1,%0"
+  :"=a" (returnVal)
+  :"Nd" (port));
+  return returnVal;
+}
+
 void io_wait() {
     asm volatile ("outb %%al, $0x80" : : "a"(0));
 }

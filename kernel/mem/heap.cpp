@@ -54,11 +54,15 @@ void* malloc(size_t size){
             if (currentSeg->length > size){
                 currentSeg->split(size);
                 currentSeg->free = false;
-                return (void*)((uint64_t)currentSeg + sizeof(HeapSegHdr));
+                void* addr = (void*)((uint64_t)currentSeg + sizeof(HeapSegHdr));
+                //memset(addr, size, 0);
+                return addr;
             }
             if (currentSeg->length == size){
                 currentSeg->free = false;
-                return (void*)((uint64_t)currentSeg + sizeof(HeapSegHdr));
+                void* addr = (void*)((uint64_t)currentSeg + sizeof(HeapSegHdr));
+                //memset(addr, size, 0);
+                return addr;
             }
         }
         if (currentSeg->next == NULL) break;

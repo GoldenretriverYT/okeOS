@@ -29,6 +29,11 @@ void ACPI::init(Logger* logger) {
     }
 
     FADT* fadt = (FADT*)ACPI::facp;
+
+    outb(fadt->SMI_CommandPort, fadt->AcpiEnable);
+    while (inw(fadt->PM1aControlBlock) & 1 == 0);
+
+    logger->info("ACPI is (hopefully) enabled");
 }
 
 void* ACPI::findTable(char* sig) {

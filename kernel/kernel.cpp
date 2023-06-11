@@ -80,6 +80,29 @@ void initInterrupts(u64 offset) {
     asm ("lidt %0" : : "m" (idtr));
 }
 
+void cpuid(u32 code, u32* a, u32* b, u32* c, u32* d) {
+    asm volatile("cpuid"
+                 : "=a"(*a), "=b"(*b), "=c"(*c), "=d"(*d)
+                 : "a"(code), "c"(0));
+}
+
+bool sseAvailable() {
+    u32 eax, ebx, ecx, edx;
+    cpuid(1, &eax, &ebx, &ecx, &edx);
+    return edx & (1 << 25);
+}
+
+void initSSE() {
+    asm("mov %cr0, %rax");
+    asm("and $0xfffb, %ax");
+    asm("or $0x2, %ax");
+    asm("mov %rax, %cr0");
+
+    asm("mov %cr4, %rax");
+    asm("or $0x600, %ax");
+    asm("mov %rax, %cr4");
+}
+
 
 // The following will be our kernel's entry point.
 // If renaming _start() to something else, make sure to change the
@@ -131,14 +154,22 @@ extern "C" void _start(void) {
     kprintf("[RAM] Total: %u, Free: %u, Used: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM());
     
     // Init IDT
-    kprintf("Loading IDT & Interrupts...\n");
+    kprintf("Initiliaze IDT & Interrupts...\n");
     u64 idtrOffset = (u64)mem_pageframeallocator_requestPage();
     kprintf_both("Putting IDTR at address %x\n", idtrOffset);
     initInterrupts(idtrOffset);
     kprintf("Initiliazed IDT & Interrupts!\n");
 
+    // Init SSE
+    if(sseAvailable()) {
+        kprintf("Initiliaze SSE...\n");
+        initSSE();
+        kprintf("Initiliazed SSE!\n");
+    }else {
+        kprintf("SSE is not available!\n");
+    }
     
-    kprintf_both("Initialize paging!\n");
+    kprintf_both("Initialize paging...\n");
     globalPageTable = (PageTable*)mem_pageframeallocator_requestPage();
     kprintf_both("PagingTable Address is %x\n", (u64)globalPageTable);
     memset(globalPageTable, 0, 0x1000);
@@ -199,6 +230,8 @@ extern "C" void _start(void) {
     kprintf_both("Heap successfully initiliazed!\n");
     kprintf_both("Funny fun fact: The HeapSegHdr is %d bytes long\n", sizeof(HeapSegHdr));
 
+    sfree(newString, 16);
+
     Logger testLogger = Logger("Test", "Kernel");
     u64 used = getUsedMem();
     testLogger.info("Checking memory leaks from logger...");
@@ -217,8 +250,8 @@ extern "C" void _start(void) {
 
     //rsdp->checksumValidation(); // no who gives a fuck tbh then well it just isnt gonna work who cares
 
-    if(rsdp->Revision != 2) {
-        acpiLogger.warn("ACPI Version 2.0+ is not fully supported.");
+    if(rsdp->Revision == 2) {
+        acpiLogger.warn("Detected ACPI 2.0+!"); // i dont really care about acpi 2.0+ :trol:
     }
 
     if(memcmp(rsdp->Signature, "RSD PTR ", 8) != 0) {
@@ -227,9 +260,7 @@ extern "C" void _start(void) {
 
     gRSDT = (RSDT*)(void*)rsdp->RsdtAddress;
     
-    acpiLogger.info("Calling ACPIsuinit");
-    acpiLogger.info("Calling ACPIsuinit");
-    acpiLogger.info("Calling ACPIsuinit");
+    acpiLogger.info("Calling ACPI::init");
     
     ACPI::init(&acpiLogger);
 

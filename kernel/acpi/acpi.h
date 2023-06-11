@@ -2,6 +2,7 @@
 #include "../lib/num.h"
 #include "../lib/logger.h"
 #include "../lib/mem.h"
+#include "../lib/io.h"
 
 struct ACPISDTHeader {
   char Signature[4];

@@ -4,7 +4,7 @@
 - [x] PMM 
 - [x] VMM
 - [x] PAGING
-- [ ] ACPI
+- [x] ACPI
 - [ ] APIC
 - [ ] IOAPIC
 - [ ] LAPIC
