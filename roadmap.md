@@ -5,12 +5,8 @@
 - [x] VMM
 - [x] PAGING
 - [x] ACPI
-- [ ] APIC
-- [ ] IOAPIC
-- [ ] LAPIC
-- [ ] HPET
-- [ ] APIC-TIMER
-- [ ] SMP
+- [ ] PIT
+- [/] HPET
 - [ ] Multitasking
 - [ ] Syscalls
 - [ ] Userspace

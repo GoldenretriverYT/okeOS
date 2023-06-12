@@ -17,6 +17,8 @@
 #include "acpi/rsdt.h"
 #include "acpi/acpi.h"
 #include "lib/logger.h"
+#include "sched/pit.h"
+#include "sched/timer.h"
 
 #define DBG_DUMPMEMMAP
 
@@ -78,6 +80,16 @@ void initInterrupts(u64 offset) {
     setIdtGate((void*)pitInterruptHandler, 0x20, IDT_TA_InterruptGate, 0x08);
 
     asm ("lidt %0" : : "m" (idtr));
+
+    RemapPIC();
+
+    // enable pit
+    outb(PIC1_DATA, 0b11111110);
+    outb(PIC2_DATA, 0b11111111);
+
+    asm("sti");
+
+    PIT::setDivisor(100);
 }
 
 void cpuid(u32 code, u32* a, u32* b, u32* c, u32* d) {
@@ -235,8 +247,17 @@ extern "C" void _start(void) {
     gRSDT = (RSDT*)(void*)rsdp->RsdtAddress;
     
     acpiLogger.info("Calling ACPI::init");
-    
     ACPI::init(&acpiLogger);
+
+    Logger pitLogger = Logger("PIT", "Kernel");
+
+    Timer timer = Timer();
+
+    pitLogger.info("Please count the seconds. Should be 5. Also testing timer!");
+    timer.start();
+    PIT::sleepSeconds(5);
+    timer.stop();
+    pitLogger.info("Check if it was 5 seconds! According to the timer, %dms have passed", timer.getElapsedMillis());
 
     // We're done, just hang...
     hcf();

@@ -60,6 +60,7 @@ override CFLAGS += \
     -mno-red-zone \
     -mcmodel=kernel \
     -Wno-write-strings \
+    -msoft-float \
     -g
 
 # Internal C preprocessor flags that should not be changed by the user.
