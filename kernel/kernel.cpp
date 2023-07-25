@@ -20,7 +20,9 @@
 #include "sched/pit.h"
 #include "sched/timer.h"
 
-#define DBG_DUMPMEMMAP
+//#define DBG_DUMPMEMMAP
+//#define DBG_TESTPIT
+//#define DBG_TESTLOGGERMEMLEAK
 
 // The Limine requests can be placed anywhere, but it is important that
 // the compiler does not optimise them away, so, usually, they should
@@ -102,6 +104,7 @@ void cpuid(u32 code, u32* a, u32* b, u32* c, u32* d) {
 // If renaming _start() to something else, make sure to change the
 // linker script accordingly.
 extern "C" void _start(void) {
+    #pragma region Init framebuffer & terminal
     // Ensure we got a framebuffer.
     if (framebuffer_request.response == NULL
      || framebuffer_request.response->framebuffer_count < 1) {
@@ -112,16 +115,19 @@ extern "C" void _start(void) {
     gFramebuffer = framebuffer_request.response->framebuffers[0]; 
 
     gTerminal.init();
-    kprintf_both("Initiliazed terminal, yay! Test: %d | Test 2: 0x%x | chars/line: %u | lines/screen: %u\n", 30, 0xFF00FF, gTerminal.charsPerLine, gTerminal.maxLines);
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Initiliazed terminal! Test: %d | Test 2: 0x%x | chars/line: %u | lines/screen: %u\n", 30, 0xFF00FF, gTerminal.charsPerLine, gTerminal.maxLines);
     
-    kprintf("Initiliazing serial port: %d\n", serial_init());
-    kprintf_both("Initialized serial port!\n");
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Initiliazing serial port: %d\n", serial_init());
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Initialized serial port!\n");
+    #pragma endregion
 
-    // Load GDT
-    kprintf("Loading GDT...\n");
+    #pragma region Init GDT
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Loading GDT...\n");
     struct GDTDescriptor* gdtDescriptor = gdt_init();
-    kprintf("If you are reading this, we did load the GDT! hooray! GDTDescriptor Address: 0x%x\n", &gdtDescriptor);
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF If you are reading this, we did load the GDT! hooray! GDTDescriptor Address: 0x%x\n", &gdtDescriptor);
+    #pragma endregion
 
+    #pragma region Read memory map and init page frame allocator
     if(memmap_request.response == NULL) {
         panic("No memory map!");
         hcf();
@@ -130,7 +136,7 @@ extern "C" void _start(void) {
     struct limine_memmap_response memmap = *memmap_request.response;
 
     // setup memory "constants"
-    kprintf_serial("Physical Base of Kernel: %x\nVirtual Base of Kernel: %x\nHHDM Offset: %x\n", kaddr_request.response->physical_base, kaddr_request.response->virtual_base, hhdm_request.response->offset);
+    kprintf_serial("$c8[Kernel/PreLogger] $c7[???]$cF Physical Base of Kernel: %x\nVirtual Base of Kernel: %x\nHHDM Offset: %x\n", kaddr_request.response->physical_base, kaddr_request.response->virtual_base, hhdm_request.response->offset);
     mem_hhdmOffset = hhdm_request.response->offset;
     mem_kVirtOffset = kaddr_request.response->virtual_base;
 
@@ -142,22 +148,24 @@ extern "C" void _start(void) {
     }
 #endif
 
-    kprintf("Initialize page frame allocator...\n");
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Initialize page frame allocator...\n");
     mem_pageframeallocator_init(memmap, hhdm_request.response);
-    kprintf("[RAM] Total: %x, Free: %x, Used: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM());
-    kprintf("[RAM] Total: %u, Free: %u, Used: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM());
-    
-    // Init IDT
-    kprintf("Initiliaze IDT & Interrupts...\n");
-    u64 idtrOffset = (u64)mem_pageframeallocator_requestPage();
-    kprintf_both("Putting IDTR at address %x\n", idtrOffset);
-    initInterrupts(idtrOffset);
-    kprintf("Initiliazed IDT & Interrupts!\n");
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Ram -> Total: %x, Free: %x, Used: %x\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM());
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Ram -> Total: %u, Free: %u, Used: %u\n", mem_getTotalRAM(), mem_getFreeRAM(), mem_getUsedRAM());
+    #pragma endregion
 
-    // Init paging
-    kprintf_both("Initialize paging...\n");
+    #pragma region Init IDT & Interrupts
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Initiliaze IDT & Interrupts...\n");
+    u64 idtrOffset = (u64)mem_pageframeallocator_requestPage();
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Putting IDTR at address %x\n", idtrOffset);
+    initInterrupts(idtrOffset);
+    kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Initiliazed IDT & Interrupts!\n");
+    #pragma endregion
+
+    #pragma region Init Paging
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Initialize paging...\n");
     globalPageTable = (PageTable*)mem_pageframeallocator_requestPage();
-    kprintf_both("PagingTable Address is %x\n", (u64)globalPageTable);
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF PagingTable Address is %x\n", (u64)globalPageTable);
     memset(globalPageTable, 0, 0x1000);
 
     for(u64 i = 0; i < memmap.entry_count; i++) {
@@ -179,45 +187,37 @@ extern "C" void _start(void) {
         }
     }
 
-    /*// We have to map these physical locations :shrug:
-    PageTable_MapMemory(globalPageTable, (void*)idtrOffset, (void*)idtrOffset);
-    PageTable_MapMemory(globalPageTable, (void*)globalPageTable, (void*)globalPageTable);*/
-
     // Map first 16 mb
     for(u64 i = 0; i < mb(16); i += 0x1000) {
         PageTable_MapMemory(globalPageTable, (void*)i, (void*)i);
     }
 
-    kprintf_both("Mapped memory\n");
-
-    //u64 fbSize = ((gFramebuffer->width * gFramebuffer->height * gFramebuffer->bpp) / 8) + 0x1000;
-    //mem_pageframeallocator_lockPages(gFramebuffer->address, fbSize / 0x1000 + 1);
-    
-    //kprintf_both("Locking up now, %x", globalPageTable);
-    //for(u64 i = 0; i < 1000000000; i++){ io_wait(); }
-    kprintf_both("Loading PML4 into CR3\n");
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Mapped memory\n");
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Loading PML4 into CR3\n");
     asm("mov %0, %%cr3" : : "r" (globalPageTable));
-    kprintf_serial("done paging!\n");
-    kprintf_both("Done initiliazing paging!\n");
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Done initiliazing paging!\n");
+    #pragma endregion
     
-    // Init heap
-    kprintf_both("Initiliazing heap with starting size 1mb, CurrentFreeMemory: %u\n", mem_getFreeRAM());
+    #pragma region Init Heap
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Initiliazing heap with starting size 1mb, CurrentFreeMemory: %u\n", mem_getFreeRAM());
     initHeap((void*)0x800000, mb(1) / kb(4));
-    kprintf_serial("initHeap() done\n");
+    kprintf_serial("$c8[Kernel/PreLogger] $c7[???]$cF initHeap() done\n");
 
     char* newString = (char*)malloc(16);
-    kprintf_serial("Address of newString: 0x%x\n", (u64)newString);
+    kprintf_serial("$c8[Kernel/PreLogger] $c7[???]$cF Address of newString: 0x%x\n", (u64)newString);
 
     char* copyable = "Hello World!";
 
     memcpy(newString, copyable, strlen((u8*)copyable));
 
-    kprintf_both("Heap Test: %s\n", newString);
-    kprintf_both("Heap successfully initiliazed!\n");
-    kprintf_both("Funny fun fact: The HeapSegHdr is %d bytes long\n", sizeof(HeapSegHdr));
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Heap Test: %s\n", newString);
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Heap successfully initiliazed!\n");
+    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Funny fun fact: The HeapSegHdr is %d bytes long\n", sizeof(HeapSegHdr));
 
     sfree(newString, 16);
+    #pragma endregion
 
+    #ifdef DBG_TESTLOGGERMEMLEAK
     Logger testLogger = Logger("Test", "Kernel");
     u64 used = getUsedMem();
     testLogger.info("Checking memory leaks from logger...");
@@ -228,7 +228,10 @@ extern "C" void _start(void) {
     testLogger.info("Heap Test, how much memory is used for allocation of 4 bytes?");
     void* testBlockOfMemory = malloc(4);
     testLogger.info("Before: %u; After: %u", used, getUsedMem());
+    sfree(testBlockOfMemory, 4);
+    #endif
 
+    #pragma region Init ACPI
     Logger acpiLogger = Logger("ACPI", "Kernel");
     acpiLogger.info("Enabling ACPI...");
     acpiLogger.info("RSDP: %x", rsdp_request.response->address);
@@ -248,7 +251,9 @@ extern "C" void _start(void) {
     
     acpiLogger.info("Calling ACPI::init");
     ACPI::init(&acpiLogger);
+    #pragma endregion
 
+    #ifdef DBG_TESTPIT
     Logger pitLogger = Logger("PIT", "Kernel");
 
     Timer timer = Timer();
@@ -258,6 +263,7 @@ extern "C" void _start(void) {
     PIT::sleepSeconds(5);
     timer.stop();
     pitLogger.info("Check if it was 5 seconds! According to the timer, %dms have passed", timer.getElapsedMillis());
+    #endif
 
     // We're done, just hang...
     hcf();

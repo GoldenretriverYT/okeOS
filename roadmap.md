@@ -5,7 +5,7 @@
 - [x] VMM
 - [x] PAGING
 - [x] ACPI
-- [ ] PIT
+- [x] PIT
 - [/] HPET
 - [ ] Multitasking
 - [ ] Syscalls
