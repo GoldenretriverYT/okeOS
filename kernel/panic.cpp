@@ -31,6 +31,11 @@ void traceStackTraceOnlySerial(u32 MaxFrames)
     }
 }
 
+/**
+ * @brief Panic the kernel and halt the system.
+ * 
+ * @param msg The message to display. Should not exceed the size of a terminal page.
+ */
 void panic(char* msg) { // TODO: Cleanup
     gTerminal.fgColor = 0xFF0000;
     kprintf_serial("Panic GODDAMN!\n");
@@ -39,7 +44,7 @@ void panic(char* msg) { // TODO: Cleanup
     traceStackTraceOnlySerial(16);
 
     kprintf("\n\n");
-    kprintf("** okeOS Panic **                             :(\n");
+    kprintf("** okeOS Panic **                             :(\n"); // TODO: Use a skull emoji instead of :()
     kprintf("A fatal exception occurred and okeOS was halted.\n");
     kprintf("Message: %s\n\n\n", msg);
 
