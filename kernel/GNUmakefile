@@ -29,7 +29,7 @@ override CC := $$HOME/opt/cross/bin/x86_64-elf-gcc
 $(eval $(call DEFAULT_VAR,LD,ld))
 
 # User controllable C flags.
-$(eval $(call DEFAULT_VAR,CFLAGS,-g -O2 -pipe -Wall -Wextra))
+$(eval $(call DEFAULT_VAR,CFLAGS,-g -O2 -pipe -Wall -Wextra -Wno-unknown-pragmas))
 
 # User controllable C preprocessor flags. We set none by default.
 $(eval $(call DEFAULT_VAR,CPPFLAGS,))

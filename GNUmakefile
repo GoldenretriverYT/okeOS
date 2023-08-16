@@ -6,12 +6,14 @@ override IMAGE_NAME := barebones
 .PHONY: all
 all: $(IMAGE_NAME).iso
 
+.PHONY: What is 
+
 .PHONY: all-hdd
 all-hdd: $(IMAGE_NAME).hdd
 
 .PHONY: run
 run: $(IMAGE_NAME).iso
-	qemu-system-x86_64 -M q35 -m 256M -cdrom $(IMAGE_NAME).iso -boot d -serial stdio
+	qemu-system-x86_64 -M q35 -m 4.758M -cdrom $(IMAGE_NAME).iso -boot d -serial stdio
 
 .PHONY: rungdb
 rungdb: $(IMAGE_NAME).iso
@@ -20,8 +22,6 @@ rungdb: $(IMAGE_NAME).iso
 .PHONY: run-int
 run-int: $(IMAGE_NAME).iso
 	qemu-system-x86_64 -M q35 -m 2G -cdrom $(IMAGE_NAME).iso -boot d -serial stdio -d int
-
-
 
 .PHONY: run-uefi
 run-uefi: ovmf $(IMAGE_NAME).iso

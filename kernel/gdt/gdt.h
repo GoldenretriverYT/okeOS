@@ -1,5 +1,6 @@
 #pragma once
 #include "../lib/num.h"
+#include "../task/tss.h"
 
 struct GDTDescriptor {
     u16 Size;
@@ -22,6 +23,7 @@ struct GDT {
     struct GDTEntry UserNull;
     struct GDTEntry UserCode;
     struct GDTEntry UserData;
+    struct GDTEntry TSS;
 } __attribute__((packed)) 
 __attribute((aligned(0x1000)));
 

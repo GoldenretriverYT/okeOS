@@ -210,4 +210,4 @@ void _kprintf(char* str, bool serial, bool terminal, va_list args) {
         __writeChar(*str, serial, terminal);
         str++;
     }
-}
+};

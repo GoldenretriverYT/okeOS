@@ -1,74 +1,101 @@
 #include "ints.h"
 
-__attribute__((interrupt)) void pageFaultHandler(struct interrupt_frame* frame){
-    kprintf_serial("Error code: %d\n", frame->err_code);
-    panic("Page Fault Detected");
-    while(1);
+InterruptDescriptor idt[256];
+
+void setIdtEntry(u8 vector, void* handler, u8 dpl) {
+    u64 handlerAddr = (u64)handler;
+
+    InterruptDescriptor* entry = &idt[vector];
+    entry->addressLow = handlerAddr & 0xFFFF;
+    entry->addressMid = (handlerAddr >> 16) & 0xFFFF;
+    entry->addressHigh = handlerAddr >> 32;
+    entry->selector = 0x8;
+    //trap gate + present + DPL
+    entry->flags = 0b1110 | ((dpl & 0b11) << 5) |(1 << 7);
+    //ist disabled
+    entry->ist = 0;
 }
 
-__attribute__((interrupt)) void doubleFaultHandler(struct interrupt_frame* frame){
-    panic("Double Fault Detected");
-    while(1);
+void loadIDT(void* idtAddr)
+{
+    IDTR idtReg;
+    idtReg.limit = 0xFFF;
+    idtReg.base = (u64)idtAddr;
+    IDTR* idtRegPtr = &idtReg;
+    asm volatile("lidt %0" :: "m"(idtRegPtr));
 }
 
-__attribute__((interrupt)) void gpFaultHandler(struct interrupt_frame* frame){
-    panic("General Protection Fault Detected");
-    while(1);
+void initInts() {
+    for (u64 i = 0; i < 256; i++)
+    setIdtEntry(i, (void*)vector_0_handler + (i * 16), 0);
 }
 
-__attribute__((interrupt)) void keyboardInterruptHandler(struct interrupt_frame* frame){
-    // TODO
+extern "C" void interruptDispatch(CPUStatus* ctx)
+{
+    switch (ctx->vectorNumber)
+    {
+        case ReservedVectors::GeneralProtectionFault:
+            panic("General Protection Fault");
+            break;
+        case ReservedVectors::PageFault:
+            panic((char*)getPageFaultString(ctx->errorCode));
+            break;
+        default:
+            kprintf_serial("Unexpected interrupt. Vector: %x (%d)", ctx->vectorNumber, ctx->vectorNumber);
+            break;
+    }
 }
 
-__attribute__((interrupt)) void mouseInterruptHandler(struct interrupt_frame* frame){
-    // TODO
-}
+char fixedPageFaultString[256];
 
-__attribute__((interrupt)) void pitInterruptHandler(struct interrupt_frame* frame){
-    PIT::tick();
-    PIC_EndMaster();
-}
+const char* getPageFaultString(u64 errorCode) {
+    // Construct a string considering following bits in the bitfield
+    // 0: Present - 0 = not present, 1 = present | Present means that the page table entry does exist
+    // 1: Write - 0 = read, 1 = write | Write means that the page was written to
+    // 2: User - 0 = supervisor, 1 = user | User means that the page was accessed in user mode
+    // 3: Reserved bit violation - 0 = no violation, 1 = violation | Reserved bit violation means that a reserved bit was set to 1
+    // 4: Instruction fetch - 0 = data access, 1 = instruction fetch | Instruction fetch means that the page was accessed by an instruction fetch
+    // 5: Protection key violation - 0 = no violation, 1 = violation | Protection key violation means that the page was accessed with a protection key that does not match the key in the PTE
+    // We dont care about the others
 
-void PIC_EndMaster(){
-    outb(PIC1_COMMAND, PIC_EOI);
-}
+    u64 present = errorCode & 0b1;
+    u64 write = (errorCode >> 1) & 0b1;
+    u64 user = (errorCode >> 2) & 0b1;
+    u64 reservedBitViolation = (errorCode >> 3) & 0b1;
+    u64 instructionFetch = (errorCode >> 4) & 0b1;
+    u64 protectionKeyViolation = (errorCode >> 5) & 0b1;
 
-void PIC_EndSlave(){
-    outb(PIC2_COMMAND, PIC_EOI);
-    outb(PIC1_COMMAND, PIC_EOI);
-}
-   
+    u64 strOffset = 0;
 
-void RemapPIC(){
-    uint8_t a1, a2; 
+    auto append = [&](const char* str) {
+        u64 len = strlen((u8*)str);
+        memcpy(fixedPageFaultString + strOffset, str, len);
+        strOffset += len;
+    };
+    
+    if(user == 0) {
+        append("Supervisor Process ");
+    }else {
+        append("User Process ");
+    }
 
-    a1 = inb(PIC1_DATA);
-    io_wait();
-    a2 = inb(PIC2_DATA);
-    io_wait();
+    if(write == 0) {
+        append("read from ");
+    }else {
+        append("write to ");
+    }
 
-    outb(PIC1_COMMAND, ICW1_INIT | ICW1_ICW4);
-    io_wait();
-    outb(PIC2_COMMAND, ICW1_INIT | ICW1_ICW4);
-    io_wait();
+    if(instructionFetch == 0) {
+        append("data ");
+    }else {
+        append("instruction ");
+    }
 
-    outb(PIC1_DATA, 0x20);
-    io_wait();
-    outb(PIC2_DATA, 0x28);
-    io_wait();
+    if(present == 0) {
+        append("non-present page entry");
+    }else {
+        append("and caused a protection fault");
+    }
 
-    outb(PIC1_DATA, 4);
-    io_wait();
-    outb(PIC2_DATA, 2);
-    io_wait();
-
-    outb(PIC1_DATA, ICW4_8086);
-    io_wait();
-    outb(PIC2_DATA, ICW4_8086);
-    io_wait();
-
-    outb(PIC1_DATA, a1);
-    io_wait();
-    outb(PIC2_DATA, a2);
-
+    return fixedPageFaultString;
 }

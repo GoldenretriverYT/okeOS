@@ -121,7 +121,7 @@ char *FastStringBuilder::build()
 
     for (int i = 0; i < nParts; i++)
     {
-        fullSize += strlen((u8 *)parts[i]);
+        fullSize += strlen((u8 *)parts[i]) + 1; // +1 for null terminator
     }
 
     if(this->outputBuf != nullptr)
@@ -134,7 +134,7 @@ char *FastStringBuilder::build()
 
     for (int i = 0; i < nParts; i++)
     {
-         u64 partLen = strlen((u8 *)parts[i]);
+        u64 partLen = strlen((u8 *)parts[i]);
         memcpy(this->outputBuf + off, parts[i], partLen);
         off += partLen;
     }

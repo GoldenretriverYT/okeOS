@@ -5,7 +5,6 @@
 #include "lib/num.h"
 #include "lib/io.h"
 #include "gdt/gdt.h"
-#include "idt/idt.h"
 #include "idt/ints.h"
 #include "mem/memutils.h"
 #include "mem/pageframeallocator.h"
@@ -19,10 +18,12 @@
 #include "lib/logger.h"
 #include "sched/pit.h"
 #include "sched/timer.h"
+#include "lib/list.h"
 
 //#define DBG_DUMPMEMMAP
 //#define DBG_TESTPIT
 //#define DBG_TESTLOGGERMEMLEAK
+//#define DBG_TESTLISTS
 
 // The Limine requests can be placed anywhere, but it is important that
 // the compiler does not optimise them away, so, usually, they should
@@ -63,7 +64,7 @@ static void hcf(void) {
 
 struct IDTR idtr;
 
-void setIdtGate(void* handler, u8 entryOffset, u8 typeAttr, u8 selector){
+/*void setIdtGate(void* handler, u8 entryOffset, u8 typeAttr, u8 selector){
     struct IDTDescEntry* interrupt = (struct IDTDescEntry*)(idtr.Offset + entryOffset * sizeof(struct IDTDescEntry));
     idt_setOffset(interrupt, (uint64_t)handler);
     interrupt->type_attr = typeAttr;
@@ -92,7 +93,7 @@ void initInterrupts(u64 offset) {
     asm("sti");
 
     PIT::setDivisor(100);
-}
+}*/
 
 void cpuid(u32 code, u32* a, u32* b, u32* c, u32* d) {
     asm volatile("cpuid"
@@ -156,9 +157,7 @@ extern "C" void _start(void) {
 
     #pragma region Init IDT & Interrupts
     kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Initiliaze IDT & Interrupts...\n");
-    u64 idtrOffset = (u64)mem_pageframeallocator_requestPage();
-    kprintf_both("$c8[Kernel/PreLogger] $c7[???]$cF Putting IDTR at address %x\n", idtrOffset);
-    initInterrupts(idtrOffset);
+    initInts();
     kprintf("$c8[Kernel/PreLogger] $c7[???]$cF Initiliazed IDT & Interrupts!\n");
     #pragma endregion
 
@@ -237,7 +236,7 @@ extern "C" void _start(void) {
     acpiLogger.info("RSDP: %x", rsdp_request.response->address);
     RSDPDescriptor* rsdp = (RSDPDescriptor*)rsdp_request.response->address;
 
-    //rsdp->checksumValidation(); // no who gives a fuck tbh then well it just isnt gonna work who cares
+    //rsdp->checksumValidation(); // no who gives a shat tbh then well it just isnt gonna work who cares
 
     if(rsdp->Revision == 2) {
         acpiLogger.warn("Detected ACPI 2.0+!"); // i dont really care about acpi 2.0+ :trol:
@@ -263,6 +262,43 @@ extern "C" void _start(void) {
     PIT::sleepSeconds(5);
     timer.stop();
     pitLogger.info("Check if it was 5 seconds! According to the timer, %dms have passed", timer.getElapsedMillis());
+    #endif
+
+    #ifdef DBG_TESTLISTS
+    List<u16>* list = new List<u16>();
+
+    list->add(30);
+    list->add(60);
+    list->add(90);
+    
+    Logger listTestLogger = Logger("ListTest", "Kernel");
+
+    listTestLogger.info("List test: %d | Expected: 30", list->get(0)); // should return 30
+    listTestLogger.info("List test: %d | Expected: 60", list->get(1)); // should return 60
+    listTestLogger.info("List test: %d | Expected: 90", list->get(2)); // should return 90
+
+    list->remove((u64)1); // Since u16 is our type and we can both remove by item and by index, we need to cast to u64
+
+    listTestLogger.info("List test: %d | Expected: 30", list->get(0)); // should return 30
+    listTestLogger.info("List test: %d | Expected: 90", list->get(1)); // should return 90
+    listTestLogger.info("List test: %d | Expected: 0 / NULL", list->get(2)); // should return NULL
+
+    list->clear();
+    listTestLogger.info("Lets test sorting!");
+    list->add(34);
+    list->add(12);
+    list->add(56);
+    list->add(90);
+    list->add(78);
+
+    list->sort();
+
+    listTestLogger.info("List test: %d | Expected: 12", list->get(0)); // should return 12
+    listTestLogger.info("List test: %d | Expected: 34", list->get(1)); // should return 34
+    listTestLogger.info("List test: %d | Expected: 56", list->get(2)); // should return 56
+    listTestLogger.info("List test: %d | Expected: 78", list->get(3)); // should return 78
+    listTestLogger.info("List test: %d | Expected: 90", list->get(4)); // should return 90
+
     #endif
 
     // We're done, just hang...

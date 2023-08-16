@@ -28,7 +28,9 @@
         "span": "cpp",
         "buffer": "cpp",
         "interception-malloc-test-1.C": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "typeindex": "cpp",
+        "typeinfo": "cpp"
     },
     "files.exclude": {
         "**/.git": true,

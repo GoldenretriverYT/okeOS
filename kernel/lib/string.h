@@ -25,3 +25,7 @@ class FastStringBuilder {
     char* build();
     char* buildAndDestroy();
 };
+
+// A string builder that uses a linked list of String objects
+class StringBuilder {
+};

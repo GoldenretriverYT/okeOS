@@ -55,13 +55,13 @@ void* malloc(size_t size){
                 currentSeg->split(size);
                 currentSeg->free = false;
                 void* addr = (void*)((uint64_t)currentSeg + sizeof(HeapSegHdr));
-                //memset(addr, size, 0);
+                memset(addr, size, 0);
                 return addr;
             }
             if (currentSeg->length == size){
                 currentSeg->free = false;
                 void* addr = (void*)((uint64_t)currentSeg + sizeof(HeapSegHdr));
-                //memset(addr, size, 0);
+                memset(addr, size, 0);
                 return addr;
             }
         }
@@ -100,6 +100,13 @@ void expandHeap(size_t length){
     size_t pageCount = length / 0x1000;
     HeapSegHdr* newSegment = (HeapSegHdr*)heapEnd;
 
+    // Align the heap end to the page boundary
+    size_t align = (size_t)heapEnd % 0x1000;
+    if (align > 0) {
+        heapEnd = (void*)((size_t)heapEnd + (0x1000 - align));
+        newSegment = (HeapSegHdr*)heapEnd;
+    }
+
     for (size_t i = 0; i < pageCount; i++){
         PageTable_MapMemory(globalPageTable, heapEnd, mem_pageframeallocator_requestPage());
         heapEnd = (void*)((size_t)heapEnd + 0x1000);
@@ -112,7 +119,6 @@ void expandHeap(size_t length){
     newSegment->next = NULL;
     newSegment->length = length - sizeof(HeapSegHdr);
     newSegment->combineBackward();
-
 }
 
 void HeapSegHdr::combineForward(){
